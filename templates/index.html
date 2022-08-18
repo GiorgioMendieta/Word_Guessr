@@ -17,8 +17,9 @@
             Messages go here
         </div>
 
-        <!-- Variable number of rows -->
         <div class="guess-grid-container">
+            <!-- Variable number of rows -->
+            <div class="guess-grid">
             <!-- Tiles go here -->
             {% for guess in range(num_guesses) %}
                 <div class="guessRow" id="attempt-{{guess}}">
@@ -29,6 +30,7 @@
                 {% endfor %}    
                 </div>
             {% endfor %}
+            </div>
         </div>
         
         <div class="keyboard-container">
