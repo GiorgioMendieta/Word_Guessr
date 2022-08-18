@@ -37,7 +37,7 @@ body {
     /* There are 10 keys per row, however we will take half a key as our unitary size
     and then double it */
     grid-template-columns: repeat(20, minmax(auto, 1.25em));
-    /* Each button is 3em tall */
+    /* Each button is 4em tall */
     grid-auto-rows: 4em;
     gap: 0.25em;
     justify-content: center;
@@ -101,34 +101,33 @@ body {
 
 .guess-grid-container {
     display: grid;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 1;
-    grid-template-rows: repeat(6, 4em);
+    /* TODO: Make variable in CSS */
+    grid-template-rows: repeat(6, 1fr);
     /* Gap between rows */
     gap: 0.25em;
+    flex-grow: 1;
     margin: 1em;
 }
 
 .guessRow {
     display: grid;
-    justify-content: center;
-    align-items: center;
-    /* flex-grow: 1; */
     /* TODO: Make variable in CSS */
-    grid-template-columns: repeat(5, 4em);
+    grid-template-columns: repeat(5, 1fr);
+    grid-auto-rows: 4em;
     /* Gap between columns */
-    gap: 0.35em;
+    gap: 0.25em;
 }
 
- .tile {
-    /* height: 4em; */
-    /* width: 4em; */
+.tile {
+    /* height: 2em; */
+    width: 2em;
     font-size: 2em;
-    /* background-color: red; */
-    border: .10em solid #3A3A3C;
+    border: .075em solid #3A3A3C;
     padding: 0%;
+    display: inline-flex;
     justify-content: center;
     align-items: center;
+    vertical-align: middle;
     text-transform: uppercase;
+    user-select: none;
  }

@@ -21,10 +21,10 @@
         <div class="guess-grid-container">
             <!-- Tiles go here -->
             {% for guess in range(num_guesses) %}
-                <div class="guessRow" id="guessRow-{{guess}}">
+                <div class="guessRow" id="attempt-{{guess}}">
                 {% for letter in range(num_letters) %}
                     <div class="tile" id="tile-{{letter}}">
-                        {{tiles[guess][letter]}}
+                        <b>{{tiles[guess][letter]}}</b>
                     </div>
                 {% endfor %}    
                 </div>
