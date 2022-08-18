@@ -29,5 +29,23 @@ def after_request(response):
 @app.route("/")
 def index():
     """Show main game"""
+    num_guesses = 6
+    NUM_LETTERS = 5
 
-    return render_template("index.html")
+    tiles = [[0] * NUM_LETTERS for i in range(num_guesses)]
+
+    for guess in range(num_guesses):
+        for letter in range(NUM_LETTERS):
+            tiles[guess][letter] = 'a'
+
+    # Keyboard layout
+    keys = [['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+            [' ', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ' '],
+            ['Enter', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'Back']]
+
+
+    return render_template("index.html", 
+        keys=keys,
+        num_guesses=num_guesses,
+        num_letters=NUM_LETTERS,
+        tiles=tiles)
