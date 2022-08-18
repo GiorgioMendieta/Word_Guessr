@@ -16,3 +16,52 @@ body {
     border-bottom: solid 1px #3a3a3c;
     padding: 1em;
 }
+
+/* Main container for the game */
+.game-container {
+    height: 90vh; /* 90% of viewport */
+    /* Flexbox */
+    display: flex; 
+    flex-direction: column; /* Stack flex elements in a column */
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tile-container {
+    /* width: 330px; */
+    margin-bottom: 30px;
+}
+
+.keyboard-row{
+    display: grid;
+    /* There are 10 keys per row, however we will take half a key as our unitary size
+    and then double it */
+    grid-template-columns: repeat(20, minmax(auto, 1.25em));
+    /* Each button is 3em tall */
+    grid-auto-rows: 4em;
+    gap: 0.25em;
+    justify-content: center;
+    margin-bottom: 0.25em;
+}
+
+.key {
+    /* Inherit font size from parent <body> to make it responsive */
+    font-size: inherit;
+    background-color: hsl(198, 1%, 51%);
+    /* Every key is two-columns wide (From .keyboard-row # of grid columns */
+    grid-column: span 2;
+    border: none;
+    padding: 0%;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    border-radius: 0.25em;
+    margin: 1px;
+    cursor: pointer;
+    /* Prevent the user from highlighting the button text */
+    user-select: none;
+}
+
+.key.large {
+    grid-column: span 3;
+}
