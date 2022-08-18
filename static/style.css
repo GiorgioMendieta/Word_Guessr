@@ -38,7 +38,7 @@ body {
     and then double it */
     grid-template-columns: repeat(20, minmax(auto, 1.25em));
     /* Each button is 4em tall */
-    grid-auto-rows: 4em;
+    grid-auto-rows: 3.8em;
     gap: 0.25em;
     justify-content: center;
     margin-bottom: 0.25em;
