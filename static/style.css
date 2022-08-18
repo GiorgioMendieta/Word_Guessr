@@ -98,3 +98,37 @@ body {
 .key:hover, .key:focus {
     --lightness-offset: 10%;
 }
+
+.guess-grid-container {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    grid-template-rows: repeat(6, 4em);
+    /* Gap between rows */
+    gap: 0.25em;
+    margin: 1em;
+}
+
+.guessRow {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    /* flex-grow: 1; */
+    /* TODO: Make variable in CSS */
+    grid-template-columns: repeat(5, 4em);
+    /* Gap between columns */
+    gap: 0.35em;
+}
+
+ .tile {
+    /* height: 4em; */
+    /* width: 4em; */
+    font-size: 2em;
+    /* background-color: red; */
+    border: .10em solid #3A3A3C;
+    padding: 0%;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+ }
