@@ -47,7 +47,13 @@ body {
 .key {
     /* Inherit font size from parent <body> to make it responsive */
     font-size: inherit;
-    background-color: hsl(198, 1%, 51%);
+    /* Use HSL to change lightness on hover and when a key is not available */
+    background-color: hsl(
+        var(--hue, 198),
+        var(--saturation, 1%),
+        /* Perform a calculation to add a lightness offset (default = 0%) */
+        calc(var(--lightness-offset, 0%) + var(--lightness, 51%))
+    );
     /* Every key is two-columns wide (From .keyboard-row # of grid columns */
     grid-column: span 2;
     border: none;
@@ -64,4 +70,10 @@ body {
 
 .key.large {
     grid-column: span 3;
+}
+
+/* Increase the key's lightness when it's hovered */
+/* Uses the current lightness as base and adds to it */
+.key:hover, .key:focus {
+    --lightness-offset: 10%;
 }
