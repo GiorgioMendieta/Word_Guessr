@@ -100,34 +100,59 @@ body {
 }
 
 .guess-grid-container {
-    display: grid;
-    /* TODO: Make variable in CSS */
-    grid-template-rows: repeat(6, 1fr);
-    /* Gap between rows */
-    gap: 0.25em;
+    display: flex;
+    align-items: center;
     flex-grow: 1;
     margin: 1em;
 }
 
+.guess-grid {
+    display: grid;
+    /* TODO: Make variable # of rows in CSS */
+    grid-template-rows: repeat(6, 1fr);
+    /* Gap between rows */
+    gap: 0.25em;
+}
+
 .guessRow {
     display: grid;
-    /* TODO: Make variable in CSS */
-    grid-template-columns: repeat(5, 1fr);
+    /* 4em column width */
+    /* TODO: Make variable # of columns in CSS */
+    grid-template-columns: repeat(5, 4em);
     grid-auto-rows: 4em;
     /* Gap between columns */
     gap: 0.25em;
 }
 
 .tile {
-    /* height: 2em; */
-    width: 2em;
     font-size: 2em;
-    border: .075em solid #3A3A3C;
-    padding: 0%;
+    border: .075em solid hsl(240, 2%, 23%);
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    vertical-align: middle;
     text-transform: uppercase;
     user-select: none;
  }
+
+/* Active tile (Has data in it) */
+.tile[data-state="active"] {
+    border-color: hsl(240, 2%, 33%);
+}
+
+/* Wrong tile */
+.tile[data-state="wrong"] {
+    border: none;
+    background-color: #3A3A3C;
+}
+
+/* Present tile */
+.tile[data-state="present"] {
+    border: none;
+    background-color: #B59F3B;
+}
+
+/* Correct tile */
+.tile[data-state="correct"] {
+    border: none;
+    background-color: #538D4E;
+}
