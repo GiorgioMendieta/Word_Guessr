@@ -1,0 +1,18 @@
+* {
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: #121213;
+    /* Variable font size (Responsive) */
+    /* Min size,  Default, Max */
+    font-size: clamp(0.5rem, 2.5vmin, 1.5rem);
+}
+
+.title-container {
+    text-align: center;
+    width: auto;
+    border-bottom: solid 1px #3a3a3c;
+    padding: 1em;
+}
