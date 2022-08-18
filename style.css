@@ -72,6 +72,27 @@ body {
     grid-column: span 3;
 }
 
+/* Reduce the key's lightness when it's wrong */
+.key.wrong {
+    --lightness: 23%;
+}
+
+/* Change the key's color to yellow if it's present */
+/* (Overwrites .key.wrong) */
+.key.present {
+    --hue: 50;
+    --saturation: 51%;
+    --lightness: 47%;
+}
+
+/* Change the key's color to green if it's correct */
+/* (Overwrites .key.present) */
+.key.correct {
+    --hue: 115;
+    --saturation: 29%;
+    --lightness: 43%;
+}
+
 /* Increase the key's lightness when it's hovered */
 /* Uses the current lightness as base and adds to it */
 .key:hover, .key:focus {
