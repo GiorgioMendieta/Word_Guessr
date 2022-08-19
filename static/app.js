@@ -51,7 +51,6 @@ function handleMouseClick(e) {
 
 function handleKeyPress(e) {
     if (e.key === "Enter") {
-        console.log("Guess submited");
         submitGuess();
         return;
     }
@@ -96,5 +95,53 @@ function deleteKey() {
         tile.textContent = "";
     }
     
+    return;
+}
+
+function submitGuess() {
+    // Check if user inserted enough letters to submit
+    if(letter < NUM_LETTERS) {
+        showAlert("Not enough letters");
+        shakeTiles(activeTiles);
+        return;
+    }
+
+    // Get Word
+    const row = document.getElementById("guess-" + guess);
+    const tiles = Array.from(row.children);
+    tiles.forEach(tile => {
+        console.log(tile);
+    });
+
+    flipTiles(word);
+    return;
+}
+
+alertContainer = document.getElementById("alert-container");
+function showAlert(msg, duration = 1000) {
+    console.log(msg);
+    const alert = document.createElement("div");
+    alert.classList.add("alert");
+    alert.textContent = msg;
+    alertContainer.prepend(alert);
+
+    if(duration == null) return;
+
+    // If the duration is specified, add the "hide" class to the alert element
+    setTimeout(() => {
+        alert.classList.add("hide");
+        // As soon as the fade out transition ends, delete the element
+        alert.addEventListener("transitionend", () => {
+            alert.remove();
+        });
+    }, duration);
+
+
+}
+
+function flipTiles(word) {
+    letter = 0;
+    guess++;
+
     return;
 }

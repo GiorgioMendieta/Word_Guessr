@@ -157,3 +157,37 @@ body {
     border: none;
     background-color: #538D4E;
 }
+
+.alert-container {
+    position: fixed;
+    /* 10% of viewport height */
+    top: 10vh;
+    /* 50% of viewport width */
+    /* left: 50vh; */
+    /* transform: translateX(-50%); */
+    /* Always place alert on top */
+    z-index: 1; 
+    
+    /* Display alerts in flexbox vertically */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.alert {
+    background-color: #FFFFFF;
+    color: #121213;
+    text-align: center;
+    padding: 0.75em;
+    border-radius: 0.25em;
+    /* Prevent selecting the alert */
+    pointer-events: none;
+    /* Used for hiding alert */
+    opacity: 100%;
+    transition: opacity 500ms  ease-in-out;
+    margin-bottom: 0.5em;
+}
+
+.alert.hide {
+    opacity: 0%;
+}
