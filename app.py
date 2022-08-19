@@ -1,30 +1,14 @@
 import os
 
-from flask import Flask, flash, redirect, render_template, request, session
-from tempfile import mkdtemp
-
-
-import logging
-import datetime
-
-# Run app in debug mode
-config = {
-    "DEBUG": True
-}
+from flask import Flask, Config, flash, redirect, render_template, request, session
 
 # Configure application
 app = Flask(__name__)
 
+# Run app in debug modeß
+app.config["DEBUG"] = True
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
-
-@app.after_request
-def after_request(response):
-    """Ensure responses aren't cached"""
-    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-    response.headers["Expires"] = 0
-    response.headers["Pragma"] = "no-cache"
-    return response
 
 @app.route("/")
 def index():
@@ -36,7 +20,7 @@ def index():
 
     for guess in range(num_guesses):
         for letter in range(NUM_LETTERS):
-            tiles[guess][letter] = 'a'
+            tiles[guess][letter] = ''
 
     # Keyboard layout
     keys = [['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
