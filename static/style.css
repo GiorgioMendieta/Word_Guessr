@@ -114,7 +114,7 @@ body {
     gap: 0.25em;
 }
 
-.guessRow {
+.guess-row {
     display: grid;
     /* 4em column width */
     /* TODO: Make variable # of columns in CSS */
@@ -126,6 +126,7 @@ body {
 
 .tile {
     font-size: 2em;
+    font-weight: bold;
     border: .075em solid hsl(240, 2%, 23%);
     display: inline-flex;
     justify-content: center;
