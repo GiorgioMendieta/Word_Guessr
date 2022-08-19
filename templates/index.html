@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index</title>
+    <title>Find The Word</title>
     <link href="/static/favicon.ico" rel="icon">
     <link rel="stylesheet" href="/static/style.css"/>
 </head>
@@ -21,10 +21,10 @@
         <div class="guess-grid-container">
             <div class="guess-grid">
             {% for guess in range(num_guesses) %}
-                <div class="guessRow" id="attempt-{{guess}}">
+                <div class="guess-row" id="guess-{{guess}}">
                 {% for letter in range(num_letters) %}
-                    <div class="tile" id="tile-{{letter}}">
-                        <b>{{tiles[guess][letter]}}</b>
+                    <div class="tile" id="tile-{{guess}}-{{letter}}">
+                        {{tiles[guess][letter]}}
                     </div>
                 {% endfor %}    
                 </div>
@@ -49,7 +49,7 @@
         </div>
     </div>
 
-    <!-- <script src="app.js"></script> -->
+    <script src="/static/app.js"></script>
 
 </body>
 </html>
