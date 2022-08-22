@@ -7,14 +7,18 @@ body {
     background-color: #121213;
     /* Variable font size (Responsive) */
     /* Min size,  Default, Max */
-    font-size: clamp(0.5rem, 2.5vmin, 1.5rem);
+    font-size: clamp(0.8rem, 2.5vmin, 1.5rem);
+}
+
+.header-container {
+    display: flex;
+    flex-direction: row;
 }
 
 .title-container {
     text-align: center;
     width: auto;
     border-bottom: solid 1px #3a3a3c;
-    padding: 1em;
 }
 
 /* Main container for the game */
@@ -27,26 +31,21 @@ body {
     align-items: center;
 }
 
-.tile-container {
-    /* width: 330px; */
-    margin-bottom: 30px;
-}
-
-.keyboard-row{
+.keyboard-row {
     display: grid;
     /* There are 10 keys per row, however we will take half a key as our unitary size
     and then double it */
     grid-template-columns: repeat(20, minmax(auto, 1.25em));
-    /* Each button is 4em tall */
+    /* Height of buttons */
     grid-auto-rows: 3.8em;
-    gap: 0.25em;
     justify-content: center;
-    margin-bottom: 0.25em;
+    margin-bottom: 0.3em;
 }
 
 .key {
     /* Inherit font size from parent <body> to make it responsive */
     font-size: inherit;
+    font-weight: bold;
     /* Use HSL to change lightness on hover and when a key is not available */
     background-color: hsl(
         var(--hue, 198),
@@ -62,7 +61,7 @@ body {
     align-items: center;
     text-transform: uppercase;
     border-radius: 0.25em;
-    margin: 1px;
+    margin-right: 0.3em;
     cursor: pointer;
     /* Prevent the user from highlighting the button text */
     user-select: none;
