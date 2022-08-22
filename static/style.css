@@ -13,12 +13,14 @@ body {
 .header-container {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-bottom: solid 1px #3a3a3c;
 }
 
 .title-container {
     text-align: center;
     width: auto;
-    border-bottom: solid 1px #3a3a3c;
 }
 
 /* Main container for the game */
@@ -33,13 +35,14 @@ body {
 
 .keyboard-row {
     display: grid;
-    /* There are 10 keys per row, however we will take half a key as our unitary size
-    and then double it */
-    grid-template-columns: repeat(20, minmax(auto, 1.25em));
+    /* There are 10 keys per row, however we will take half a key (spacer) 
+    as our unitary size and then double it */
+    grid-template-columns: repeat(20, minmax(1em, 1.5em));
     /* Height of buttons */
-    grid-auto-rows: 3.8em;
+    grid-auto-rows: 4em;
     justify-content: center;
-    margin-bottom: 0.3em;
+    /* Same as margin-left of .key */
+    margin-bottom: 0.4em;
 }
 
 .key {
@@ -61,7 +64,8 @@ body {
     align-items: center;
     text-transform: uppercase;
     border-radius: 0.25em;
-    margin-right: 0.3em;
+    /* Same as margin-bottom of .keyboard-row */
+    margin-right: 0.4em;
     cursor: pointer;
     /* Prevent the user from highlighting the button text */
     user-select: none;
@@ -96,6 +100,11 @@ body {
 /* Uses the current lightness as base and adds to it */
 .key:hover, .key:focus {
     --lightness-offset: 10%;
+}
+
+/* Remove last margin */
+.key:last-of-type {
+    /* margin-right: 0; */
 }
 
 .guess-grid-container {
