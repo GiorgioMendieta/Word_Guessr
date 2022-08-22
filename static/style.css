@@ -204,6 +204,16 @@ body {
     transform: rotateX(90deg);
 }
 
+.tile.pop {
+    animation: pop 200ms linear;
+}
+
+@keyframes pop {
+    50% {
+        transform: scale(1.2);
+    }
+}
+
 .alert-container {
     position: fixed;
     /* 10% of viewport height */

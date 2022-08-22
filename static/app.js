@@ -77,6 +77,16 @@ function addKey(key) {
         tile.dataset.state = "active";
         tile.textContent = key;
 
+        // Add pop animation when writing on tiles
+        tile.classList.add("pop")
+        tile.addEventListener(
+            "animationend",
+            () => {
+                tile.classList.remove("pop");
+            },
+            { once: true }
+        );
+
         // Advance to next tile
         letter++;
     }
