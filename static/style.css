@@ -164,6 +164,9 @@ body {
     align-items: center;
     text-transform: uppercase;
     user-select: none;
+    
+    /* Flip animation */
+    transition: transform 250ms linear;
  }
 
 /* Active tile (Has data in it) */
@@ -187,6 +190,10 @@ body {
 .tile[data-state="correct"] {
     border: none;
     background-color: #538D4E;
+}
+
+.tile.flip {
+    transform: rotateX(90deg);
 }
 
 .alert-container {

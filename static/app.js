@@ -1,12 +1,13 @@
 // Constants
 const NUM_GUESSES = 6;
 const NUM_LETTERS = 5;
+const FLIP_DURATION = 500;
 
 // Get keyboard keys and put them in an array
 const keys = Array.from(document.getElementsByClassName("key"));
 
-// const guessGrid = document.querySelector("[data-guess-grid]");
-// const guessRows = document.getElementsByClassName("guess-row");
+// TODO: Get word from API
+const wordle = "apple";
 
 // Main
 
@@ -107,12 +108,21 @@ function submitGuess() {
         return;
     }
 
+    // Get array of tiles of the current row
     const tiles = Array.from(row.children);
+    let word = '';
     tiles.forEach((tile) => {
-        // console.log(tile);
+        // For each tile, get the contents and append it to the word
+        word = word + tile.innerHTML;
     });
 
-    checkWord(word);
+    // TODO: Get word from API
+    // if (false) { 
+    //     showAlert("Not in word list!");
+    //     shakeRow(row);
+    // }
+
+    checkWord(word, row);
     return;
 }
 
@@ -152,9 +162,59 @@ function shakeRow(row) {
     return;
 }
 
-// function flipTiles(word) {
-//     letter = 0;
-//     guess++;
+function checkWord(word) {
+    console.log("Submitted guess: " + word);
 
-//     return;
-// }
+    flipTiles(word);
+
+    if (word === wordle) {
+        showAlert("Magnificent!");
+        stopInteraction();
+        // TODO: Show end screen
+        return;
+    } else {
+        if (guess >= (NUM_GUESSES-1)) {
+            showAlert("Game over!");
+            stopInteraction();
+            // TODO: Show end screen
+            return;
+        } else {
+            letter = 0;
+            guess++;
+        }
+    }
+
+    return;
+}
+
+function flipTiles(word) {
+    // Prevent interaction while animation is running
+    stopInteraction();
+
+    Array.from(word).forEach(letter => {
+        console.log(letter);
+        const key = document.querySelector("[data-key=" + letter + "]");
+
+        // TODO: Add color
+        key.classList.add("present");
+    });
+
+    // Get every tile in the row
+    const rowTiles = document.querySelector("#guess-" + guess).childNodes;
+    rowTiles.forEach((tile, index) => {
+        // Flip 90 deg, change color, then flip back
+        setTimeout(() => {
+            tile.classList.add("flip");
+        }, (index*FLIP_DURATION/2));
+
+        tile.addEventListener("transitionend", () => {
+            tile.classList.remove("flip")
+
+            // TODO: Add color
+            tile.dataset.state = "present";
+        });
+    });
+
+    startInteraction();
+    return;
+}
