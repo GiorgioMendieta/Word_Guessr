@@ -5,8 +5,8 @@ const NUM_LETTERS = 5;
 // Get keyboard keys and put them in an array
 const keys = Array.from(document.getElementsByClassName("key"));
 
-const guessGrid = document.querySelector("[data-guess-grid]");
-const guessRows = document.getElementsByClassName("guess-row");
+// const guessGrid = document.querySelector("[data-guess-grid]");
+// const guessRows = document.getElementsByClassName("guess-row");
 
 // Main
 
@@ -15,8 +15,6 @@ startInteraction();
 // Function declarations
 
 function startInteraction() {
-    // document.addEventListener("click", handleMouseClick);
-
     // Add a click event listener for every key and call handleMouseClick()
     keys.forEach((key) => {
         key.addEventListener("click", handleMouseClick);
@@ -37,7 +35,7 @@ function handleMouseClick(e) {
         submitGuess();
         return;
     }
-    
+
     if (e.target.matches("[data-key='Back']")) {
         deleteKey();
         return;
@@ -72,7 +70,7 @@ let letter = 0;
 
 function addKey(key) {
     // Limit number of tiles to be written
-    if(letter < NUM_LETTERS) {
+    if (letter < NUM_LETTERS) {
         const tile = document.getElementById("tile-" + guess + "-" + letter);
         tile.dataset.letter = key.toLowerCase();
         tile.dataset.state = "active";
@@ -86,7 +84,7 @@ function addKey(key) {
 
 function deleteKey() {
     // Limit number of tiles to be deleted
-    if(letter > 0) {
+    if (letter > 0) {
         letter--;
 
         const tile = document.getElementById("tile-" + guess + "-" + letter);
@@ -94,26 +92,27 @@ function deleteKey() {
         delete tile.dataset.state;
         tile.textContent = "";
     }
-    
+
     return;
 }
 
 function submitGuess() {
+    // Get Word
+    const row = document.getElementById("guess-" + guess);
+
     // Check if user inserted enough letters to submit
-    if(letter < NUM_LETTERS) {
+    if (letter < NUM_LETTERS) {
         showAlert("Not enough letters");
-        shakeTiles(activeTiles);
+        shakeRow(row);
         return;
     }
 
-    // Get Word
-    const row = document.getElementById("guess-" + guess);
     const tiles = Array.from(row.children);
-    tiles.forEach(tile => {
-        console.log(tile);
+    tiles.forEach((tile) => {
+        // console.log(tile);
     });
 
-    flipTiles(word);
+    checkWord(word);
     return;
 }
 
@@ -125,23 +124,37 @@ function showAlert(msg, duration = 1000) {
     alert.textContent = msg;
     alertContainer.prepend(alert);
 
-    if(duration == null) return;
+    if (duration == null) return;
 
     // If the duration is specified, add the "hide" class to the alert element
     setTimeout(() => {
         alert.classList.add("hide");
         // As soon as the fade out transition ends, delete the element
-        alert.addEventListener("transitionend", () => {
+        alert.addEventListener("transitionend", 
+        () => {
             alert.remove();
         });
     }, duration);
-
-
 }
 
-function flipTiles(word) {
-    letter = 0;
-    guess++;
+// If the guess is incorrect, shake the whole row
+function shakeRow(row) {
+    row.classList.add("shake");
 
+    // Once the shake ends its animation, remove the class
+    row.addEventListener(
+        "animationend",
+        () => {
+            row.classList.remove("shake");
+        },
+        { once: true }
+    );
     return;
 }
+
+// function flipTiles(word) {
+//     letter = 0;
+//     guess++;
+
+//     return;
+// }
