@@ -13,17 +13,17 @@ It is a simple web app developed with Flask and Python as back-end to test my fu
 - SQL (Planned)
 - APIs (Planned)
 
-## Functions
+## Planned Features
 
-### Register user
+### User accounts
 - Encrypt passwords by salting them and using a hash (SHA-256)
 - Store statistics using a SQL database
 - Log in to display win streak & statistics
 
-## Planned Features
+### Other features
 - Theming
 - Dynamic word length based on settings
-- Dictionary API (Paid API)
+- **Dictionary API** (Paid API)
 	- Display definition at the end of guess
 	- **Workaround:** Use a pre-selected dictionary of words
 - Share score using emojis 🟩🥲🤩
