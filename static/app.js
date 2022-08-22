@@ -77,6 +77,7 @@ function addKey(key) {
         tile.dataset.state = "active";
         tile.textContent = key;
 
+        // Advance to next tile
         letter++;
     }
 
@@ -86,6 +87,7 @@ function addKey(key) {
 function deleteKey() {
     // Limit number of tiles to be deleted
     if (letter > 0) {
+        // Go back a tile
         letter--;
 
         const tile = document.getElementById("tile-" + guess + "-" + letter);
@@ -117,7 +119,7 @@ function submitGuess() {
     });
 
     // TODO: Get word from API
-    // if (false) { 
+    // if (word not in dictionary) { 
     //     showAlert("Not in word list!");
     //     shakeRow(row);
     // }
@@ -165,16 +167,17 @@ function shakeRow(row) {
 function checkWord(word) {
     console.log("Submitted guess: " + word);
 
+    // Color tiles and keys based on word
     flipTiles(word);
 
     if (word === wordle) {
-        showAlert("Magnificent!");
+        showAlert("Magnificent!", 5000);
         stopInteraction();
         // TODO: Show end screen
         return;
     } else {
         if (guess >= (NUM_GUESSES-1)) {
-            showAlert("Game over!");
+            showAlert("Game over!", 5000);
             stopInteraction();
             // TODO: Show end screen
             return;
@@ -192,18 +195,21 @@ function flipTiles(word) {
     stopInteraction();
 
     Array.from(word).forEach(letter => {
-        console.log(letter);
         const key = document.querySelector("[data-key=" + letter + "]");
 
         // TODO: Add color
-        key.classList.add("present");
+        key.classList.add("wrong");
     });
 
     // Get every tile in the row
     const rowTiles = document.querySelector("#guess-" + guess).childNodes;
+
+    console.log(rowTiles);
+
+    // Flip 90 deg, change color, then flip back for each tile
     rowTiles.forEach((tile, index) => {
-        // Flip 90 deg, change color, then flip back
         setTimeout(() => {
+            // TODO: Fix error (childNodes select text and divs)
             tile.classList.add("flip");
         }, (index*FLIP_DURATION/2));
 
@@ -211,10 +217,12 @@ function flipTiles(word) {
             tile.classList.remove("flip")
 
             // TODO: Add color
-            tile.dataset.state = "present";
-        });
+            tile.dataset.state = "wrong";
+        }, 
+        {once: true});
     });
 
     startInteraction();
+
     return;
 }
