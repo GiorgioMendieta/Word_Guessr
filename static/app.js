@@ -183,12 +183,14 @@ function checkWord(word) {
     if (word === wordle) {
         showAlert("Magnificent!", 5000);
         stopInteraction();
+
         // TODO: Show end screen
         return;
     } else {
         if (guess >= (NUM_GUESSES-1)) {
             showAlert("Game over!", 5000);
             stopInteraction();
+
             // TODO: Show end screen
             return;
         } else {
@@ -200,39 +202,50 @@ function checkWord(word) {
     return;
 }
 
-function flipTiles(word) {
+function flipTiles(wordGuess) {
     // Prevent interaction while animation is running
     stopInteraction();
 
-    Array.from(word).forEach(letter => {
-        const key = document.querySelector("[data-key=" + letter + "]");
+    // Get array of tiles of the current row
+    const row = document.querySelector("#guess-" + guess);
+    const rowTiles = Array.from(row.children);
 
-        // TODO: Add color
-        key.classList.add("wrong");
-    });
 
-    // Get every tile in the row
-    const rowTiles = document.querySelector("#guess-" + guess).childNodes;
-
-    console.log(rowTiles);
-
-    // Flip 90 deg, change color, then flip back for each tile
-    rowTiles.forEach((tile, index) => {
-        setTimeout(() => {
-            // TODO: Fix error (childNodes select text and divs)
-            tile.classList.add("flip");
-        }, (index*FLIP_DURATION/2));
-
-        tile.addEventListener("transitionend", () => {
-            tile.classList.remove("flip")
-
-            // TODO: Add color
-            tile.dataset.state = "wrong";
-        }, 
-        {once: true});
-    });
+    // Pass all the information to the flipTile function
+    rowTiles.forEach((...params) => flipTile(...params, wordGuess));
 
     startInteraction();
 
     return;
+}
+
+function flipTile(tile, index, array, wordGuess) {
+    
+    const tileLetter = tile.dataset.letter;
+    const key = document.querySelector("[data-key=" + tileLetter + "]");
+    
+    console.log(`Wordle[${index}]: ${wordle[index]} \n Guess[${index}]: ${wordGuess[index]}`);
+
+    // Flip 90 deg, change color, then flip back for each tile
+    setTimeout(() => {
+        tile.classList.add("flip");
+    }, (index*FLIP_DURATION/2));
+    
+    tile.addEventListener("transitionend", () => {
+        tile.classList.remove("flip")
+        
+        if(wordle[index] === tileLetter) {
+            tile.dataset.state = "correct"
+            key.classList.add("correct");
+
+        // TODO: Fix duplicate letters marked as present
+        } else if (wordle.includes(tileLetter)) {
+            tile.dataset.state = "present"
+            key.classList.add("present");
+        } else {
+            tile.dataset.state = "wrong"
+            key.classList.add("wrong");
+        }
+    }, 
+    {once: true});
 }
