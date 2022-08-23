@@ -29,7 +29,7 @@ startInteraction();
 // TODO: Make variable length
 // Get new word 
 function getNewWord() {
-    fetch('https://random-words5.p.rapidapi.com/getRandom?wordLength=5', wordOptionsAPI)
+    fetch(`https://random-words5.p.rapidapi.com/getRandom?wordLength=${NUM_LETTERS}`, wordOptionsAPI)
         // Convert the response to text format
         .then(response => response.text())
         .then(response => {
@@ -340,5 +340,51 @@ function endScreen() {
     // Show word definition
     getDefinition(wordle);
     // TODO: Create modal with stats
+
+    shareScore();
     return;
+}
+
+function shareScore() {
+    // Empty emoji list
+    let row = [];
+    // Empty emoji 2d array
+    let emojis = [];
+    // Initial msg
+    let msg;
+    if (guess == 5){
+        msg = `X/${NUM_GUESSES} attempts 😢\n`;
+    } else {
+        msg = `${guess}/${NUM_GUESSES} attempts 😎\n`;
+    }
+
+    emojis.push(msg);
+
+    for (let i = 0; i <= guess; i++) {
+        for (let j = 0; j < NUM_LETTERS; j++) {
+            var tile = document.querySelector(`#tile-${i}-${j}`)
+            var tileState = tile.dataset.state;
+
+            if(tileState == "correct") {
+                row.push("🟩");
+            } else if(tileState == "present") {
+                row.push("🟨");
+            } else if(tileState == "wrong") {
+                row.push("⬛️");
+            }
+        }
+
+        // Transform the row into a string (no commas) and push it to the emoji array
+        emojis.push(row.join(''));
+        // Reset variable
+        row = [];
+    }
+
+    // Convert array to string separated by new lines
+    emojis = emojis.join("\n");
+
+    // Copy results to clipboard
+    navigator.clipboard.writeText(emojis);
+
+    showAlert("Copied results to clipboard")
 }
