@@ -4,18 +4,7 @@ const NUM_LETTERS = 5;
 const FLIP_DURATION = 500;
 const JUMP_DURATION = 500;
 
-// Get keyboard keys and put them in an array
-const keys = Array.from(document.getElementsByClassName("key"));
-
-// TODO: Switch to WordsAPI (RapidAPI) for a single API provider
-const wordOptionsAPI = {
-    method: 'GET',
-    headers: {
-        'X-RapidAPI-Key': 'RANDOM_WORDS_API_KEY',
-        'X-RapidAPI-Host': 'random-words5.p.rapidapi.com'
-    }
-};
-
+// Global variables
 let wordle;
 let definition;
 
@@ -26,22 +15,29 @@ startInteraction();
 
 // Function declarations
 
-// TODO: Make variable length
-// Get new word 
 function getNewWord() {
+    // TODO: Switch to WordsAPI (RapidAPI) for a single API provider
+    const wordOptionsAPI = {
+        method: 'GET',
+        headers: {
+            'X-RapidAPI-Key': 'RANDOM_WORDS_API_KEY',
+            'X-RapidAPI-Host': 'random-words5.p.rapidapi.com'
+        }
+    };
+
     fetch(`https://random-words5.p.rapidapi.com/getRandom?wordLength=${NUM_LETTERS}`, wordOptionsAPI)
         // Convert the response to text format
         .then(response => response.text())
         .then(response => {
-            // console.log(response)
             wordle = response
-            console.log("Wordle is: " + wordle.toUpperCase());
+            console.log(wordle.toUpperCase());
         })
         .catch(err => console.error(err));
+
 }
 
 function getDefinition(word) {
-    console.log(`Definition of: ${word}`);
+    console.log(`Definition for: ${word}`);
     fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`, { method: 'GET' })
         // Convert the response to text format
         .then(response => response.json())
@@ -54,6 +50,8 @@ function getDefinition(word) {
 
 
 function startInteraction() {
+    // Get keyboard keys and put them in an array
+    const keys = Array.from(document.getElementsByClassName("key"));
     keys.forEach((key) => {
         key.addEventListener("click", handleMouseClick);
     });
@@ -61,6 +59,8 @@ function startInteraction() {
 }
 
 function stopInteraction() {
+    // Get keyboard keys and put them in an array
+    const keys = Array.from(document.getElementsByClassName("key"));
     keys.forEach((key) => {
         key.removeEventListener("click", handleMouseClick);
     });
@@ -352,10 +352,10 @@ function shareScore() {
     let emojis = [];
     // Initial msg
     let msg;
-    if (guess == 5){
+    if (guess == 5) {
         msg = `X/${NUM_GUESSES} attempts 😢\n`;
     } else {
-        msg = `${guess}/${NUM_GUESSES} attempts 😎\n`;
+        msg = `${guess + 1}/${NUM_GUESSES} attempts 😎\n`;
     }
 
     emojis.push(msg);
@@ -365,11 +365,11 @@ function shareScore() {
             var tile = document.querySelector(`#tile-${i}-${j}`)
             var tileState = tile.dataset.state;
 
-            if(tileState == "correct") {
+            if (tileState == "correct") {
                 row.push("🟩");
-            } else if(tileState == "present") {
+            } else if (tileState == "present") {
                 row.push("🟨");
-            } else if(tileState == "wrong") {
+            } else if (tileState == "wrong") {
                 row.push("⬛️");
             }
         }
