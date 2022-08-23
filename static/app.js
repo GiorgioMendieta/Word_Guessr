@@ -24,7 +24,6 @@ function startInteraction() {
 }
 
 function stopInteraction() {
-    //   document.removeEventListener("click", handleMouseClick);
     keys.forEach((key) => {
         key.removeEventListener("click", handleMouseClick);
     });
@@ -135,6 +134,7 @@ function submitGuess() {
     // }
 
     checkWord(word, row);
+    
     return;
 }
 
@@ -176,6 +176,7 @@ function shakeRow(row) {
 
 function checkWord(word) {
     console.log("Submitted guess: " + word);
+    console.log("Wordle: " + wordle);
 
     // Color tiles and keys based on word
     flipTiles(word);
@@ -194,7 +195,9 @@ function checkWord(word) {
             // TODO: Show end screen
             return;
         } else {
+            // Restart tile position
             letter = 0;
+            // Advance a row
             guess++;
         }
     }
@@ -210,11 +213,8 @@ function flipTiles(wordGuess) {
     const row = document.querySelector("#guess-" + guess);
     const rowTiles = Array.from(row.children);
 
-
     // Pass all the information to the flipTile function
     rowTiles.forEach((...params) => flipTile(...params, wordGuess));
-
-    startInteraction();
 
     return;
 }
@@ -229,23 +229,32 @@ function flipTile(tile, index, array, wordGuess) {
     // Flip 90 deg, change color, then flip back for each tile
     setTimeout(() => {
         tile.classList.add("flip");
-    }, (index*FLIP_DURATION/2));
-    
+    }, (index * FLIP_DURATION / 2));
+
     tile.addEventListener("transitionend", () => {
-        tile.classList.remove("flip")
-        
+        tile.classList.remove("flip");
+
         if(wordle[index] === tileLetter) {
-            tile.dataset.state = "correct"
+            tile.dataset.state = "correct";
             key.classList.add("correct");
 
         // TODO: Fix duplicate letters marked as present
         } else if (wordle.includes(tileLetter)) {
-            tile.dataset.state = "present"
+            tile.dataset.state = "present";
             key.classList.add("present");
         } else {
-            tile.dataset.state = "wrong"
+            tile.dataset.state = "wrong";
             key.classList.add("wrong");
         }
-    }, 
-    {once: true});
+
+        // Resume user interaction when last tile is done flipping
+        if(index == array.length - 1) {
+            startInteraction();
+        }
+    });
+
+}
+
+function endScreen() {
+    // TODO: Create modal with stats
 }
