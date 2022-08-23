@@ -10,7 +10,7 @@ It is a simple web app developed with Flask and Python as back-end to test my fu
 - HTML
 - CSS
 - SQL (Planned)
-- APIs (Planned)
+- API calls
 
 ## Planned Features
 
@@ -24,14 +24,14 @@ It is a simple web app developed with Flask and Python as back-end to test my fu
 
 - Theming
 - Dynamic word length based on settings
-- **Dictionary API** (Paid API)
+- **Dictionary API**
   - Display definition at the end of guess
-  - **Workaround:** Use a pre-selected dictionary of words
+  - Check if word exists
 - Share score using emojis 🟩🥲🤩
 
 ### Playing modes
 
-- **Easy mode:** Provide short definitions (Paid API)
+- **Easy mode:** Provide short definitions (Via API)
   - More number of opportunities (+1 tile row)
 - **Hard mode:** Prevent using past letters
   - Less number of opportunities (-1 tile row)
