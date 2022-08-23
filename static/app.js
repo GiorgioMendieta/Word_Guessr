@@ -11,7 +11,7 @@ const keys = Array.from(document.getElementsByClassName("key"));
 const wordOptionsAPI = {
     method: 'GET',
     headers: {
-        'X-RapidAPI-Key': 'API_KEY',
+        'X-RapidAPI-Key': 'RANDOM_WORDS_API_KEY',
         'X-RapidAPI-Host': 'random-words5.p.rapidapi.com'
     }
 };
@@ -33,8 +33,9 @@ function getNewWord() {
         // Convert the response to text format
         .then(response => response.text())
         .then(response => {
-            console.log(response)
+            // console.log(response)
             wordle = response
+            console.log("Wordle is: " + wordle.toUpperCase());
         })
         .catch(err => console.error(err));
 }
@@ -219,6 +220,7 @@ function shakeRow(row) {
 }
 
 function checkWord(word) {
+    // Win condition
     if (word === wordle) {
         showAlert("Magnificent!", 5000);
         jumpTiles();
@@ -226,18 +228,16 @@ function checkWord(word) {
 
         endScreen()
         return;
+    } else if (guess >= (NUM_GUESSES - 1)) {
+        showAlert(wordle.toUpperCase(), null);
+        stopInteraction();
+        endScreen()
+        return;
     } else {
-        if (guess >= (NUM_GUESSES - 1)) {
-            showAlert(wordle.toUpperCase(), null);
-            stopInteraction();
-            endScreen()
-            return;
-        } else {
-            // Restart tile position
-            letter = 0;
-            // Advance a row
-            guess++;
-        }
+        // Restart tile position
+        letter = 0;
+        // Advance a row
+        guess++;
     }
 
     return;
