@@ -7,17 +7,52 @@ const JUMP_DURATION = 500;
 // Get keyboard keys and put them in an array
 const keys = Array.from(document.getElementsByClassName("key"));
 
-// TODO: Get word from API
-const wordle = "apple";
+// TODO: Switch to WordsAPI (RapidAPI) for a single API provider
+const wordOptionsAPI = {
+    method: 'GET',
+    headers: {
+        'X-RapidAPI-Key': 'API_KEY',
+        'X-RapidAPI-Host': 'random-words5.p.rapidapi.com'
+    }
+};
+
+let wordle;
+let definition;
 
 // Main
 
+getNewWord();
 startInteraction();
 
 // Function declarations
 
+// TODO: Make variable length
+// Get new word 
+function getNewWord() {
+    fetch('https://random-words5.p.rapidapi.com/getRandom?wordLength=5', wordOptionsAPI)
+        // Convert the response to text format
+        .then(response => response.text())
+        .then(response => {
+            console.log(response)
+            wordle = response
+        })
+        .catch(err => console.error(err));
+}
+
+function getDefinition(word) {
+    console.log(`Definition of: ${word}`);
+    fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`, { method: 'GET' })
+        // Convert the response to text format
+        .then(response => response.json())
+        .then(response => {
+            console.log(response)
+            definition = response
+        })
+        .catch(err => console.error(err));
+}
+
+
 function startInteraction() {
-    // Add a click event listener for every key and call handleMouseClick()
     keys.forEach((key) => {
         key.addEventListener("click", handleMouseClick);
     });
@@ -128,14 +163,21 @@ function submitGuess() {
         word = word + tile.innerHTML;
     });
 
-    // TODO: Get word from API
-    // if (word not in dictionary) { 
-    //     showAlert("Not in word list!");
-    //     shakeRow(row);
-    // }
+    // Check if word exists
+    fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`, { method: 'GET' })
+        .then((response) => {
+            if (!response.ok) {
+                throw Error();
+            }
 
-    // Color tiles and keys based on word
-    flipTiles(word);
+            // Word exists, flip tiles
+            flipTiles(word);
+        })
+        .catch(() => {
+            // Word does not exist
+            showAlert("Not in word list!");
+            shakeRow(row);
+        });
 
     return;
 }
@@ -154,10 +196,10 @@ function showAlert(msg, duration = 1000) {
     setTimeout(() => {
         alert.classList.add("hide");
         // As soon as the fade out transition ends, delete the element
-        alert.addEventListener("transitionend", 
-        () => {
-            alert.remove();
-        });
+        alert.addEventListener("transitionend",
+            () => {
+                alert.remove();
+            });
     }, duration);
 }
 
@@ -177,9 +219,6 @@ function shakeRow(row) {
 }
 
 function checkWord(word) {
-    console.log("Submitted guess: " + word);
-    console.log("Wordle: " + wordle);
-
     if (word === wordle) {
         showAlert("Magnificent!", 5000);
         jumpTiles();
@@ -189,9 +228,8 @@ function checkWord(word) {
         return;
     } else {
         if (guess >= (NUM_GUESSES - 1)) {
-            showAlert("Game over!", 5000);
+            showAlert(wordle.toUpperCase(), null);
             stopInteraction();
-
             endScreen()
             return;
         } else {
@@ -205,9 +243,13 @@ function checkWord(word) {
     return;
 }
 
+// Temp variable to keep track of correct letters
+let tempWord;
+
 function flipTiles(wordGuess) {
     // Prevent interaction while animation is running
     stopInteraction();
+    tempWord = Array.from(wordGuess);
 
     // Get array of tiles of the current row
     const row = document.querySelector("#guess-" + guess);
@@ -225,7 +267,7 @@ function flipTile(tile, index, array, wordGuess) {
     const tileLetter = tile.dataset.letter;
     const key = document.querySelector(`[data-key="${tileLetter}"i]`);
 
-    console.log(`Wordle[${index}]: ${wordle[index]} \n Guess[${index}]: ${wordGuess[index]}`);
+    // console.log(`Wordle[${index}]: ${wordle[index]} \n Guess[${index}]: ${wordGuess[index]}`);
 
     // Flip 90 deg, change color, then flip back for each tile
     setTimeout(() => {
@@ -235,12 +277,28 @@ function flipTile(tile, index, array, wordGuess) {
     tile.addEventListener("transitionend", () => {
         tile.classList.remove("flip");
 
-        if(wordle[index] === tileLetter) {
+        if (wordle[index] === tileLetter) {
             tile.dataset.state = "correct";
             key.classList.add("correct");
 
-        // TODO: Fix duplicate letters marked as present
-        } else if (wordle.includes(tileLetter)) {
+            // console.log(tempWord);
+
+            // Remove correct letters from temp word
+            // tempWord.forEach((letter, i) => {
+            //     if(letter == tileLetter) tempWord[i] = '';
+            // });
+
+            const i = tempWord.indexOf(tileLetter);
+            if (i > -1) { // only splice array when item is found
+                tempWord.splice(i, 1); // 2nd parameter means remove one item only
+            }
+
+            // console.log(tempWord);
+
+            // TODO: Fix duplicate letters marked as present
+            // Check if correct number of letter appears in wordle, and mark duplicates 
+            // as wrong
+        } else if (wordle.includes(tileLetter) && tempWord.includes(tileLetter)) {
             tile.dataset.state = "present";
             key.classList.add("present");
         } else {
@@ -248,7 +306,7 @@ function flipTile(tile, index, array, wordGuess) {
             key.classList.add("wrong");
         }
 
-        if(index == array.length - 1) {
+        if (index == array.length - 1) {
             tile.addEventListener("transitionend", () => {
                 // Resume user interaction when last tile is done flipping
                 startInteraction();
@@ -274,11 +332,13 @@ function jumpTiles() {
                 },
                 { once: true }
             )
-        }, (index * JUMP_DURATION/NUM_LETTERS))
+        }, (index * JUMP_DURATION / NUM_LETTERS))
     })
 }
 
 function endScreen() {
+    // Show word definition
+    getDefinition(wordle);
     // TODO: Create modal with stats
     return;
 }
