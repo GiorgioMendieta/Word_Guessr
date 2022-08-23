@@ -25,7 +25,8 @@ body {
 
 /* Main container for the game */
 .game-container {
-    height: 90vh; /* 90% of viewport */
+    /* 90% of viewport */
+    /* height: 90vh;  */
     /* Flexbox */
     display: flex; 
     flex-direction: column; /* Stack flex elements in a column */
@@ -33,6 +34,7 @@ body {
     align-items: center;
 }
 
+/* TODO: Switch to flexbox instead of grid */
 .keyboard-row {
     display: grid;
     /* There are 10 keys per row, however we will take half a key (spacer) 
@@ -69,6 +71,8 @@ body {
     cursor: pointer;
     /* Prevent the user from highlighting the button text */
     user-select: none;
+    /* Remove ugly blue highlight on mobile */
+    -webkit-tap-highlight-color: transparent;
 }
 
 .key.large {
@@ -102,7 +106,7 @@ body {
     filter: brightness(115%);
 }
 
-/* Remove last margin */
+/* Remove last key margin */
 .key:last-of-type {
     /* margin-right: 0; */
 }
@@ -129,7 +133,7 @@ body {
     grid-template-columns: repeat(5, 4em);
     grid-auto-rows: 4em;
     /* Gap between columns */
-    gap: 0.25em;
+    gap: inherit;
 }
 
 .guess-row.shake {
