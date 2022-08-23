@@ -2,6 +2,7 @@
 const NUM_GUESSES = 6;
 const NUM_LETTERS = 5;
 const FLIP_DURATION = 500;
+const JUMP_DURATION = 500;
 
 // Get keyboard keys and put them in an array
 const keys = Array.from(document.getElementsByClassName("key"));
@@ -119,7 +120,7 @@ function submitGuess() {
         return;
     }
 
-    // Get array of tiles of the current row
+    // Get array of tile letters of the current row
     const tiles = Array.from(row.children);
     let word = '';
     tiles.forEach((tile) => {
@@ -133,8 +134,9 @@ function submitGuess() {
     //     shakeRow(row);
     // }
 
-    checkWord(word, row);
-    
+    // Color tiles and keys based on word
+    flipTiles(word);
+
     return;
 }
 
@@ -178,21 +180,19 @@ function checkWord(word) {
     console.log("Submitted guess: " + word);
     console.log("Wordle: " + wordle);
 
-    // Color tiles and keys based on word
-    flipTiles(word);
-
     if (word === wordle) {
         showAlert("Magnificent!", 5000);
+        jumpTiles();
         stopInteraction();
 
-        // TODO: Show end screen
+        endScreen()
         return;
     } else {
-        if (guess >= (NUM_GUESSES-1)) {
+        if (guess >= (NUM_GUESSES - 1)) {
             showAlert("Game over!", 5000);
             stopInteraction();
 
-            // TODO: Show end screen
+            endScreen()
             return;
         } else {
             // Restart tile position
@@ -219,11 +219,12 @@ function flipTiles(wordGuess) {
     return;
 }
 
+// Execute for each tile in guess
 function flipTile(tile, index, array, wordGuess) {
-    
+
     const tileLetter = tile.dataset.letter;
-    const key = document.querySelector("[data-key=" + tileLetter + "]");
-    
+    const key = document.querySelector(`[data-key="${tileLetter}"i]`);
+
     console.log(`Wordle[${index}]: ${wordle[index]} \n Guess[${index}]: ${wordGuess[index]}`);
 
     // Flip 90 deg, change color, then flip back for each tile
@@ -247,14 +248,37 @@ function flipTile(tile, index, array, wordGuess) {
             key.classList.add("wrong");
         }
 
-        // Resume user interaction when last tile is done flipping
         if(index == array.length - 1) {
-            startInteraction();
+            tile.addEventListener("transitionend", () => {
+                // Resume user interaction when last tile is done flipping
+                startInteraction();
+                // Check submitted word until last tile is done flipping
+                checkWord(wordGuess);
+            })
         }
     });
+}
 
+// If the guess is incorrect, shake the whole row
+function jumpTiles() {
+    // Get array of tiles of the current row
+    const row = document.querySelector("#guess-" + guess);
+    const rowTiles = Array.from(row.children);
+    rowTiles.forEach((tile, index) => {
+        setTimeout(() => {
+            tile.classList.add("jump")
+            tile.addEventListener(
+                "animationend",
+                () => {
+                    tile.classList.remove("jump");
+                },
+                { once: true }
+            )
+        }, (index * JUMP_DURATION/NUM_LETTERS))
+    })
 }
 
 function endScreen() {
     // TODO: Create modal with stats
+    return;
 }

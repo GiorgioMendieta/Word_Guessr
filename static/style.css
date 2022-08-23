@@ -54,7 +54,7 @@ body {
         var(--hue, 198),
         var(--saturation, 1%),
         /* Perform a calculation to add a lightness offset (default = 0%) */
-        calc(var(--lightness-offset, 0%) + var(--lightness, 51%))
+        var(--lightness, 51%)
     );
     /* Every key is two-columns wide (From .keyboard-row # of grid columns */
     grid-column: span 2;
@@ -99,7 +99,7 @@ body {
 /* Increase the key's lightness when it's hovered */
 /* Uses the current lightness as base and adds to it */
 .key:hover, .key:focus {
-    --lightness-offset: 10%;
+    filter: brightness(115%);
 }
 
 /* Remove last margin */
@@ -211,6 +211,20 @@ body {
 @keyframes pop {
     50% {
         transform: scale(1.2);
+    }
+}
+
+.tile.jump {
+    animation: jump 500ms linear;
+}
+
+@keyframes jump {
+    50% {
+        transform: translateY(-50%);
+    }
+
+    100% {
+        transform: translateY(0%);
     }
 }
 
