@@ -28,8 +28,9 @@ body {
     /* 90% of viewport */
     /* height: 90vh;  */
     /* Flexbox */
-    display: flex; 
-    flex-direction: column; /* Stack flex elements in a column */
+    display: flex;
+    /* Stack flex elements in a column */
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
 }
@@ -102,7 +103,8 @@ body {
 
 /* Increase the key's lightness when it's hovered */
 /* Uses the current lightness as base and adds to it */
-.key:hover, .key:focus {
+.key:hover,
+.key:focus {
     filter: brightness(115%);
 }
 
@@ -143,17 +145,17 @@ body {
 /* Need to add keyframes manually */
 @keyframes shake {
     10% {
-      transform: translateX(-3%);
+        transform: translateX(-3%);
     }
-    
+
     30% {
         transform: translateX(3%);
     }
-  
+
     50% {
         transform: translateX(-6%);
     }
-  
+
     70% {
         transform: translateX(6%);
     }
@@ -161,11 +163,11 @@ body {
     90% {
         transform: translateX(-3%);
     }
-    
+
     100% {
         transform: translateX(0%);
     }
-  }
+}
 
 .tile {
     font-size: 2em;
@@ -176,10 +178,10 @@ body {
     align-items: center;
     text-transform: uppercase;
     user-select: none;
-    
+
     /* Flip animation */
     transition: transform 250ms linear;
- }
+}
 
 /* Active tile (Has data in it) */
 .tile[data-state="active"] {
@@ -223,8 +225,24 @@ body {
 }
 
 @keyframes jump {
-    50% {
+    20% {
         transform: translateY(-50%);
+    }
+
+    40% {
+        transform: translateY(5%);
+    }
+
+    60% {
+        transform: translateY(-25%);
+    }
+
+    80% {
+        transform: translateY(2.5%);
+    }
+
+    90% {
+        transform: translateY(-5%);
     }
 
     100% {
@@ -240,8 +258,7 @@ body {
     /* left: 50vh; */
     /* transform: translateX(-50%); */
     /* Always place alert on top */
-    z-index: 1; 
-    
+    z-index: 1;
     /* Display alerts in flexbox vertically */
     display: flex;
     flex-direction: column;
