@@ -14,8 +14,6 @@ let definition;
 let guess = 0;
 let letter = 0;
 
-let tempWord; // Temp variable to keep track of correct letters
-
 let gameStatus = "IN_PROGRESS"; // WIN, LOSE, IN_PROGRESS
 
 // Main
@@ -38,6 +36,8 @@ function getNewWord() {
     fetch(`https://random-words5.p.rapidapi.com/getRandom?wordLength=${NUM_LETTERS}`, wordOptionsAPI)
         .then((response) => {
             if (!response.ok) {
+                // Default word for debugging
+                wordle = "apple";
                 throw Error();
             }
             // Convert the response to text format
@@ -48,7 +48,6 @@ function getNewWord() {
             console.log(wordle.toUpperCase());
         })
         .catch(() => showAlert("Couldn't retrieve word!", 5000));
-
 }
 
 function getDefinition(word) {
@@ -62,7 +61,6 @@ function getDefinition(word) {
         })
         .catch(err => console.error(err));
 }
-
 
 function startInteraction() {
     // Get keyboard keys and put them in an array
@@ -113,6 +111,7 @@ function handleKeyPress(e) {
         return;
     }
 
+    // TODO: Fix caps-lock not registering letters
     // Regex to see if a valid key was pressed
     if (e.key.match(/^[a-z]$/)) {
         addKey(e.key);
@@ -262,25 +261,24 @@ function checkWord(word) {
 function flipTiles(wordGuess) {
     // Prevent interaction while animation is running
     stopInteraction();
-    tempWord = Array.from(wordGuess);
 
     // Get array of tiles of the current row
     const row = document.querySelector("#guess-" + guess);
     const rowTiles = Array.from(row.children);
+    const tileColorsArr = colorTiles(wordGuess);
 
     // Pass all the information to the flipTile function
-    rowTiles.forEach((...params) => flipTile(...params, wordGuess));
+    rowTiles.forEach((...params) => flipTile(...params, wordGuess, tileColorsArr));
 
     return;
 }
 
 // Execute for each tile in guess
-function flipTile(tile, index, array, wordGuess) {
-
+function flipTile(tile, index, array, wordGuess, tileColorsArr) {
     const tileLetter = tile.dataset.letter;
     const key = document.querySelector(`[data-key="${tileLetter}"i]`);
 
-    // console.log(`Wordle[${index}]: ${wordle[index]} \n Guess[${index}]: ${wordGuess[index]}`);
+    let tileColor = tileColorsArr[index];
 
     // Flip 90 deg, change color, then flip back for each tile
     setTimeout(() => {
@@ -290,44 +288,56 @@ function flipTile(tile, index, array, wordGuess) {
     tile.addEventListener("transitionend", () => {
         tile.classList.remove("flip");
 
-        if (wordle[index] === tileLetter) {
-            tile.dataset.state = "correct";
-            key.classList.add("correct");
+        // Set tile & key color
+        tile.dataset.state = tileColor;
+        key.classList.add(tileColor);
 
-            // console.log(tempWord);
-
-            // Remove correct letters from temp word
-            // tempWord.forEach((letter, i) => {
-            //     if(letter == tileLetter) tempWord[i] = '';
-            // });
-
-            const i = tempWord.indexOf(tileLetter);
-            if (i > -1) { // only splice array when item is found
-                tempWord.splice(i, 1); // 2nd parameter means remove one item only
-            }
-
-            // console.log(tempWord);
-
-            // TODO: Fix duplicate letters marked as present
-            // Check if correct number of letter appears in wordle, and mark duplicates 
-            // as wrong
-        } else if (wordle.includes(tileLetter) && tempWord.includes(tileLetter)) {
-            tile.dataset.state = "present";
-            key.classList.add("present");
-        } else {
-            tile.dataset.state = "wrong";
-            key.classList.add("wrong");
-        }
-
+        // Wait until last tile animation ends
         if (index == array.length - 1) {
             tile.addEventListener("transitionend", () => {
-                // Resume user interaction when last tile is done flipping
+                // Resume user interaction
                 startInteraction();
-                // Check submitted word until last tile is done flipping
+                // Check submitted word
                 checkWord(wordGuess);
             })
         }
     });
+}
+
+function colorTiles(wordGuess) {
+    const guessArr = Array.from(wordGuess);
+    const wordleArr = Array.from(wordle);
+
+    // Every tile starts as wrong
+    const result = Array(NUM_LETTERS).fill("wrong");
+
+    for (let i = 0; i < NUM_LETTERS; i++) {
+        // If letter is in correct place, mark as correct
+        if (guessArr[i] === wordleArr[i]) {
+            // Remove correct letters
+            wordleArr[i] = "";
+            guessArr[i] = "";
+
+            result[i] = "correct";
+        }
+    }
+
+    // Obtain letters present in wordle
+    for (let i = 0; i < NUM_LETTERS; i++) {
+        // Skip correctly-guessed letters 
+        if (guessArr[i] === "") continue;
+
+        const index = wordleArr.indexOf(guessArr[i]);
+        // A negative index means the letter is already guessed correctly, remove it
+        if (index !== -1) {
+            wordleArr[index] = "";
+
+            result[i] = "present";
+        }
+    }
+
+    // Returns array of colors
+    return result;
 }
 
 // If the guess is incorrect, shake the whole row
@@ -367,7 +377,9 @@ function shareScore() {
     let emojis = [];
     // Initial msg
     let msg;
-    if (guess == 5) {
+
+    // Last attempt without guessing the wordle?
+    if (guess == (NUM_GUESSES - 1)) {
         msg = `X/${NUM_GUESSES} attempts 😢\n`;
     } else {
         msg = `${guess + 1}/${NUM_GUESSES} attempts 😎\n`;
