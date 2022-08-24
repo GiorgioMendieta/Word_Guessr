@@ -22,16 +22,18 @@
     <div class="header-container">
         <div class="menu-left">
             <form class="form-board" action="/" method="post">
-                Board options
+                <b>Board options</b>
                 <div>
-                    <input class="num-slider" id="guesses" name="guesses" type="range" min="3" max="10" step="1"
+                    <input class="num-slider" id="guess-range" name="guesses" type="range" min="3" max="10" step="1"
                         value="{{num_guesses}}">
-                    <label for="guesses"># Rows</label>
+                    <label for="guesses"># Rows:</label>
+                    <p id="guess-val">0</p>
                 </div>
                 <div>
-                    <input class="num-slider" id="letters" name="letters" type="range" min="4" max="8" step="1"
+                    <input class="num-slider" id="letter-range" name="letters" type="range" min="4" max="8" step="1"
                         value="{{num_letters}}">
-                    <label for="letters"># Letters</label>
+                    <label for="letters"># Letters:</label>
+                    <p id="letter-val">0</p>
                 </div>
 
                 <button class="menu-button btn-submit" type="submit">Submit</button>

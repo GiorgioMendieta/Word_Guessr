@@ -7,6 +7,25 @@ const JUMP_DURATION = 500;
 // Document elements
 const alertContainer = document.getElementById("alert-container");
 
+
+const sliderGuess = document.getElementById("guess-range");
+let outputGuess = document.getElementById("guess-val");
+outputGuess.innerHTML = sliderGuess.value; // Display the default slider value
+
+// Update the current slider value (each time you drag the slider handle)
+sliderGuess.oninput = function () {
+    outputGuess.innerHTML = this.value;
+}
+
+const sliderLetter = document.getElementById("letter-range");
+let outputLetter = document.getElementById("letter-val");
+outputLetter.innerHTML = sliderLetter.value; // Display the default slider value
+
+// Update the current slider value (each time you drag the slider handle)
+sliderLetter.oninput = function () {
+    outputLetter.innerHTML = this.value;
+}
+
 // Global variables
 let wordle;
 let definition;

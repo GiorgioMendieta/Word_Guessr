@@ -44,18 +44,33 @@ body {
     margin-bottom: 0.25em;
 }
 
+.form-board>div {
+    display: inherit;
+    flex-direction: row;
+    align-items: center;
+}
+
+.form-board>div>p {
+    margin: 0 0.5em;
+}
+
 .num-slider {
-    color: #121213;
     width: 10em;
+    /* appearance: none; */
+    /* background: #538D4E; */
 }
 
 .menu-button {
-    background-color: transparent;
+    background-color: #121213;
     border: solid 1px #3a3a3c;
     border-radius: 0.25em;
     padding: 0.5em;
     font-size: inherit;
     justify-content: center;
+}
+
+.menu-button:hover {
+    filter: brightness(150%);
 }
 
 /* Main container for the game */
