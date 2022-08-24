@@ -20,6 +20,7 @@ It is a simple web app developed with Javascript and Flask (Phyton) as back-end 
   - Check if submitted word exists
 - **Random Word API**
   - Get random words to play
+- Dynamic board size based on settings (word length and # of attempts)
 
 ## Planned Features
 
@@ -36,14 +37,12 @@ It is a simple web app developed with Javascript and Flask (Phyton) as back-end 
 ### Other features
 
 - Theming
-- Dynamic word length based on settings
 - **Dictionary API**
-  - Display definition at the end of guess
-  - Check if word exists
+  - Display definition at the end of game
 
 ### Playing modes
 
-- **Easy mode:** Provide short definitions (Via API)
+- **Easy mode:** Provide a short definition
   - More number of opportunities (+1 tile row)
 - **Hard mode:** Prevent using past letters
   - Less number of opportunities (-1 tile row)
