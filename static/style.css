@@ -30,13 +30,30 @@ body {
 }
 
 .menu-left {
+    display: flex;
+    flex-direction: column;
     margin-right: auto;
     align-items: center;
 }
 
+.form-board {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.25em;
+    margin-bottom: 0.25em;
+}
+
+.num-slider {
+    color: #121213;
+    width: 10em;
+}
+
 .menu-button {
     background-color: transparent;
-    border: none;
+    border: solid 1px #3a3a3c;
+    border-radius: 0.25em;
+    padding: 0.5em;
     font-size: inherit;
     justify-content: center;
 }

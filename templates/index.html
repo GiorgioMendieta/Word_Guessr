@@ -21,9 +21,20 @@
 <body>
     <div class="header-container">
         <div class="menu-left">
-            <form action="/">
-                <input class="form-num" id="guesses" name="guesses" placeholder="Guesses" type="number" min="1"
-                    max="{{10}}">
+            <form class="form-board" action="/" method="post">
+                Board options
+                <div>
+                    <input class="num-slider" id="guesses" name="guesses" type="range" min="3" max="10" step="1"
+                        value="{{num_guesses}}">
+                    <label for="guesses"># Rows</label>
+                </div>
+                <div>
+                    <input class="num-slider" id="letters" name="letters" type="range" min="4" max="8" step="1"
+                        value="{{num_letters}}">
+                    <label for="letters"># Letters</label>
+                </div>
+
+                <button class="menu-button btn-submit" type="submit">Submit</button>
             </form>
         </div>
         <div class="title-container">
