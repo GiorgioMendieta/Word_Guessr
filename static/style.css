@@ -66,12 +66,10 @@ body {
     font-size: inherit;
     font-weight: bold;
     /* Use HSL to change lightness on hover and when a key is not available */
-    background-color: hsl(
-        var(--hue, 198),
-        var(--saturation, 1%),
-        /* Perform a calculation to add a lightness offset (default = 0%) */
-        var(--lightness, 51%)
-    );
+    background-color: hsl(var(--hue, 198),
+            var(--saturation, 1%),
+            /* Perform a calculation to add a lightness offset (default = 0%) */
+            var(--lightness, 51%));
     /* Every key is two-columns wide (From .keyboard-row # of grid columns */
     grid-column: span 2;
     border: none;
