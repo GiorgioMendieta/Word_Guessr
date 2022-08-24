@@ -111,10 +111,9 @@ function handleKeyPress(e) {
         return;
     }
 
-    // TODO: Fix caps-lock not registering letters
     // Regex to see if a valid key was pressed
-    if (e.key.match(/^[a-z]$/)) {
-        addKey(e.key);
+    if (e.key.match(/^[a-zA-Z]$/)) {
+        addKey(e.key.toLowerCase());
         return;
     }
 }
