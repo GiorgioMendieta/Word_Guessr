@@ -1,6 +1,6 @@
 // Constants
-const NUM_GUESSES = 6;
-const NUM_LETTERS = 5;
+// const NUM_GUESSES = 6;
+// const NUM_LETTERS = 5;
 const FLIP_DURATION = 500;
 const JUMP_DURATION = 500;
 
@@ -18,10 +18,20 @@ let gameStatus = "IN_PROGRESS"; // WIN, LOSE, IN_PROGRESS
 
 // Main
 
+setBoard(NUM_GUESSES, NUM_LETTERS);
 getNewWord();
 startInteraction();
 
 // Function declarations
+
+function setBoard(NUM_GUESSES, NUM_LETTERS) {
+    // Get the root element
+    var r = document.querySelector(':root');
+    // Set CSS properties to display tiles correctly
+    r.style.setProperty('--rows', NUM_GUESSES);
+    r.style.setProperty('--letters', NUM_LETTERS);
+}
+
 
 function getNewWord() {
     // TODO: Switch to WordsAPI (RapidAPI) for a single API provider
@@ -37,7 +47,7 @@ function getNewWord() {
         .then((response) => {
             if (!response.ok) {
                 // Default word for debugging
-                wordle = "apple";
+                wordle = "cool";
                 throw Error();
             }
             // Convert the response to text format
@@ -242,7 +252,7 @@ function checkWord(word) {
         if (guess == 2) { winMsg = "Impressive" }
         if (guess == 3) { winMsg = "Splendid" }
         if (guess == 4) { winMsg = "Great" }
-        if (guess == 5) { winMsg = "Phew" }
+        if (guess >= NUM_GUESSES - 1) { winMsg = "Phew" }
 
         showAlert(winMsg, 5000);
         jumpTiles();

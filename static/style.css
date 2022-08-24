@@ -29,6 +29,11 @@ body {
     align-items: center;
 }
 
+.menu-left {
+    margin-right: auto;
+    align-items: center;
+}
+
 .menu-button {
     background-color: transparent;
     border: none;
@@ -133,8 +138,7 @@ body {
 
 .guess-grid {
     display: grid;
-    /* TODO: Make variable # of rows in CSS */
-    grid-template-rows: repeat(6, 1fr);
+    grid-template-rows: repeat(var(--rows, 6), 1fr);
     /* Gap between rows */
     gap: 0.25em;
 }
@@ -142,8 +146,7 @@ body {
 .guess-row {
     display: grid;
     /* 4em column width */
-    /* TODO: Make variable # of columns in CSS */
-    grid-template-columns: repeat(5, 4em);
+    grid-template-columns: repeat(var(--letters, 5), 4em);
     grid-auto-rows: 4em;
     /* Gap between columns */
     gap: inherit;
