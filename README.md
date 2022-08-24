@@ -1,6 +1,6 @@
 # Find the words (Wordle clone)
 
-It is a simple web app developed with Flask and Python as back-end to test my fullstack abilities.
+It is a simple web app developed with Javascript and Flask (Phyton) as back-end to test my fullstack abilities.
 
 ## Tech Stack
 
@@ -12,7 +12,20 @@ It is a simple web app developed with Flask and Python as back-end to test my fu
 - SQL (Planned)
 - API calls
 
+## Implemented Features
+
+- Animations done by hand in CSS
+- Share score using emojis 🟩🥲🤩
+- **Dictionary API**
+  - Check if submitted word exists
+- **Random Word API**
+  - Get random words to play
+
 ## Planned Features
+
+### Store stats
+
+- Use Local Storage or SQL db
 
 ### User accounts
 
@@ -27,7 +40,6 @@ It is a simple web app developed with Flask and Python as back-end to test my fu
 - **Dictionary API**
   - Display definition at the end of guess
   - Check if word exists
-- Share score using emojis 🟩🥲🤩
 
 ### Playing modes
 
