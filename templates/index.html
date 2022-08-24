@@ -11,10 +11,8 @@
 
     <!-- Pass in variables from Flask server to JS -->
     <script type="text/javascript">
-        // const NUM_LETTERS = parseInt('{{ num_letters | tojson}}')
-        const NUM_LETTERS = {{ num_letters }}
-        // const NUM_GUESSES = parseInt('{{ num_guesses | tojson}}')
-        const NUM_GUESSES = {{ num_guesses }}
+        const NUM_LETTERS = parseInt('{{ num_letters | tojson}}')
+        const NUM_GUESSES = parseInt('{{ num_guesses | tojson}}')
     </script>
 </head>
 
