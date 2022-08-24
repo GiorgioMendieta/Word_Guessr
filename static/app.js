@@ -235,10 +235,18 @@ function checkWord(word) {
     // Win condition
     if (word === wordle) {
         gameStatus = "WIN";
-        showAlert("Magnificent!", 5000);
+
+        let winMsg;
+        if (guess == 0) { winMsg = "Genius" }
+        if (guess == 1) { winMsg = "Magnificent" }
+        if (guess == 2) { winMsg = "Impressive" }
+        if (guess == 3) { winMsg = "Splendid" }
+        if (guess == 4) { winMsg = "Great" }
+        if (guess == 5) { winMsg = "Phew" }
+
+        showAlert(winMsg, 5000);
         jumpTiles();
         stopInteraction();
-
         endScreen()
         return;
     } else if (guess >= (NUM_GUESSES - 1)) {
