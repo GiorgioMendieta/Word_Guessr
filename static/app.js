@@ -4,9 +4,6 @@
 const FLIP_DURATION = 500;
 const JUMP_DURATION = 500;
 
-// Document elements
-const alertContainer = document.getElementById("alert-container")
-
 // Global variables
 let wordle;
 let definition;
@@ -76,7 +73,7 @@ function getNewWord() {
             wordle = response
             console.log(wordle.toUpperCase());
         })
-        .catch(() => showAlert("Couldn't retrieve word!", 5000));
+        .catch(() => showAlert("Error: Could not retrieve word!", 3000, "Error"));
 }
 
 function getDefinition(word) {
@@ -225,10 +222,12 @@ function submitGuess() {
     return;
 }
 
-function showAlert(msg, duration = 1000) {
+function showAlert(msg, duration = 1000, type = "Message") {
+    const alertContainer = document.getElementById("alert-container")
     console.log(msg);
     const alert = document.createElement("div");
     alert.classList.add("alert");
+    if (type == "Error") alert.classList.add("error");
     alert.textContent = msg;
     alertContainer.prepend(alert);
 

@@ -326,6 +326,11 @@ body {
     margin-bottom: 0.5em;
 }
 
+.alert.error {
+    background-color: red;
+    color: white;
+}
+
 .alert.hide {
     opacity: 0%;
 }
