@@ -18,13 +18,15 @@ let gameStatus = "IN_PROGRESS"; // WIN, LOSE, IN_PROGRESS
 
 // Main
 
-setBoard(NUM_GUESSES, NUM_LETTERS);
+setBoardCss(NUM_GUESSES, NUM_LETTERS);
 getNewWord();
 startInteraction();
 
 // Function declarations
 
-function setBoard(NUM_GUESSES, NUM_LETTERS) {
+function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
+    console.log(`Number of attempts: ${NUM_GUESSES}`)
+    console.log(`Word lenght: ${NUM_LETTERS}`)
     // Get the root element
     var r = document.querySelector(':root');
     // Set CSS properties to display tiles correctly
