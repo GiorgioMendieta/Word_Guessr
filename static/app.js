@@ -4,6 +4,9 @@ const NUM_LETTERS = 5;
 const FLIP_DURATION = 500;
 const JUMP_DURATION = 500;
 
+// Document elements
+const alertContainer = document.getElementById("alert-container");
+
 // Global variables
 let wordle;
 let definition;
@@ -11,8 +14,9 @@ let definition;
 let guess = 0;
 let letter = 0;
 
-// WIN, LOSE
-let gameStatus = "IN_PROGRESS";
+let tempWord; // Temp variable to keep track of correct letters
+
+let gameStatus = "IN_PROGRESS"; // WIN, LOSE, IN_PROGRESS
 
 // Main
 
@@ -32,13 +36,18 @@ function getNewWord() {
     };
 
     fetch(`https://random-words5.p.rapidapi.com/getRandom?wordLength=${NUM_LETTERS}`, wordOptionsAPI)
-        // Convert the response to text format
-        .then(response => response.text())
+        .then((response) => {
+            if (!response.ok) {
+                throw Error();
+            }
+            // Convert the response to text format
+            response.text()
+        })
         .then(response => {
             wordle = response
             console.log(wordle.toUpperCase());
         })
-        .catch(err => console.error(err));
+        .catch(() => showAlert("Couldn't retrieve word!", 5000));
 
 }
 
@@ -189,7 +198,6 @@ function submitGuess() {
     return;
 }
 
-alertContainer = document.getElementById("alert-container");
 function showAlert(msg, duration = 1000) {
     console.log(msg);
     const alert = document.createElement("div");
@@ -250,9 +258,6 @@ function checkWord(word) {
 
     return;
 }
-
-// Temp variable to keep track of correct letters
-let tempWord;
 
 function flipTiles(wordGuess) {
     // Prevent interaction while animation is running
@@ -354,7 +359,7 @@ function endScreen() {
 
 function shareScore() {
     // Can't share score if game hasn't ended yet
-    if(gameStatus === "IN_PROGRESS") return;
+    if (gameStatus === "IN_PROGRESS") return;
 
     // Empty emoji list
     let row = [];
