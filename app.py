@@ -13,12 +13,12 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 @app.route("/")
 def index():
     """Show main game"""
-    num_guesses = 6
+    NUM_GUESSES = 6
     NUM_LETTERS = 5
 
-    tiles = [[0] * NUM_LETTERS for i in range(num_guesses)]
+    tiles = [[0] * NUM_LETTERS for i in range(NUM_GUESSES)]
 
-    for guess in range(num_guesses):
+    for guess in range(NUM_GUESSES):
         for letter in range(NUM_LETTERS):
             tiles[guess][letter] = ''
 
@@ -30,6 +30,6 @@ def index():
 
     return render_template("index.html", 
         keys=keys,
-        num_guesses=num_guesses,
+        num_guesses=NUM_GUESSES,
         num_letters=NUM_LETTERS,
         tiles=tiles)
