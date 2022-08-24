@@ -20,7 +20,20 @@ body {
 
 .title-container {
     text-align: center;
+    flex-grow: 1;
     width: auto;
+}
+
+.menu-right {
+    margin-left: auto;
+    align-items: center;
+}
+
+.menu-button {
+    background-color: transparent;
+    border: none;
+    font-size: inherit;
+    justify-content: center;
 }
 
 /* Main container for the game */

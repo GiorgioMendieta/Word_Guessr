@@ -8,6 +8,12 @@ const JUMP_DURATION = 500;
 let wordle;
 let definition;
 
+let guess = 0;
+let letter = 0;
+
+// WIN, LOSE
+let gameStatus = "IN_PROGRESS";
+
 // Main
 
 getNewWord();
@@ -56,6 +62,9 @@ function startInteraction() {
         key.addEventListener("click", handleMouseClick);
     });
     document.addEventListener("keydown", handleKeyPress);
+
+    const shareBtn = document.getElementById("share-result");
+    shareBtn.addEventListener("click", shareScore);
 }
 
 function stopInteraction() {
@@ -101,9 +110,6 @@ function handleKeyPress(e) {
         return;
     }
 }
-
-let guess = 0;
-let letter = 0;
 
 function addKey(key) {
     // Limit number of tiles to be written
@@ -222,6 +228,7 @@ function shakeRow(row) {
 function checkWord(word) {
     // Win condition
     if (word === wordle) {
+        gameStatus = "WIN";
         showAlert("Magnificent!", 5000);
         jumpTiles();
         stopInteraction();
@@ -229,6 +236,7 @@ function checkWord(word) {
         endScreen()
         return;
     } else if (guess >= (NUM_GUESSES - 1)) {
+        gameStatus = "LOSE";
         showAlert(wordle.toUpperCase(), null);
         stopInteraction();
         endScreen()
@@ -341,11 +349,13 @@ function endScreen() {
     getDefinition(wordle);
     // TODO: Create modal with stats
 
-    shareScore();
     return;
 }
 
 function shareScore() {
+    // Can't share score if game hasn't ended yet
+    if(gameStatus === "IN_PROGRESS") return;
+
     // Empty emoji list
     let row = [];
     // Empty emoji 2d array
@@ -361,6 +371,8 @@ function shareScore() {
     emojis.push(msg);
 
     for (let i = 0; i <= guess; i++) {
+        // Reset variable
+        row = [];
         for (let j = 0; j < NUM_LETTERS; j++) {
             var tile = document.querySelector(`#tile-${i}-${j}`)
             var tileState = tile.dataset.state;
@@ -373,11 +385,8 @@ function shareScore() {
                 row.push("⬛️");
             }
         }
-
         // Transform the row into a string (no commas) and push it to the emoji array
         emojis.push(row.join(''));
-        // Reset variable
-        row = [];
     }
 
     // Convert array to string separated by new lines
