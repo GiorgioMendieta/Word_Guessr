@@ -5,26 +5,7 @@ const FLIP_DURATION = 500;
 const JUMP_DURATION = 500;
 
 // Document elements
-const alertContainer = document.getElementById("alert-container");
-
-
-const sliderGuess = document.getElementById("guess-range");
-let outputGuess = document.getElementById("guess-val");
-outputGuess.innerHTML = sliderGuess.value; // Display the default slider value
-
-// Update the current slider value (each time you drag the slider handle)
-sliderGuess.oninput = function () {
-    outputGuess.innerHTML = this.value;
-}
-
-const sliderLetter = document.getElementById("letter-range");
-let outputLetter = document.getElementById("letter-val");
-outputLetter.innerHTML = sliderLetter.value; // Display the default slider value
-
-// Update the current slider value (each time you drag the slider handle)
-sliderLetter.oninput = function () {
-    outputLetter.innerHTML = this.value;
-}
+const alertContainer = document.getElementById("alert-container")
 
 // Global variables
 let wordle;
@@ -51,6 +32,23 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
     // Set CSS properties to display tiles correctly
     r.style.setProperty('--rows', NUM_GUESSES);
     r.style.setProperty('--letters', NUM_LETTERS);
+
+    // Rows slider
+    const sliderGuess = document.getElementById("guess-range");
+    let outputGuess = document.getElementById("guess-val");
+    outputGuess.innerHTML = sliderGuess.value; // Display the default slider value
+    // Letters slider
+    const sliderLetter = document.getElementById("letter-range");
+    let outputLetter = document.getElementById("letter-val");
+    outputLetter.innerHTML = sliderLetter.value; // Display the default slider value
+
+    // Update the current slider value (each time the slider handle is dragged)
+    sliderGuess.oninput = function () {
+        outputGuess.innerHTML = this.value;
+    }
+    sliderLetter.oninput = function () {
+        outputLetter.innerHTML = this.value;
+    }
 }
 
 
