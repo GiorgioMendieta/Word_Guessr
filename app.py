@@ -10,6 +10,7 @@ app.config["DEBUG"] = True
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
+
 @app.route("/")
 def index():
     """Show main game"""
@@ -27,9 +28,8 @@ def index():
             [' ', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ' '],
             ['Enter', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'Back']]
 
-
-    return render_template("index.html", 
-        keys=keys,
-        num_guesses=NUM_GUESSES,
-        num_letters=NUM_LETTERS,
-        tiles=tiles)
+    return render_template("index.html",
+                           keys=keys,
+                           num_guesses=NUM_GUESSES,
+                           num_letters=NUM_LETTERS,
+                           tiles=tiles)
