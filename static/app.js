@@ -66,6 +66,9 @@ function startInteraction() {
 
     const shareBtn = document.getElementById("share-result");
     shareBtn.addEventListener("click", shareScore);
+
+    const themeToggleSwitch = document.getElementById("switch-theme");
+    themeToggleSwitch.addEventListener("change", toggleTheme);
 }
 
 function stopInteraction() {
@@ -416,4 +419,15 @@ function shareScore() {
     navigator.clipboard.writeText(emojis);
 
     showAlert("Copied results to clipboard")
+}
+
+function toggleTheme() {
+    const body = document.getElementById("body");
+    const isLight = body.classList.contains("light")
+
+    if (!isLight) {
+        body.classList.add("light");
+    } else {
+        body.classList.remove("light");
+    }
 }
