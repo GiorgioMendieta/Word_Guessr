@@ -14,7 +14,7 @@ It is a simple web app developed with Javascript and Flask (Python) as back-end 
 
 ## Implemented Features
 
-- Animations done by hand in CSS
+- Animations done manually in CSS
 - Share score using emojis 🟩🥲🤩
 - **Dictionary API**
   - Check if submitted word exists
@@ -47,7 +47,9 @@ It is a simple web app developed with Javascript and Flask (Python) as back-end 
 - **Hard mode:** Prevent using past letters
   - Less number of opportunities (-1 tile row)
 
-## Install dependencies
+## Getting started
+
+### Install dependencies
 
 The following dependencies must be installed:
 
@@ -63,8 +65,6 @@ The following dependencies must be installed:
 `pip install requests`
 
 - Needed for API calls
-
-## Getting started
 
 ### Environment variables
 
@@ -87,3 +87,17 @@ Go to rapidapi.com, sign up and request for **Random words api**
 
 - Execute `flask run`
 - Go to <http://127.0.0.1:5000/>
+
+## Project structure
+
+The project has the following tree structure:
+
+    .
+    ├── README.md         (Readme file)
+    ├── app.py            (Flask backend)
+    ├── static
+    │   ├── app.js        (Main javascript frontend code)
+    │   ├── favicon.ico   (Website icon)
+    │   └── style.css     (Styles sheet)
+    ├── templates
+    │   └── index.html    (HTML code using Jinja templates)
