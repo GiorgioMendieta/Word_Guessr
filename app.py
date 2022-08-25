@@ -1,6 +1,9 @@
 import os
+import requests
 
 from flask import Flask, Config, flash, redirect, render_template, request, session
+
+RANDOM_WORDS_API_KEY = os.environ.get("RANDOM_WORDS_API_KEY")
 
 # Configure application
 app = Flask(__name__)
@@ -46,12 +49,14 @@ def index():
         NUM_GUESSES = int(NUM_GUESSES)
 
     # GET request
-    else :
+    else:
         # Default values
         NUM_LETTERS = 5
         NUM_GUESSES = 6
 
-    
+    # Obtain word from Random Words API
+    wordle = get_word(NUM_LETTERS)
+
     # Create board and populate it with blank values
     tiles = [[0] * NUM_LETTERS for i in range(NUM_GUESSES)]
 
@@ -60,7 +65,23 @@ def index():
             tiles[guess][letter] = ''
 
     return render_template("index.html",
-                        keys=keys,
-                        num_guesses=NUM_GUESSES,
-                        num_letters=NUM_LETTERS,
-                        tiles=tiles)
+                           keys=keys,
+                           num_guesses=NUM_GUESSES,
+                           num_letters=NUM_LETTERS,
+                           RANDOM_WORDS_API_KEY=RANDOM_WORDS_API_KEY,
+                           wordle=wordle,
+                           tiles=tiles)
+
+def get_word(n):
+    # TODO: Switch to WordsAPI (RapidAPI) for a single API provider
+    url = "https://random-words5.p.rapidapi.com/getRandom"
+    querystring = {"wordLength":str(n)}
+    headers = {
+        "X-RapidAPI-Key": str(RANDOM_WORDS_API_KEY),
+        "X-RapidAPI-Host": "random-words5.p.rapidapi.com"
+    }
+
+    response = requests.request(
+        "GET", url, headers=headers, params=querystring)
+
+    return response.text

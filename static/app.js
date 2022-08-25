@@ -1,11 +1,8 @@
 // Constants
-// const NUM_GUESSES = 6;
-// const NUM_LETTERS = 5;
 const FLIP_DURATION = 500;
 const JUMP_DURATION = 500;
 
 // Global variables
-let wordle;
 let definition;
 
 let guess = 0;
@@ -16,14 +13,13 @@ let gameStatus = "IN_PROGRESS"; // WIN, LOSE, IN_PROGRESS
 // Main
 
 setBoardCss(NUM_GUESSES, NUM_LETTERS);
-getNewWord();
 startInteraction();
 
 // Function declarations
 
 function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
     console.log(`Number of attempts: ${NUM_GUESSES}`)
-    console.log(`Word lenght: ${NUM_LETTERS}`)
+    console.log(`Word length: ${NUM_LETTERS}`)
     // Get the root element
     var r = document.querySelector(':root');
     // Set CSS properties to display tiles correctly
@@ -46,34 +42,6 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
     sliderLetter.oninput = function () {
         outputLetter.innerHTML = this.value;
     }
-}
-
-
-function getNewWord() {
-    // TODO: Switch to WordsAPI (RapidAPI) for a single API provider
-    const wordOptionsAPI = {
-        method: 'GET',
-        headers: {
-            'X-RapidAPI-Key': 'RANDOM_WORDS_API_KEY',
-            'X-RapidAPI-Host': 'random-words5.p.rapidapi.com'
-        }
-    };
-
-    fetch(`https://random-words5.p.rapidapi.com/getRandom?wordLength=${NUM_LETTERS}`, wordOptionsAPI)
-        .then((response) => {
-            if (!response.ok) {
-                // Default word for debugging
-                wordle = "cool";
-                throw Error();
-            }
-            // Convert the response to text format
-            response.text()
-        })
-        .then(response => {
-            wordle = response
-            console.log(wordle.toUpperCase());
-        })
-        .catch(() => showAlert("Error: Could not retrieve word!", 3000, "Error"));
 }
 
 function getDefinition(word) {
