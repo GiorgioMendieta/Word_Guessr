@@ -29,10 +29,10 @@
 /* Selects ALL elements */
 * {
     color: var(--color-font);
-    font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
+    font-family: Arial, Helvetica, sans-serif;
     background-color: var(--color-bg);
     /* Variable font size (Responsive) */
     /* Min size,  Default, Max */
@@ -49,6 +49,7 @@ body {
 }
 
 .title-container {
+    font-family: 'Silkscreen', cursive;
     text-align: center;
     flex-grow: 1;
     width: auto;
@@ -200,6 +201,8 @@ body {
 
 /* ---------------------- Game board ---------------------- */
 .guess-grid-container {
+    font-family: 'Silkscreen', cursive;
+
     display: flex;
     align-items: center;
     flex-grow: 1;
@@ -211,6 +214,8 @@ body {
     grid-template-rows: repeat(var(--rows, 6), 1fr);
     /* Gap between rows */
     gap: 0.25em;
+    width: 100%;
+    margin: auto;
 }
 
 .guess-row {
