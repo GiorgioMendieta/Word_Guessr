@@ -1,16 +1,25 @@
 :root {
+    font-size: 1vh;
     --header-height: 5em;
     --tile-size: 4em;
-    font-size: 1vh;
+
+    --color-bg: #121212;
+    --color-font: white;
 }
 
+.light {
+    --color-bg: #ffffff;
+    --color-font: black;
+}
+
+/* Selects ALL elements */
 * {
-    color: white;
+    color: var(--color-font);
     font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
-    background-color: #121213;
+    background-color: var(--color-bg);
     /* Variable font size (Responsive) */
     /* Min size,  Default, Max */
     font-size: clamp(0.5rem, 1.5vh, 2.5rem);
@@ -130,22 +139,20 @@ body {
     grid-column: span 3;
 }
 
-/* Reduce the key's lightness when it's wrong */
-.key.wrong {
+/* Wrong key */
+.key[data-state="wrong"] {
     --lightness: 23%;
 }
 
-/* Change the key's color to yellow if it's present */
-/* (Overwrites .key.wrong) */
-.key.present {
+/* Present key */
+.key[data-state="present"] {
     --hue: 50;
     --saturation: 51%;
     --lightness: 47%;
 }
 
-/* Change the key's color to green if it's correct */
-/* (Overwrites .key.present) */
-.key.correct {
+/* Correct key */
+.key[data-state="correct"] {
     --hue: 115;
     --saturation: 29%;
     --lightness: 43%;
@@ -227,13 +234,14 @@ body {
     align-items: center;
     text-transform: uppercase;
     user-select: none;
-
+    color: white;
     /* Flip animation */
     transition: transform 250ms linear;
 }
 
 /* Active tile (Has data in it) */
 .tile[data-state="active"] {
+    color: var(--color-font);
     border-color: hsl(240, 2%, 33%);
 }
 

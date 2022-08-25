@@ -293,7 +293,7 @@ function flipTile(tile, index, array, wordGuess, tileColorsArr) {
 
         // Set tile & key color
         tile.dataset.state = tileColor;
-        key.classList.add(tileColor);
+        key.dataset.state = tileColor;
 
         // Wait until last tile animation ends
         if (index == array.length - 1) {
