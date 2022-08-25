@@ -72,10 +72,11 @@ def index():
                            wordle=wordle,
                            tiles=tiles)
 
+
 def get_word(n):
     # TODO: Switch to WordsAPI (RapidAPI) for a single API provider
     url = "https://random-words5.p.rapidapi.com/getRandom"
-    querystring = {"wordLength":str(n)}
+    querystring = {"wordLength": str(n)}
     headers = {
         "X-RapidAPI-Key": str(RANDOM_WORDS_API_KEY),
         "X-RapidAPI-Host": "random-words5.p.rapidapi.com"
