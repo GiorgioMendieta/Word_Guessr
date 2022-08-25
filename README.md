@@ -1,6 +1,6 @@
 # Find the words (Wordle clone)
 
-It is a simple web app developed with Javascript and Flask (Phyton) as back-end to test my fullstack abilities.
+It is a simple web app developed with Javascript and Flask (Python) as back-end to test my fullstack abilities.
 
 ## Tech Stack
 
@@ -76,6 +76,8 @@ Create `.env` file and add:
     RAPID_API_KEY = {KEY GOES HERE}
 
 on `app.py` first we need to import the `os` package so that we can use the command `os.environ.get()` command to fetch the environment variable stored in `.env` file
+
+source(<https://medium.com/thedevproject/start-using-env-for-your-flask-project-and-stop-using-environment-variables-for-development-247dc12468be>)
 
 ### Signing up for API
 
