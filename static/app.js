@@ -382,7 +382,7 @@ function shareScore() {
     let msg;
 
     // Last attempt without guessing the wordle?
-    if (guess >= (NUM_GUESSES - 1)) {
+    if (guess == NUM_GUESSES) {
         msg = `X/${NUM_GUESSES} attempts 😢\n`;
     } else {
         msg = `${guess + 1}/${NUM_GUESSES} attempts 😎\n`;
