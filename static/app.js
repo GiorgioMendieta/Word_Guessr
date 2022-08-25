@@ -42,6 +42,9 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
     sliderLetter.oninput = function () {
         outputLetter.innerHTML = this.value;
     }
+
+    const sidebarButton = document.getElementById("sidebar-button");
+    sidebarButton.addEventListener("click", toggleSidebar);
 }
 
 function getDefinition(word) {
@@ -426,8 +429,24 @@ function toggleTheme() {
     const isLight = body.classList.contains("light")
 
     if (!isLight) {
+        body.classList.remove("dark")
         body.classList.add("light");
     } else {
         body.classList.remove("light");
+        body.classList.add("dark");
+    }
+}
+
+function toggleSidebar() {
+    const button = document.getElementById("sidebar-button");
+    const sidebar = document.getElementById("sidebar");
+
+    if (button.dataset.state == "open") {
+        document.getElementById("sidebar").style.display = "none";
+        button.dataset.state = "closed";
+
+    } else if (button.dataset.state == "closed") {
+        document.getElementById("sidebar").style.display = "block"; // flex ?
+        button.dataset.state = "open";
     }
 }

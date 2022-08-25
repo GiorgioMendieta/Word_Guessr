@@ -5,6 +5,7 @@
     --key-margin: 0.45em;
 
     --color-bg: #121212;
+    --color-border: #3A3A3C;
     --color-font: white;
 
     --key-bg: #818384;
@@ -46,12 +47,13 @@ body {
     font-size: clamp(0.5rem, 1.5vh, 2.5rem);
 }
 
+/* ---------- Header ---------- */
 .header-container {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
-    border-bottom: solid 1px #3a3a3c;
+    /* justify-content: center; */
+    border-bottom: solid 1px var(--color-border);
     height: var(--header-height);
 }
 
@@ -59,54 +61,16 @@ body {
     font-family: 'Silkscreen', cursive;
     text-align: center;
     flex-grow: 1;
+}
+
+.menu-button.menu-header {
+    /* font-size: 1.5em; */
+    font-weight: bold;
     width: auto;
+    margin-left: 1em;
 }
 
-.menu {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 1em;
-}
-
-.board-options {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    gap: 0.25em;
-    margin-bottom: 0.25em;
-}
-
-.board-options>div {
-    display: inherit;
-    flex-direction: row;
-    align-items: center;
-}
-
-.board-options>div>p {
-    margin: 0 0.5em;
-}
-
-.num-slider {
-    width: 10em;
-    /* appearance: none; */
-    /* background: #538D4E; */
-}
-
-.menu-button {
-    background-color: var(--color-bg);
-    border: solid 1px #3a3a3c;
-    border-radius: 0.25em;
-    padding: 0.5em;
-    font-size: inherit;
-    justify-content: center;
-}
-
-.menu-button:hover {
-    filter: brightness(150%);
-}
-
-/* Main container for the game */
+/* ---------- Main container for the game ---------- */
 .game-container {
     height: calc(100vh - var(--header-height));
     display: flex;
@@ -430,4 +394,70 @@ input:checked+label:after {
 label:active:after {
     /* width: 130px; */
     width: calc(var(--toggle-height)*1.3);
+}
+
+/* ---------- Sidebar ---------- */
+.sidebar {
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* justify-content: flex-start; */
+    border-right: solid 1px var(--color-border);
+    align-items: center;
+    position: absolute;
+    height: 100%;
+    width: 10em;
+    left: 0%;
+    z-index: 2;
+    background-color: var(--color-bg);
+
+    transition: margin-right 0.3s;
+}
+
+.menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Vertical margin only */
+    padding: 1em 0;
+    width: 100%;
+}
+
+.menu-item>b {
+    margin-bottom: 0.5em;
+}
+
+.menu-button {
+    font-family: 'Silkscreen', cursive;
+    background-color: var(--color-bg);
+    border: solid 0.1em var(--color-border);
+    border-radius: 0.25em;
+    padding: 0.5em;
+    width: 8em;
+    font-size: inherit;
+    justify-content: center;
+}
+
+.menu-button:hover {
+    filter: brightness(150%);
+}
+
+.board-options {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5em;
+    margin: 0.5em 0;
+    width: 90%;
+}
+
+.board-options>div {
+    display: inherit;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.num-slider {
+    width: 100%;
+    /* appearance: none; */
+    /* background: #538D4E; */
 }

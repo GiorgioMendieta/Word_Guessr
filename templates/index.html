@@ -17,46 +17,63 @@
     <script type="text/javascript">
         const NUM_LETTERS = parseInt('{{ num_letters | tojson}}')
         const NUM_GUESSES = parseInt('{{ num_guesses | tojson}}')
-        const wordle = '{{wordle}}'
+        let wordle = '{{wordle}}'
     </script>
 </head>
 
-<body id="body">
+<body id="body" class="dark">
     <header class="header-container">
-        <div class="menu">
-            <form class="board-options" action="/" method="post">
-                <b>Board options</b>
-                <div>
-                    <input class="num-slider" id="guess-range" name="guesses" type="range" min="3" max="8" step="1"
-                        value="{{num_guesses}}">
-                    <!-- <label for="guesses">Rows:</label> -->
-                    Rows:
-                    <p id="guess-val">0</p>
-                </div>
-                <div>
-                    <input class="num-slider" id="letter-range" name="letters" type="range" min="4" max="7" step="1"
-                        value="{{num_letters}}">
-                    <!-- <label for="letters">Letters:</label> -->
-                    Letters:
-                    <p id="letter-val">0</p>
-                </div>
-
-                <button class="menu-button btn-submit" type="submit">Submit</button>
-            </form>
+        <!-- Sidebar -->
+        <div>
+            <button class="menu-button menu-header" id="sidebar-button" data-state="closed">
+                Menu
+            </button>
         </div>
+
         <div class="title-container">
             <h1>Word Guessr</h1>
-        </div>
-        <div class="menu">
-            <button class="menu-button" type="button" id="share-result">
-                Share score
-            </button>
-            <input type="checkbox" id="switch-theme">
-            <label for="switch-theme">Toggle theme</label>
         </div>
     </header>
 
     <div class="game-container">
+        <div class="sidebar" id="sidebar" style="display: none;">
+            <div class="menu-item">
+                <b>Board options</b>
+                <form class="board-options" id="board-options" action="/" method="post">
+                    <div>
+                        <span>
+                            Rows: <span id="guess-val">0</span>
+                        </span>
+                        <input class="num-slider" id="guess-range" name="guesses" type="range" min="3" max="8" step="1"
+                            value="{{num_guesses}}">
+                    </div>
+                    <div>
+                        <span>
+                            Letters: <span id="letter-val">0</span>
+                        </span>
+                        <input class="num-slider" id="letter-range" name="letters" type="range" min="4" max="7" step="1"
+                            value="{{num_letters}}">
+                    </div>
+
+                </form>
+                <button class="menu-button btn-submit" form="board-options" type="submit">Submit</button>
+            </div>
+
+            <div class="menu-item">
+                <b>Share score</b>
+                <button class="menu-button" type="button" id="share-result">
+                    Share
+                </button>
+            </div>
+
+            <div class="menu-item">
+                <b>Toggle theme</b>
+                <input type="checkbox" id="switch-theme">
+                <label for="switch-theme">Toggle theme</label>
+            </div>
+
+        </div>
+
         <div class="alert-container" id="alert-container">
             <!-- Alerts go here -->
         </div>
