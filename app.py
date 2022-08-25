@@ -12,6 +12,8 @@ app = Flask(__name__)
 app.config["DEBUG"] = True
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+# Set cache to 0secs to see latest changes
+app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 
 
 @app.route("/", methods=["GET", "POST"])
