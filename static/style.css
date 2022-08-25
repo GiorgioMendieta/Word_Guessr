@@ -10,6 +10,9 @@
     --key-bg: #818384;
     --input-bg: #818384;
 
+    /* Tile colors */
+    --tile-absent: #393A3C;
+    --tile-active: #565758;
     --tile-wrong: #3A3A3C;
     --tile-present: #B59F3B;
     --tile-correct: #538D4E;
@@ -22,7 +25,11 @@
 .light {
     --color-bg: #ffffff;
     --color-font: black;
+
     --key-bg: #D4D6DA;
+
+    --tile-absent: #D4D6DA;
+    --tile-active: #888A8D;
     --tile-wrong: #787C7E;
 }
 
@@ -130,10 +137,7 @@ body {
 .key {
     font-size: inherit;
     font-weight: bold;
-    /* Use HSL to change lightness on hover and when a key is not available */
-    background-color: hsl(var(--hue, 198),
-            var(--saturation, 1%),
-            var(--lightness, 51%));
+    background-color: var(--key-bg);
     display: flex;
     /* Unit size */
     flex: 1;
@@ -167,23 +171,19 @@ body {
 
 /* Wrong key */
 .key[data-state="wrong"] {
-    --lightness: 23%;
+    background-color: var(--tile-wrong);
     color: white;
 }
 
 /* Present key */
 .key[data-state="present"] {
-    --hue: 50;
-    --saturation: 51%;
-    --lightness: 47%;
+    background-color: var(--tile-present);
     color: white;
 }
 
 /* Correct key */
 .key[data-state="correct"] {
-    --hue: 115;
-    --saturation: 29%;
-    --lightness: 43%;
+    background-color: var(--tile-correct);
     color: white;
 }
 
@@ -262,7 +262,7 @@ body {
 .tile {
     font-size: calc(var(--tile-size)/2);
     font-weight: bold;
-    border: .075em solid hsl(240, 2%, 23%);
+    border: .075em solid var(--tile-absent);
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -276,7 +276,7 @@ body {
 /* Active tile (Has data in it) */
 .tile[data-state="active"] {
     color: var(--color-font);
-    border-color: hsl(240, 2%, 33%);
+    border-color: var(--tile-active);
 }
 
 /* Wrong tile */
@@ -394,7 +394,7 @@ label {
     text-indent: -9999px;
     width: var(--toggle-width);
     height: var(--toggle-height);
-    background: var(--input-bg);
+    background: var(--tile-wrong);
     display: block;
     border-radius: var(--toggle-height);
     position: relative;
