@@ -2,6 +2,7 @@
     font-size: 1vh;
     --header-height: 5em;
     --tile-size: 4em;
+    --key-margin: 0.45em;
 
     --color-bg: #121212;
     --color-font: white;
@@ -60,7 +61,7 @@ body {
     margin: 1em;
 }
 
-.form-board {
+.board-options {
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -68,13 +69,13 @@ body {
     margin-bottom: 0.25em;
 }
 
-.form-board>div {
+.board-options>div {
     display: inherit;
     flex-direction: row;
     align-items: center;
 }
 
-.form-board>div>p {
+.board-options>div>p {
     margin: 0 0.5em;
 }
 
@@ -99,48 +100,50 @@ body {
 
 /* Main container for the game */
 .game-container {
-    /* 90% of viewport */
-    height: calc(99vh - var(--header-height));
-    /* Flexbox */
+    height: calc(100vh - var(--header-height));
     display: flex;
-    /* Stack flex elements in a column */
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+    max-width: 500px;
+    /* No vertical margin, fill horizontal margin */
+    margin: 0 auto;
 }
 
-/* TODO: Switch to flexbox instead of grid */
+/* ---------------------- Keyboard ---------------------- */
+.keyboard-container {
+    font-size: medium;
+    margin: 0 var(--key-margin);
+    /* Use all the width available */
+    width: 100%;
+}
+
 .keyboard-row {
-    display: grid;
-    /* There are 10 keys per row, however we will take half a key (spacer) 
-    as our unitary size and then double it */
-    grid-template-columns: repeat(20, minmax(1em, 1.5em));
-    /* Height of buttons */
-    grid-auto-rows: 4em;
+    display: flex;
+    flex-direction: row;
     justify-content: center;
-    /* Same as margin-left of .key */
-    margin-bottom: 0.4em;
+    margin-bottom: var(--key-margin);
 }
 
 .key {
-    /* Inherit font size from parent <body> to make it responsive */
     font-size: inherit;
     font-weight: bold;
     /* Use HSL to change lightness on hover and when a key is not available */
     background-color: hsl(var(--hue, 198),
             var(--saturation, 1%),
-            /* Perform a calculation to add a lightness offset (default = 0%) */
             var(--lightness, 51%));
-    /* Every key is two-columns wide (From .keyboard-row # of grid columns */
-    grid-column: span 2;
+    display: flex;
+    /* Unit size */
+    flex: 1;
+    height: 4em;
     border: none;
     padding: 0%;
     justify-content: center;
     align-items: center;
     text-transform: uppercase;
     border-radius: 0.25em;
-    /* Same as margin-bottom of .keyboard-row */
-    margin-right: 0.4em;
+    margin-right: var(--key-margin);
     cursor: pointer;
     /* Prevent the user from highlighting the button text */
     user-select: none;
@@ -149,7 +152,16 @@ body {
 }
 
 .key.large {
-    grid-column: span 3;
+    /* Large keys are 1.5 width */
+    flex: 1.5;
+    /* Smaller font size so letters can fit */
+    font-size: 0.8em;
+    height: inherit;
+}
+
+.spacer {
+    /* Spacers take half a key width */
+    flex: 0.5;
 }
 
 /* Wrong key */
@@ -183,9 +195,10 @@ body {
 
 /* Remove last key margin */
 .key:last-of-type {
-    /* margin-right: 0; */
+    margin-right: 0;
 }
 
+/* ---------------------- Game board ---------------------- */
 .guess-grid-container {
     display: flex;
     align-items: center;
@@ -323,6 +336,7 @@ body {
     }
 }
 
+/* ---------------------- Toast notifications ---------------------- */
 .alert-container {
     position: fixed;
     /* 10% of viewport height */
@@ -362,7 +376,7 @@ body {
     opacity: 0%;
 }
 
-/* Toggle switch */
+/* ---------------------- Toggle switch ---------------------- */
 /* Hide checkbox */
 input[type=checkbox] {
     height: 0;
