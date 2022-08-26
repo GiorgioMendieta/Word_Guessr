@@ -272,13 +272,17 @@ function checkWord(word) {
         endScreen()
         return;
     } else {
-        // Restart tile position
-        letter = 0;
-        // Advance a row
-        guess++;
+        advanceRow()
     }
 
     return;
+}
+
+function advanceRow() {
+    // Restart tile position
+    letter = 0;
+    // Advance a row
+    guess++;
 }
 
 function flipTiles(wordGuess) {
@@ -451,16 +455,18 @@ function toggleTheme() {
     }
 }
 
+// Function gets called on button click
 function toggleSidebar() {
     const button = document.getElementById("sidebar-button");
-    const sidebar = document.getElementById("sidebar");
 
     if (button.dataset.state == "open") {
         document.getElementById("sidebar").style.display = "none";
         button.dataset.state = "closed";
+        button.innerHTML = "Menu"
 
     } else if (button.dataset.state == "closed") {
         document.getElementById("sidebar").style.display = "block"; // flex ?
         button.dataset.state = "open";
+        button.innerHTML = "Close"
     }
 }
