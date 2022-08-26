@@ -3,7 +3,6 @@ const FLIP_DURATION = 500;
 const JUMP_DURATION = 500;
 
 // Global variables
-let definition;
 
 let guess = 0;
 let letter = 0;
@@ -49,17 +48,6 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
     hideFlashAlerts();
 }
 
-function getDefinition(word) {
-    console.log(`Definition for: ${word}`);
-    fetch(`http://127.0.0.1:5000/check?word=${word}`)
-        // Convert the response to text format
-        .then(response => response.json())
-        .then(response => {
-            console.log(response)
-            definition = response
-        })
-        .catch(err => console.error(err));
-}
 
 function startInteraction() {
     // Get keyboard keys and put them in an array
@@ -160,7 +148,7 @@ function deleteKey() {
     return;
 }
 
-function submitGuess() {
+async function submitGuess() {
     // Get Word
     const row = document.getElementById("guess-" + guess);
 
@@ -180,21 +168,25 @@ function submitGuess() {
     });
 
     // Check if word exists
-    fetch(`http://127.0.0.1:5000/check?word=${word}`)
-        .then((response) => {
-            if (!response.ok) {
-                throw Error();
-            }
-            // Word exists, flip tiles
-            flipTiles(word);
-        })
-        .catch(() => {
-            // Word does not exist
-            showAlert("Not in word list!");
-            shakeRow(row);
-        });
+    const wordExists = await checkWord(word);
+    if (wordExists) {
+        flipTiles(word)
+    } else {
+        showAlert("Not in word list!");
+        shakeRow(row);
+    }
 
     return;
+}
+
+async function checkWord(word) {
+    const response = await fetch(`http://127.0.0.1:5000/check?word=${word}`);
+
+    if (response.ok) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 function showAlert(msg, duration = 1000, type = "Message") {
@@ -220,6 +212,7 @@ function showAlert(msg, duration = 1000, type = "Message") {
 }
 
 function hideFlashAlerts() {
+    // Hide alerts created by the server
     const flashAlerts = Array.from(document.getElementsByClassName("flash"))
 
     flashAlerts.forEach((flash) => {
@@ -246,7 +239,7 @@ function shakeRow(row) {
     return;
 }
 
-function checkWord(word) {
+function checkWin(word) {
     // Win condition
     if (word === wordle) {
         gameStatus = "WIN";
@@ -324,7 +317,7 @@ function flipTile(tile, index, array, wordGuess, tileColorsArr) {
                 // Resume user interaction
                 startInteraction();
                 // Check submitted word
-                checkWord(wordGuess);
+                checkWin(wordGuess);
             })
         }
     });
@@ -366,7 +359,6 @@ function colorTiles(wordGuess) {
     return result;
 }
 
-// If the guess is incorrect, shake the whole row
 function jumpTiles() {
     // Get array of tiles of the current row
     const row = document.querySelector("#guess-" + guess);
@@ -385,12 +377,19 @@ function jumpTiles() {
     })
 }
 
-function endScreen() {
+async function endScreen() {
     // Show word definition
-    getDefinition(wordle);
+    let definition = await getDefinition(wordle);
     // TODO: Create modal with stats
-
+    showAlert(definition, 10000)
     return;
+}
+
+async function getDefinition(word) {
+    let response = await fetch(`http://127.0.0.1:5000/define?word=${word}`)
+    response = await response.text()
+
+    return response
 }
 
 function shareScore() {

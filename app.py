@@ -4,7 +4,7 @@ import requests
 from flask import Flask, Config, flash, redirect, render_template, request, session, Response
 from flask_session import Session
 
-RANDOM_WORDS_API_KEY = os.environ.get("RANDOM_WORDS_API_KEY")
+FAST_API_KEY = os.environ.get("FAST_API_KEY")
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # Configure application
@@ -23,11 +23,17 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+headers = {
+    "X-RapidAPI-Key": str(FAST_API_KEY),
+    "X-RapidAPI-Host": "wordsapiv1.p.rapidapi.com"
+}
+
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     """Show main game"""
 
+    wordle = ""
     # Keyboard layout
     keys = [['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
             [' ', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ' '],
@@ -66,9 +72,8 @@ def index():
         NUM_LETTERS = 5
         NUM_GUESSES = 6
 
-    # Obtain word from Random Words API
+    # Obtain word from API
     wordle = get_word(NUM_LETTERS)
-    # wordle = "apple"
 
     # Create board and populate it with blank values
     tiles = [[0] * NUM_LETTERS for i in range(NUM_GUESSES)]
@@ -81,7 +86,6 @@ def index():
                            keys=keys,
                            num_guesses=NUM_GUESSES,
                            num_letters=NUM_LETTERS,
-                           RANDOM_WORDS_API_KEY=RANDOM_WORDS_API_KEY,
                            wordle=wordle,
                            tiles=tiles)
 
@@ -91,27 +95,51 @@ def check():
     # Receive fetch call from javascript file
     # Fetch word argument
     word = request.args.get("word")
-    # TODO: Switch to WordsAPI (RapidAPI) for a single API provider
-    url = "https://api.dictionaryapi.dev/api/v2/entries/en/"
-    # Check if word exists
-    response = requests.get(url + word)
+    url = f"https://wordsapiv1.p.rapidapi.com/words/{word}/definitions"
+    response = requests.request("GET", url, headers=headers)
+
     # Return only status code
     return Response(status=response.status_code)
 
 
-def get_word(n):
-    # TODO: Switch to WordsAPI (RapidAPI) for a single API provider
-    url = "https://random-words5.p.rapidapi.com/getRandom"
-    querystring = {"wordLength": str(n)}
-    headers = {
-        "X-RapidAPI-Key": str(RANDOM_WORDS_API_KEY),
-        "X-RapidAPI-Host": "random-words5.p.rapidapi.com"
-    }
+@app.route("/define")
+def define():
+    # Receive fetch call from javascript file
+    # Fetch word argument
+    word = request.args.get("word")
+    url = f"https://wordsapiv1.p.rapidapi.com/words/{word}/definitions"
+    response = requests.request("GET", url, headers=headers)
 
+    if response.status_code != 200:
+        return
+
+    response = response.json()
+
+    # Get only the first definition
+    definitions = response["definitions"][0]
+
+    msg = f'Definition of {word}: {definitions["partOfSpeech"]}; {definitions["definition"]}.'
+
+    return msg
+
+
+def get_word(n):
+    url = "https://wordsapiv1.p.rapidapi.com/words/"
+    # Get only words with letters and at least two syllables
+    # Also, don't show really obscure words and return only words that have definitions
+    # Also, synonyms are needed to prevent unique names
+    querystring = {"random": "true", "letterPattern": "^[a-z]+$", "letters": n, "syllablesMin": "2",
+                   "limit": "1", "page": "1", "frequencymin": "4", "hasDetails": "definitions,synonyms"}
     response = requests.request(
         "GET", url, headers=headers, params=querystring)
 
     if response.status_code != 200:
         flash("Error fetching word!", category="error")
+        return
 
-    return response.text
+    response = response.json()
+
+    word = response["word"]
+    print("WORDLE: " + word)
+
+    return word
