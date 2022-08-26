@@ -1,5 +1,5 @@
 :root {
-    font-size: 1vh;
+    font-size: 16px;
     --header-height: 5em;
     --menu-button-w: 5em;
     --tile-size: 4em;
@@ -49,6 +49,7 @@
 
 body {
     font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
     background-color: var(--color-bg);
     /* Variable font size (Responsive) */
     /* Min size,  Default, Max */
@@ -57,12 +58,15 @@ body {
 
 /* ---------- Header ---------- */
 .header-container {
+    position: sticky;
+    top: 0px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    /* justify-content: center; */
+    background-color: var(--color-bg);
     border-bottom: solid 2px var(--color-border);
     height: var(--header-height);
+    width: 100%;
 }
 
 .title-container {
@@ -83,6 +87,7 @@ body {
 /* ---------- Main container for the game ---------- */
 .game-container {
     height: calc(100vh - var(--header-height));
+
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -414,12 +419,12 @@ label:active:after {
 
 /* ---------- Sidebar ---------- */
 .sidebar {
-    /* display: flex; */
-    /* flex-direction: column; */
-    /* justify-content: flex-start; */
+    margin-top: var(--header-height);
     border-right: solid 2px var(--color-border);
+    border-top: solid 2px var(--color-border);
     align-items: center;
-    position: absolute;
+    position: fixed;
+    top: 0px;
     height: 100%;
     width: clamp(15em, 20vw, 30em);
     left: 0%;
