@@ -86,6 +86,21 @@ def index():
                            tiles=tiles)
 
 
+@app.route("/check")
+def check():
+    # Receive call from javascript file
+    word = request.args.get("word")
+    # TODO: Switch to WordsAPI (RapidAPI) for a single API provider
+    url = "https://api.dictionaryapi.dev/api/v2/entries/en/"
+    # Check if word exists
+    response = requests.get(url + word)
+
+    if response.status_code != 200:
+        return response.raise_for_status()
+
+    return response.json()
+
+
 def get_word(n):
     # TODO: Switch to WordsAPI (RapidAPI) for a single API provider
     url = "https://random-words5.p.rapidapi.com/getRandom"

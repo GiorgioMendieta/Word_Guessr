@@ -180,7 +180,7 @@ function submitGuess() {
     });
 
     // Check if word exists
-    fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`, { method: 'GET' })
+    fetch(`http://127.0.0.1:5000/check?word=${word}`)
         .then((response) => {
             if (!response.ok) {
                 throw Error();
