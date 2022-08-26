@@ -1,6 +1,8 @@
-# Find the words (Wordle clone)
+# Word Guessr (Wordle clone)
 
 It is a simple web app developed with Javascript and Flask (Python) as back-end to test my fullstack abilities.
+
+Based on a popular web app, the objective is to guess the word with a limited number of attempts. The user can change the parameters of # of letters and attempts.
 
 ## Tech Stack
 
@@ -16,35 +18,31 @@ It is a simple web app developed with Javascript and Flask (Python) as back-end 
 
 - Animations done manually in CSS
 - Share score using emojis 🟩🥲🤩
-- **Dictionary API**
-  - Check if submitted word exists
-- **Random Word API**
-  - Get random words to play
 - Dynamic board size based on settings (word length and # of attempts)
+- Theming support for Dark & Light modes (Default theme is light mode)
+- **Words API**
+  - Get random words to play
+  - Check if submitted word exists
+  - Display definition at the end of game
 
 ## Planned Features
 
-### Store stats
-
-- Use Local Storage or SQL db
-
 ### User accounts
 
+- Use Local Storage or SQL db
 - Encrypt passwords by salting them and using a hash (SHA-256)
 - Store statistics using a SQL database
 - Log in to display win streak & statistics
 
 ### Other features
 
-- Theming
-- **Dictionary API**
-  - Display definition at the end of game
-
 ### Playing modes
 
-- **Easy mode:** Provide a short definition
+- **Easy mode:**
+  - Provide a synonim (Words API)
   - More number of opportunities (+1 tile row)
-- **Hard mode:** Prevent using past letters
+- **Hard mode:**
+  - Prevent using past letters
   - Less number of opportunities (-1 tile row)
 
 ## Getting started
@@ -79,6 +77,15 @@ on `app.py` first we need to import the `os` package so that we can use the comm
 
 source(<https://medium.com/thedevproject/start-using-env-for-your-flask-project-and-stop-using-environment-variables-for-development-247dc12468be>)
 
+Furthermore, flask needs a secret key to store session variables as well.
+We can create one ourselves by entering into the terminal
+
+    import os
+    print(os.urandom(24).hex())
+
+And copying the random string into tbe `.env` file:
+    SECRET_KEY = {KEY GOES HERE}
+
 ### Signing up for API
 
 Go to rapidapi.com, sign up and request for **Random words api**
@@ -101,3 +108,12 @@ The project has the following tree structure:
     │   └── style.css     (Styles sheet)
     ├── templates
     │   └── index.html    (HTML code using Jinja templates)
+
+## Main takeaways
+
+The main things I learned after developing this web app are:
+
+- API and HTTP requests
+- Javascript and Python
+- HTML and CSS styling
+- How Back-ends work using Flask
