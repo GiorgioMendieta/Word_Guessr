@@ -1,7 +1,7 @@
 import os
 
 import requests
-from flask import Flask, Config, flash, redirect, render_template, request, session
+from flask import Flask, Config, flash, redirect, render_template, request, session, Response
 from flask_session import Session
 
 RANDOM_WORDS_API_KEY = os.environ.get("RANDOM_WORDS_API_KEY")
@@ -88,17 +88,15 @@ def index():
 
 @app.route("/check")
 def check():
-    # Receive call from javascript file
+    # Receive fetch call from javascript file
+    # Fetch word argument
     word = request.args.get("word")
     # TODO: Switch to WordsAPI (RapidAPI) for a single API provider
     url = "https://api.dictionaryapi.dev/api/v2/entries/en/"
     # Check if word exists
     response = requests.get(url + word)
-
-    if response.status_code != 200:
-        return response.raise_for_status()
-
-    return response.json()
+    # Return only status code
+    return Response(status=response.status_code)
 
 
 def get_word(n):

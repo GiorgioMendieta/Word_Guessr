@@ -51,7 +51,7 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
 
 function getDefinition(word) {
     console.log(`Definition for: ${word}`);
-    fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`, { method: 'GET' })
+    fetch(`http://127.0.0.1:5000/check?word=${word}`)
         // Convert the response to text format
         .then(response => response.json())
         .then(response => {
@@ -185,11 +185,11 @@ function submitGuess() {
             if (!response.ok) {
                 throw Error();
             }
-
             // Word exists, flip tiles
             flipTiles(word);
         })
         .catch(() => {
+            console.log(response.status)
             // Word does not exist
             showAlert("Not in word list!");
             shakeRow(row);
