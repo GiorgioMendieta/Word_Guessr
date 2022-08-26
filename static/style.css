@@ -2,7 +2,7 @@
     font-size: 16px;
     --header-height: 5em;
     --menu-button-w: 5em;
-    --tile-size: 4em;
+    --tile-size: 2em;
     --key-margin: 0.45em;
 
     --color-bg: #121212;
@@ -53,7 +53,7 @@ body {
     background-color: var(--color-bg);
     /* Variable font size (Responsive) */
     /* Min size,  Default, Max */
-    font-size: clamp(1rem, 1.5vh, 2.5rem);
+    font-size: clamp(0.5rem, 2vh, 2.5rem);
 }
 
 /* ---------- Header ---------- */
@@ -103,7 +103,7 @@ body {
     font-size: medium;
     margin: 0 var(--key-margin);
     /* Use all the width available */
-    width: 100%;
+    width: inherit;
 }
 
 .keyboard-row {
@@ -167,7 +167,6 @@ body {
 }
 
 /* Increase the key's lightness when it's hovered */
-/* Uses the current lightness as base and adds to it */
 .key:hover,
 .key:focus {
     filter: brightness(115%);
@@ -200,9 +199,7 @@ body {
 .guess-row {
     display: grid;
     /* column width */
-    grid-template-columns: repeat(var(--letters, 5), var(--tile-size));
-    /* row height */
-    grid-auto-rows: var(--tile-size);
+    grid-template-columns: repeat(var(--letters, 5), 1fr);
     /* Gap between columns */
     gap: inherit;
 }
@@ -239,7 +236,7 @@ body {
 }
 
 .tile {
-    font-size: calc(var(--tile-size)/2);
+    font-size: var(--tile-size);
     font-weight: bold;
     border: .075em solid var(--tile-absent);
     display: inline-flex;
@@ -248,6 +245,8 @@ body {
     text-transform: uppercase;
     user-select: none;
     color: white;
+    height: var(--tile-size);
+    width: var(--tile-size);
     /* Flip animation */
     transition: transform 250ms linear;
 }
