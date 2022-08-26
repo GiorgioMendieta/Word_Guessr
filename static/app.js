@@ -189,7 +189,6 @@ function submitGuess() {
             flipTiles(word);
         })
         .catch(() => {
-            console.log(response.status)
             // Word does not exist
             showAlert("Not in word list!");
             shakeRow(row);
