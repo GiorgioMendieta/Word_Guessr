@@ -12,6 +12,9 @@
     --key-bg: #818384;
     --input-bg: #818384;
 
+    --alert-bg: white;
+    --alert-color-font: black;
+
     /* Tile colors */
     --tile-absent: #393A3C;
     --tile-active: #565758;
@@ -30,6 +33,9 @@
     --color-font: black;
 
     --key-bg: #D4D6DA;
+
+    --alert-bg: #121212;
+    --alert-color-font: white;
 
     --tile-absent: #D4D6DA;
     --tile-active: #888A8D;
@@ -325,9 +331,10 @@ body {
     align-items: center;
 }
 
+.flash,
 .alert {
-    background-color: #FFFFFF;
-    color: #121213;
+    background-color: var(--alert-bg);
+    color: var(--alert-color-font);
     font-weight: bold;
     text-align: center;
     padding: 0.75em;
@@ -340,11 +347,13 @@ body {
     margin-bottom: 0.5em;
 }
 
+.flash.error,
 .alert.error {
     background-color: red;
     color: white;
 }
 
+.flash.hide,
 .alert.hide {
     opacity: 0%;
 }

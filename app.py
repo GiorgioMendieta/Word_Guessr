@@ -1,9 +1,11 @@
 import os
-import requests
 
+import requests
 from flask import Flask, Config, flash, redirect, render_template, request, session
+from flask_session import Session
 
 RANDOM_WORDS_API_KEY = os.environ.get("RANDOM_WORDS_API_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # Configure application
 app = Flask(__name__)
@@ -14,6 +16,12 @@ app.config["DEBUG"] = True
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 # Set cache to 0secs to see latest changes
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
+# Set secret key to flash messages
+app.config['SECRET_KEY'] = SECRET_KEY
+# Configure session to use filesystem (instead of signed cookies)
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -50,6 +58,8 @@ def index():
 
         NUM_GUESSES = int(NUM_GUESSES)
 
+        flash("Settings applied")
+
     # GET request
     else:
         # Default values
@@ -58,6 +68,7 @@ def index():
 
     # Obtain word from Random Words API
     wordle = get_word(NUM_LETTERS)
+    # wordle = "apple"
 
     # Create board and populate it with blank values
     tiles = [[0] * NUM_LETTERS for i in range(NUM_GUESSES)]
@@ -86,5 +97,8 @@ def get_word(n):
 
     response = requests.request(
         "GET", url, headers=headers, params=querystring)
+
+    if response.status_code != 200:
+        flash("Error fetching word!", category="error")
 
     return response.text

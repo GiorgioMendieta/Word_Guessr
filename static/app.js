@@ -45,6 +45,8 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
 
     const sidebarButton = document.getElementById("sidebar-button");
     sidebarButton.addEventListener("click", toggleSidebar);
+
+    hideFlashAlerts();
 }
 
 function getDefinition(word) {
@@ -197,7 +199,7 @@ function submitGuess() {
 }
 
 function showAlert(msg, duration = 1000, type = "Message") {
-    const alertContainer = document.getElementById("alert-container")
+    const alertContainer = document.getElementById("alert-container");
     console.log(msg);
     const alert = document.createElement("div");
     alert.classList.add("alert");
@@ -216,6 +218,18 @@ function showAlert(msg, duration = 1000, type = "Message") {
                 alert.remove();
             });
     }, duration);
+}
+
+function hideFlashAlerts() {
+    const flashAlerts = Array.from(document.getElementsByClassName("flash"))
+
+    flashAlerts.forEach((flash) => {
+        setTimeout(() => {
+            flash.classList.add("hide");
+            // As soon as the fade out transition ends, delete the element
+            flash.addEventListener("transitionend", () => { flash.remove() })
+        }, 2000)
+    })
 }
 
 // If the guess is incorrect, shake the whole row

@@ -1,6 +1,7 @@
 .DS_Store 
 
 venv/
+flask_session/
 
 *.pyc
 __pycache__/
