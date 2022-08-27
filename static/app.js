@@ -394,8 +394,12 @@ function jumpTiles() {
 async function endScreen() {
     // Show word definition
     let definition = await getDefinition(wordle);
-    // TODO: Create modal with stats
-    showAlert(definition, 10000)
+
+    if (definition != null) {
+        // TODO: Create modal with stats
+        showAlert(definition, 10000)
+    }
+
     // Show play again button
     document.getElementById("play-button").removeAttribute("style");
     return;
@@ -403,9 +407,9 @@ async function endScreen() {
 
 async function getDefinition(word) {
     let response = await fetch(`http://127.0.0.1:5000/define?word=${word}`)
-    response = await response.text()
+    if (!response.ok) return
 
-    return response
+    return response.text()
 }
 
 function shareScore() {

@@ -111,11 +111,16 @@ def define():
     response = requests.request("GET", url, headers=headers)
 
     if response.status_code != 200:
-        return
+        # Not a valid word
+        return Response(status=response.status_code)
 
     response = response.json()
 
-    # Get only the first definition
+    if len(response["definitions"]) < 1:
+        # No definitions found, return nothing
+        return Response(status=404)
+
+    # Get only the first definition (if any)
     definitions = response["definitions"][0]
 
     msg = f'Definition of {word}: {definitions["partOfSpeech"]}; {definitions["definition"]}.'
