@@ -259,19 +259,19 @@ body {
 
 /* Wrong tile */
 .tile[data-state="wrong"] {
-    border: none;
+    border: .075em solid var(--tile-wrong);
     background-color: var(--tile-wrong);
 }
 
 /* Present tile */
 .tile[data-state="present"] {
-    border: none;
+    border: .075em solid var(--tile-present);
     background-color: var(--tile-present);
 }
 
 /* Correct tile */
 .tile[data-state="correct"] {
-    border: none;
+    border: .075em solid var(--tile-correct);
     background-color: var(--tile-correct);
 }
 
