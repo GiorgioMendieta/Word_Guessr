@@ -25,23 +25,24 @@ Based on a popular web app, the objective is to guess the word with a limited nu
   - Check if submitted word exists
   - Display definition at the end of game
 
-## Planned Features
+## Planned Features (To-do)
 
-### User accounts
+- **Local Storage**
+  - Display satistics
+  - Games played
+  - Win percentage
+  - Win streak
+  - Max streak
 
-- Use Local Storage or SQL db
-- Encrypt passwords by salting them and using a hash (SHA-256)
-- Store statistics using a SQL database
-- Log in to display win streak & statistics
+- **User accounts**
+  - Log in to display win streak & statistics
+  - Encrypt passwords by salting them and using a hash (SHA-256)
 
-### Other features
-
-### Playing modes
-
-- **Easy mode:**
+- **Easy mode**
   - Provide a synonim (Words API)
   - More number of opportunities (+1 tile row)
-- **Hard mode:**
+
+- **Hard mode**
   - Prevent using past letters
   - Less number of opportunities (-1 tile row)
 
