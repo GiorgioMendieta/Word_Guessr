@@ -17,8 +17,10 @@ startInteraction();
 // Function declarations
 
 function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
+    // Print to console board configuration
     console.log(`Number of attempts: ${NUM_GUESSES}`)
     console.log(`Word length: ${NUM_LETTERS}`)
+
     // Get the root element
     var r = document.querySelector(':root');
     // Set CSS properties to display tiles correctly
@@ -42,9 +44,15 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
         outputLetter.innerHTML = this.value;
     }
 
+    // Button to show/hide sidebar
     const sidebarButton = document.getElementById("sidebar-button");
     sidebarButton.addEventListener("click", toggleSidebar);
 
+    // Play again button
+    const playAgainButton = document.getElementById("play-button");
+    playAgainButton.addEventListener("click", newGame);
+
+    // Hide alerts created by Flask backend
     hideFlashAlerts();
 }
 
@@ -388,6 +396,8 @@ async function endScreen() {
     let definition = await getDefinition(wordle);
     // TODO: Create modal with stats
     showAlert(definition, 10000)
+    // Show play again button
+    document.getElementById("play-button").removeAttribute("style");
     return;
 }
 
@@ -501,4 +511,8 @@ function toggleSidebar() {
 
         return;
     }
+}
+
+function newGame() {
+    location.reload()
 }

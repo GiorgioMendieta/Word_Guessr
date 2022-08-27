@@ -67,6 +67,7 @@ body {
     border-bottom: solid 2px var(--color-border);
     height: var(--header-height);
     width: 100%;
+    justify-content: space-between;
 }
 
 .title-container {
@@ -80,8 +81,13 @@ body {
 .menu-button.menu-header {
     /* font-size: 1.5em; */
     font-weight: bold;
-    width: var(--menu-button-w, 5em);
+    width: auto;
     margin: 1em;
+}
+
+#play-button {
+    color: white;
+    background-color: var(--tile-correct);
 }
 
 /* ---------- Main container for the game ---------- */
