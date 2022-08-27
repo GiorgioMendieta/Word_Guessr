@@ -106,6 +106,12 @@ function handleKeyPress(e) {
         addKey(e.key.toLowerCase());
         return;
     }
+
+    const sidebarButton = document.getElementById("sidebar-button");
+    // If sidebar is open, close it when Esc is pressed
+    if (sidebarButton.dataset.state == "open" && e.key === "Escape") {
+        toggleSidebar()
+    }
 }
 
 function addKey(key) {
@@ -458,11 +464,13 @@ function toggleSidebar() {
     const button = document.getElementById("sidebar-button");
 
     if (button.dataset.state == "open") {
+        // Closed sidebar
         document.getElementById("sidebar").style.display = "none";
         button.dataset.state = "closed";
         button.innerHTML = "Menu"
 
     } else if (button.dataset.state == "closed") {
+        // Open sidebar
         document.getElementById("sidebar").style.display = "block"; // flex ?
         button.dataset.state = "open";
         button.innerHTML = "Close"
