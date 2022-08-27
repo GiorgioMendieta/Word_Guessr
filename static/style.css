@@ -429,8 +429,34 @@ label:active:after {
     left: 0%;
     z-index: 2;
     background-color: var(--color-bg);
+}
 
-    transition: margin-right 0.3s;
+.sidebar.show {
+    animation: slidein 200ms linear;
+}
+
+@keyframes slidein {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(0%);
+    }
+}
+
+.sidebar.hide {
+    animation: slideout 200ms linear;
+}
+
+@keyframes slideout {
+    from {
+        transform: translateX(0%);
+    }
+
+    to {
+        transform: translateX(-100%);
+    }
 }
 
 .menu-item {

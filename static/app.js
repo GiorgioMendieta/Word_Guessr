@@ -462,17 +462,43 @@ function toggleTheme() {
 // Function gets called on button click
 function toggleSidebar() {
     const button = document.getElementById("sidebar-button");
+    const sidebar = document.getElementById("sidebar");
 
+    // Sidebar is open, close it
     if (button.dataset.state == "open") {
-        // Closed sidebar
-        document.getElementById("sidebar").style.display = "none";
-        button.dataset.state = "closed";
-        button.innerHTML = "Menu"
 
-    } else if (button.dataset.state == "closed") {
-        // Open sidebar
-        document.getElementById("sidebar").style.display = "block"; // flex ?
+        sidebar.classList.add("hide");
+        sidebar.addEventListener(
+            "animationend",
+            () => {
+                sidebar.classList.remove("hide");
+                sidebar.style.display = "none";
+            },
+            { once: true }
+        );
+
+        button.dataset.state = "closed";
+        button.innerHTML = "Menu";
+
+        return;
+    }
+
+    // Sidebar is closed, open it
+    if (button.dataset.state == "closed") {
+
+        sidebar.style.display = "block";
+        sidebar.classList.add("show");
+        sidebar.addEventListener(
+            "animationend",
+            () => {
+                sidebar.classList.remove("show");
+            },
+            { once: true }
+        );
+
         button.dataset.state = "open";
-        button.innerHTML = "Close"
+        button.innerHTML = "Close";
+
+        return;
     }
 }
