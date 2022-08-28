@@ -471,15 +471,7 @@ function shareScore() {
 
 function toggleTheme() {
     const body = document.getElementById("body");
-    const isLight = body.classList.contains("light")
-
-    if (!isLight) {
-        body.classList.remove("dark")
-        body.classList.add("light");
-    } else {
-        body.classList.remove("light");
-        body.classList.add("dark");
-    }
+    body.classList.toggle("light");
 }
 
 // Function gets called on button click
