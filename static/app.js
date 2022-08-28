@@ -52,6 +52,9 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
     const playAgainButton = document.getElementById("play-button");
     playAgainButton.addEventListener("click", newGame);
 
+    const modal = document.getElementById("modal-container");
+    modal.addEventListener("click", closeModal);
+
     // Hide alerts created by Flask backend
     hideFlashAlerts();
 }
@@ -117,6 +120,7 @@ function handleKeyPress(e) {
 
     const sidebarButton = document.getElementById("sidebar-button");
     // If sidebar is open, close it when Esc is pressed
+    // TODO: Fix esc key not working when game is over
     if (sidebarButton.dataset.state == "open" && e.key === "Escape") {
         toggleSidebar()
     }
@@ -394,10 +398,15 @@ function jumpTiles() {
 async function endScreen() {
     // Show word definition
     let definition = await getDefinition(wordle);
+    // TODO: Create modal with stats
+    const dialog = document.getElementById("dialog");
+    const modal = document.getElementById("modal-container");
+    modal.style.display = "flex";
 
     if (definition != null) {
-        // TODO: Create modal with stats
-        showAlert(definition, 10000)
+        dialog.innerHTML = definition;
+    } else {
+        dialog.innerHTML = "Definition not found!";
     }
 
     // Show play again button
@@ -519,4 +528,9 @@ function toggleSidebar() {
 
 function newGame() {
     location.reload()
+}
+
+function closeModal() {
+    const modal = document.getElementById("modal-container");
+    modal.style.display = "none";
 }

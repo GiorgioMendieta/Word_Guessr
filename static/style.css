@@ -334,7 +334,7 @@ body {
     /* left: 50vh; */
     /* transform: translateX(-50%); */
     /* Always place alert on top */
-    z-index: 1;
+    z-index: 2;
     /* Display alerts in flexbox vertically */
     display: flex;
     flex-direction: column;
@@ -433,7 +433,7 @@ label:active:after {
     height: 100%;
     width: clamp(15em, 20vw, 30em);
     left: 0%;
-    z-index: 2;
+    z-index: 1;
     background-color: var(--color-bg);
 }
 
@@ -483,7 +483,7 @@ label:active:after {
     font-family: 'Silkscreen', cursive;
     background-color: var(--color-bg);
     border: 2px solid var(--color-border);
-    border-radius: 0.25em;
+    border-radius: 0.4rem;
     padding: 0.5em;
     width: 8em;
     font-size: inherit;
@@ -531,4 +531,36 @@ label:active:after {
     width: 1em;
     background: white;
     border: 2px solid var(--color-border);
+}
+
+/* ---------- Modal ---------- */
+.modal-overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Occupy the whole screen */
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    /* Cover the header */
+    top: 0;
+    left: 0;
+    /* Stay on top of all elements */
+    z-index: 3;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* transition: opacity 0.2s ease-in-out; */
+}
+
+.dialog {
+    background-color: var(--color-bg);
+    border: 2px solid var(--color-border);
+    border-radius: 0.4rem;
+    padding: 1rem;
+    box-shadow: 0 0 20px 5px rgb(0 0 0 / 20%);
+    z-index: 4;
+    max-width: 75%;
+}
+
+.visible {
+    /* display: ; */
 }

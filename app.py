@@ -122,8 +122,11 @@ def define():
 
     # Get only the first definition (if any)
     definitions = response["definitions"][0]
+    partOfSpeech = definitions["partOfSpeech"]
+    definition = definitions["definition"]
 
-    msg = f'Definition of {word}: {definitions["partOfSpeech"]}; {definitions["definition"]}.'
+    # Return html in plain text
+    msg = f'Definition of <b>{word.capitalize()}</b>: <em>{partOfSpeech.capitalize()}</em>; <hr>{definition.capitalize()}.'
 
     return msg
 
