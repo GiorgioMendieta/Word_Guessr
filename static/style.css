@@ -25,6 +25,8 @@
     /* Toggle switch */
     --toggle-height: 2em;
     --toggle-width: 4em;
+
+    --transition-time: 200ms
 }
 
 .light {
@@ -45,6 +47,8 @@
 /* Selects ALL elements */
 * {
     color: var(--color-font);
+    /* Smoothly transition between dark/light modes */
+    transition: background-color var(--transition-time) ease-in, color var(--transition-time) ease-in;
 }
 
 body {
