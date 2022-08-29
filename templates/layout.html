@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="/static/favicon.ico" rel="icon">
+    <link rel="stylesheet" href="/static/style.css" />
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
+
+    {% block javascript %}
+    {% endblock %}
+</head>
+
+<body id="body" theme="light">
+    <header class="header-container">
+        {% block headerleft %}
+        {% endblock %}
+
+        <div class="title-container">
+            <h1>Word Guessr</h1>
+        </div>
+
+        {% block headerright %}
+        {% endblock %}
+    </header>
+
+    <div class="game-container">
+        {% block main %}
+        {% endblock %}
+
+        <div class="alert-container" id="alert-container">
+            <!-- Alerts go here (Javascript)-->
+            <!-- Flash messages (if available) go here (Flask) -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="flash {{category}}">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+
+        <div class="modal-overlay" id="modal-container" style="display: none;">
+            <div class="dialog" id="dialog">
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
