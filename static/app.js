@@ -6,21 +6,31 @@ const JUMP_DURATION = 500;
 
 let guess = 0;
 let letter = 0;
+let words = new Array(NUM_GUESSES)
 
 let gameStatus = "IN_PROGRESS"; // WIN, LOSE, IN_PROGRESS
 
 // Main
 
+initLocalStorage();
 setBoardCss(NUM_GUESSES, NUM_LETTERS);
 startInteraction();
 
 // Function declarations
 
-function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
-    // Print to console board configuration
-    console.log(`Number of attempts: ${NUM_GUESSES}`)
-    console.log(`Word length: ${NUM_LETTERS}`)
+// Save theme, tiles, letter & guess vars, gamestatus
+function initLocalStorage() {
+    // Retrieve saved theme
+    var theme = window.localStorage.getItem("theme");
+    // If theme is present, set it
+    if (theme) {
+        document.getElementById("body").setAttribute("theme", theme)
+    } else {
+        window.localStorage.setItem("theme", "light");
+    }
+}
 
+function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
     // Get the root element
     var r = document.querySelector(':root');
     // Set CSS properties to display tiles correctly
@@ -55,6 +65,23 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
     const modal = document.getElementById("modal-container");
     modal.addEventListener("click", closeModal);
 
+    // Dark mode switch
+    const themeToggleSwitch = document.getElementById("switch-theme");
+    var theme = window.localStorage.getItem('theme');
+    themeToggleSwitch.checked = (theme == 'dark' ? true : false);
+
+    themeToggleSwitch.addEventListener("change", () => {
+        const body = document.getElementById("body");
+
+        if (themeToggleSwitch.checked) {
+            body.setAttribute("theme", "dark")
+            window.localStorage.setItem('theme', 'dark');
+        } else {
+            body.setAttribute("theme", "light")
+            window.localStorage.setItem('theme', 'light');
+        }
+    });
+
     // Hide alerts created by Flask backend
     hideFlashAlerts();
 }
@@ -70,9 +97,6 @@ function startInteraction() {
 
     const shareBtn = document.getElementById("share-result");
     shareBtn.addEventListener("click", shareScore);
-
-    const themeToggleSwitch = document.getElementById("switch-theme");
-    themeToggleSwitch.addEventListener("change", toggleTheme);
 }
 
 function stopInteraction() {
@@ -274,13 +298,11 @@ function checkWin(word) {
         jumpTiles();
         stopInteraction();
         endScreen()
-        return;
     } else if (guess >= (NUM_GUESSES - 1)) {
         gameStatus = "LOSE";
         showAlert(wordle.toUpperCase(), null);
         stopInteraction();
         endScreen()
-        return;
     } else {
         advanceRow()
     }
@@ -467,11 +489,6 @@ function shareScore() {
     navigator.clipboard.writeText(emojis);
 
     showAlert("Copied results to clipboard")
-}
-
-function toggleTheme() {
-    const body = document.getElementById("body");
-    body.classList.toggle("light");
 }
 
 // Function gets called on button click

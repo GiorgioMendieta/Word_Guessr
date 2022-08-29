@@ -29,7 +29,7 @@
     --transition-time: 200ms
 }
 
-.light {
+body[theme="light"] {
     --color-bg: #ffffff;
     --color-border: #888A8D;
     --color-font: black;
