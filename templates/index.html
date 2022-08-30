@@ -21,7 +21,7 @@ Word Guessr
 {% endblock %}
 
 {% block headerright %}
-<button class="menu-button menu-header" id="play-button" style="display: none;">
+<button class="menu-button menu-header green" id="play-button" style="display: none;">
     Play again?
 </button>
 {% endblock %}
@@ -29,9 +29,16 @@ Word Guessr
 {% block main %}
 <div class="sidebar" id="sidebar" style="display: none;">
     <div class="menu-item">
+        <b>Register</b>
         <!-- Redirect to register.html when button is clicked -->
-        <button class="menu-button" id="register-button" onclick="location.href='http://127.0.0.1:5000/register'"
-            type="button">Register/Log-in</button>
+        <button class="menu-button green" id="register-button" onclick="location.href='http://127.0.0.1:5000/register'"
+            type="button">Register</button>
+    </div>
+    <div class="menu-item">
+        <b>Log-in</b>
+        <!-- Redirect to login.html when button is clicked -->
+        <button class="menu-button green" id="login-button" onclick="location.href='http://127.0.0.1:5000/login'"
+            type="button">Log-in</button>
     </div>
     <div class="menu-item">
         <b>Board options</b>
