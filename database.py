@@ -1,20 +1,16 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
-app = Flask(__name__)
-# SQLAlchemy config
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# Import app from app.py
+from app import app
 
 db = SQLAlchemy(app)
 
 # Table structure of database (schema)
-
-
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
+    username = db.Column(db.String(20), unique=True, nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(120), unique=True, nullable=False)
 
     # Representation method
@@ -26,9 +22,9 @@ class Stats(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    played = db.Column(db.Integer, nullable=False)
-    current_streak = db.Column(db.Integer, nullable=False)
-    max_streak = db.Column(db.Integer, nullable=False)
+    played = db.Column(db.Integer, nullable=False, default=0)
+    current_streak = db.Column(db.Integer, nullable=False, default=0)
+    max_streak = db.Column(db.Integer, nullable=False, default=0)
 
     def __repr__(self):
         return f'<Stats {self.user_id}>'
