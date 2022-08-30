@@ -1,8 +1,11 @@
 import os
 
-import requests
 from flask import Flask, Config, flash, redirect, render_template, request, session, Response
 from flask_session import Session
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import check_password_hash, generate_password_hash
+
+import requests
 
 FAST_API_KEY = os.environ.get("FAST_API_KEY")
 SECRET_KEY = os.environ.get("SECRET_KEY")
@@ -21,6 +24,11 @@ app.config['SECRET_KEY'] = SECRET_KEY
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+# SQLAlchemy config
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
 Session(app)
 
 headers = {
@@ -34,6 +42,7 @@ def index():
     """Show main game"""
 
     wordle = ""
+
     # Keyboard layout
     keys = [['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
             [' ', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ' '],
@@ -72,8 +81,10 @@ def index():
         NUM_LETTERS = 5
         NUM_GUESSES = 6
 
+    # TODO: Don't request a new word if last word hasn't been guessed (JS LocalStorage)
     # Obtain word from API
-    wordle = get_word(NUM_LETTERS)
+    # wordle = get_word(NUM_LETTERS)  # Temporarily disabled for testing
+    wordle = "apple"
 
     # Create board and populate it with blank values
     tiles = [[0] * NUM_LETTERS for i in range(NUM_GUESSES)]
@@ -131,13 +142,62 @@ def define():
     return msg
 
 
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    """Register user"""
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        confirmation = request.form.get("confirmation")
+
+        # Ensure username was submitted
+        if not username:
+            return apology("Must provide username", "register.html", 400)
+
+        # Check if username already exists
+        rows = db.execute("SELECT username FROM users where username = ?",
+                          username)
+        if len(rows) != 0:
+            return apology("Username not available", "register.html", 400)
+
+        # Ensure password was submitted
+        if not password:
+            return apology("must provide password", "register.html", 400)
+        # Check password meets the requirements
+        if len(password) < 8:
+            return apology("Password must contain at least 8 characters", "register.html", 400)
+        if not any(char.isdigit() for char in password):
+            return apology("Password must contain at one number", "register.html", 400)
+
+        # Ensure confirmation was submitted
+        if not confirmation:
+            return apology("must provide password confirmation", "register.html", 400)
+
+        if password != confirmation:
+            return apology("passwords do not match", "register.html", 400)
+
+        # Generate hash from password
+        hash = generate_password_hash(password)
+
+        # Add the user's credentials into the database
+        db.execute("INSERT INTO users (username, hash) VALUES(?, ?)",
+                   username, hash)
+
+        # After registering, redirect user to home page
+        flash("Registration succesful")
+        return redirect("/")
+
+    else:
+        return render_template("register.html")
+
+
 def get_word(n):
     url = "https://wordsapiv1.p.rapidapi.com/words/"
     # Get only words with letters and at least two syllables
     # Also, don't show really obscure words and return only words that have definitions
     # Also, synonyms are needed to prevent unique names
     querystring = {"random": "true", "letterPattern": "^[a-z]+$", "letters": n, "syllablesMin": "2",
-                   "limit": "1", "page": "1", "frequencymin": "4", "hasDetails": "definitions,synonyms"}
+                   "limit": "1", "page": "1", "frequencymin": "5", "hasDetails": "definitions,synonyms"}
     response = requests.request(
         "GET", url, headers=headers, params=querystring)
 
@@ -151,3 +211,8 @@ def get_word(n):
     print("WORDLE: " + word)
 
     return word
+
+
+def apology(msg, page, status):
+    flash(msg, category="error")
+    return render_template(page), status

@@ -29,6 +29,11 @@ Word Guessr
 {% block main %}
 <div class="sidebar" id="sidebar" style="display: none;">
     <div class="menu-item">
+        <!-- Redirect to register.html when button is clicked -->
+        <button class="menu-button" id="register-button" onclick="location.href='http://127.0.0.1:5000/register'"
+            type="button">Register/Log-in</button>
+    </div>
+    <div class="menu-item">
         <b>Board options</b>
         <form class="board-options" id="board-options" action="/" method="post">
             <div>

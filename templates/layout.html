@@ -18,6 +18,8 @@
     {% endblock %}
 </head>
 
+<!-- Default to light theme -->
+
 <body id="body" theme="light">
     <header class="header-container">
         {% block headerleft %}
@@ -37,7 +39,7 @@
 
         <div class="alert-container" id="alert-container">
             <!-- Alerts go here (Javascript)-->
-            <!-- Flash messages (if available) go here (Flask) -->
+            <!-- Flash messages with Flask go here (if any) -->
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
             {% for category, message in messages %}
