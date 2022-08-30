@@ -51,6 +51,10 @@ body[theme="light"] {
     transition: background-color var(--transition-time) ease-in, color var(--transition-time) ease-in;
 }
 
+a {
+    text-decoration: none;
+}
+
 html {
     height: 100%;
 }
