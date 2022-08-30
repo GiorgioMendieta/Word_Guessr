@@ -44,6 +44,7 @@ def index():
     """Show main game"""
 
     wordle = ""
+    resetLocalStorage = "false"
 
     # Keyboard layout
     keys = [['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
@@ -74,6 +75,8 @@ def index():
             NUM_GUESSES = 8  # Max value
 
         NUM_GUESSES = int(NUM_GUESSES)
+        # Reset local storage after a post request
+        resetStatus = "true"
 
         flash("Settings applied")
 
@@ -100,7 +103,8 @@ def index():
                            num_guesses=NUM_GUESSES,
                            num_letters=NUM_LETTERS,
                            wordle=wordle,
-                           tiles=tiles)
+                           tiles=tiles, 
+                           resetStatus=resetStatus)
 
 
 @app.route("/check")
