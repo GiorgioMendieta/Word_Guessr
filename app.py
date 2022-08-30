@@ -25,10 +25,12 @@ app.config['SECRET_KEY'] = SECRET_KEY
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 # SQLAlchemy config
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
+# IMPORTANT: Import must be after declaring app to avoid a circular import
+from database import db, Users, Stats
+
 Session(app)
 
 headers = {
@@ -147,18 +149,25 @@ def register():
     """Register user"""
     if request.method == "POST":
         username = request.form.get("username")
+        email = request.form.get("email")
         password = request.form.get("password")
         confirmation = request.form.get("confirmation")
 
         # Ensure username was submitted
         if not username:
             return apology("Must provide username", "register.html", 400)
-
         # Check if username already exists
-        rows = db.execute("SELECT username FROM users where username = ?",
-                          username)
-        if len(rows) != 0:
+        result = Users.query.filter_by(username=username).first()
+        if result is not None:
             return apology("Username not available", "register.html", 400)
+
+        # Ensure email was submitted
+        if not email:
+            return apology("Must provide email", "register.html", 400)
+        # Check if username already exists
+        result = Users.query.filter_by(email=email).first()
+        if result is not None:
+            return apology("Email not available, are you registered already?", "register.html", 400)
 
         # Ensure password was submitted
         if not password:
@@ -180,8 +189,9 @@ def register():
         hash = generate_password_hash(password)
 
         # Add the user's credentials into the database
-        db.execute("INSERT INTO users (username, hash) VALUES(?, ?)",
-                   username, hash)
+        user = Users(username=username, email=email, password=hash)
+        db.session.add(user)
+        db.session.commit()
 
         # After registering, redirect user to home page
         flash("Registration succesful")
