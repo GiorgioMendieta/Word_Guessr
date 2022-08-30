@@ -8,7 +8,9 @@ let guess = 0;
 let letter = 0;
 let words = new Array(NUM_GUESSES)
 
-let gameStatus = "IN_PROGRESS"; // WIN, LOSE, IN_PROGRESS
+let gameStatus; // WIN, LOSE, IN_PROGRESS
+let guessedWords = [];
+
 
 // Main
 
@@ -28,6 +30,28 @@ function initLocalStorage() {
     } else {
         window.localStorage.setItem("theme", "light");
     }
+
+    // Retrieve game status
+    gameStatus = window.localStorage.getItem("gameStatus")
+    // If theme is present, set it
+    if (!gameStatus) {
+        window.localStorage.setItem("gameStatus", "IN_PROGRESS");
+    }
+
+    // Retrieve submitted words from JSON
+    guessedWords = JSON.parse(window.localStorage.getItem("guessedWords")) || guessedWords
+}
+
+// Resets local storage variables
+function resetGameState() {
+    window.localStorage.removeItem("gameStatus")
+    window.localStorage.removeItem("guessedWords")
+}
+
+// Saves game state to local storage
+function setGameState() {
+    window.localStorage.setItem("gameStatus")
+    window.localStorage.setItem("guessedWords")
 }
 
 function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
@@ -84,6 +108,27 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
 
     // Hide alerts created by Flask backend
     hideFlashAlerts();
+
+    // Animate guessed words
+    if (guessedWords) {
+        for (let i = 0; i < guessedWords.length; i++) {
+            let row = document.getElementById("guess-" + i);
+            let tiles = Array.from(row.children);
+            let word = guessedWords[i];
+
+            // For each tile, get the word from guessedWords,
+            // and add each letter to the tile's inner html
+            tiles.forEach((tile, index) => {
+                let letter = word.charAt(index)
+
+                tile.dataset.letter = letter.toLowerCase();
+                tile.innerHTML = letter;
+            });
+
+            // Flip tiles for each submitted word
+            flipTiles(word, row)
+        }
+    }
 }
 
 
@@ -211,12 +256,19 @@ async function submitGuess() {
 
     // Check if word exists
     const wordExists = await checkWord(word);
+    console.log(word)
     if (wordExists) {
-        flipTiles(word)
+        flipTiles(word, row);
+        // Save the word and convert it to JSON for storage
+        guessedWords.push(word);
+        window.localStorage.setItem("guessedWords", JSON.stringify(guessedWords))
+
     } else {
         showAlert("Not in word list!");
         shakeRow(row);
     }
+
+    console.log(guessedWords)
 
     return;
 }
@@ -297,16 +349,17 @@ function checkWin(word) {
         showAlert(winMsg, 5000);
         jumpTiles();
         stopInteraction();
-        endScreen()
+        endScreen();
     } else if (guess >= (NUM_GUESSES - 1)) {
         gameStatus = "LOSE";
         showAlert(wordle.toUpperCase(), null);
         stopInteraction();
-        endScreen()
+        endScreen();
     } else {
         advanceRow()
     }
 
+    window.localStorage.setItem("gameStatus", gameStatus);
     return;
 }
 
@@ -317,12 +370,11 @@ function advanceRow() {
     guess++;
 }
 
-function flipTiles(wordGuess) {
+function flipTiles(wordGuess, row) {
     // Prevent interaction while animation is running
     stopInteraction();
 
     // Get array of tiles of the current row
-    const row = document.querySelector("#guess-" + guess);
     const rowTiles = Array.from(row.children);
     const tileColorsArr = colorTiles(wordGuess);
 
@@ -423,13 +475,16 @@ async function endScreen() {
     // TODO: Create modal with stats
     const dialog = document.getElementById("dialog");
     const modal = document.getElementById("modal-container");
-    modal.style.display = "flex";
-
     if (definition != null) {
         dialog.innerHTML = definition;
     } else {
         dialog.innerHTML = "Definition not found!";
     }
+
+    // Show after 1.5 sec
+    setTimeout(() => {
+        modal.style.display = "flex";
+    }, 1500)
 
     // Show play again button
     document.getElementById("play-button").removeAttribute("style");
@@ -536,7 +591,9 @@ function toggleSidebar() {
 }
 
 function newGame() {
-    location.reload()
+    // Reset local storage
+    resetGameState();
+    location.reload();
 }
 
 function closeModal() {
