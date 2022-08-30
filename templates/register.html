@@ -10,17 +10,18 @@ Register
 
 {% block main %}
 <div class="form-container">
-    <div>
-        <strong>Register to save results, view stats & more!</strong>
-    </div>
+    <strong>Register to save results, view stats & more!</strong>
+
     <form action="/register" method="post" id="register"></form>
-    <input form="register" autocomplete="off" autofocus class="" id="username" name="username" placeholder="Username"
-        type="text">
-    <input form="register" autocomplete="off" autofocus class="" id="email" name="email" placeholder="Email"
-        type="email">
-    <input form="register" class="" id="password" name="password" placeholder="Password" type="password">
-    <input form="register" class="" id="confirmation" name="confirmation" placeholder="Password (again)"
-        type="password">
+    <b>Email address</b>
+    <input form="register" autocomplete="off" autofocus class="input-field" id="email" name="email" placeholder="Email"
+        type="email" required>
+    <b>Password</b>
+    <input form="register" class="input-field" id="password" name="password" placeholder="Password" type="password"
+        required>
+    <b>Confirm password</b>
+    <input form="register" class="input-field" id="confirmation" name="confirmation" placeholder="Confirm password"
+        type="password" required>
     <button form="register" class="menu-button" type="submit">Register</button>
 </div>
 {% endblock %}

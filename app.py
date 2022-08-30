@@ -152,18 +152,9 @@ def define():
 def register():
     """Register user"""
     if request.method == "POST":
-        username = request.form.get("username")
         email = request.form.get("email")
         password = request.form.get("password")
         confirmation = request.form.get("confirmation")
-
-        # Ensure username was submitted
-        if not username:
-            return apology("Must provide username", "register.html", 400)
-        # Check if username already exists
-        result = Users.query.filter_by(username=username).first()
-        if result is not None:
-            return apology("Username not available", "register.html", 400)
 
         # Ensure email was submitted
         if not email:
@@ -193,7 +184,7 @@ def register():
         hash = generate_password_hash(password)
 
         # Add the user's credentials into the database
-        user = Users(username=username, email=email, password=hash)
+        user = Users(email=email, password=hash)
         db.session.add(user)
         db.session.commit()
 
