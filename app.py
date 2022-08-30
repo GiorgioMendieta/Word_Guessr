@@ -69,10 +69,10 @@ def index():
         NUM_GUESSES = request.form.get("guesses")
         if not NUM_GUESSES or not NUM_GUESSES.isdecimal():
             NUM_GUESSES = 6  # Default value
-        if int(NUM_GUESSES) < 3:
-            NUM_GUESSES = 3  # Min value
-        if int(NUM_GUESSES) > 8:
-            NUM_GUESSES = 8  # Max value
+        if int(NUM_GUESSES) < 5:
+            NUM_GUESSES = 5  # Min value
+        if int(NUM_GUESSES) > 7:
+            NUM_GUESSES = 7  # Max value
 
         NUM_GUESSES = int(NUM_GUESSES)
         # Reset local storage after a post request
