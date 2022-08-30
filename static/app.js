@@ -204,7 +204,7 @@ function handleKeyPress(e) {
 function addKey(key) {
     // Limit number of tiles to be written
     if (letter < NUM_LETTERS) {
-        const tile = document.getElementById("tile-" + guess + "-" + letter);
+        const tile = document.getElementById(`tile-${guess}-${letter}`);
         tile.dataset.letter = key.toLowerCase();
         tile.dataset.state = "active";
         tile.textContent = key;
@@ -232,7 +232,8 @@ function deleteKey() {
         // Go back a tile
         letter--;
 
-        const tile = document.getElementById("tile-" + guess + "-" + letter);
+        const tile = document.getElementById(`tile-${guess}-${letter}`);
+
         delete tile.dataset.letter;
         delete tile.dataset.state;
         tile.textContent = "";
@@ -243,7 +244,7 @@ function deleteKey() {
 
 async function submitGuess() {
     // Get Word
-    const row = document.getElementById("guess-" + guess);
+    const row = document.getElementById(`guess-${guess}`);
 
     // Check if user inserted enough letters to submit
     if (letter < NUM_LETTERS) {
@@ -460,7 +461,8 @@ function colorTiles(wordGuess) {
 
 function jumpTiles() {
     // Get array of tiles of the current row
-    const row = document.querySelector("#guess-" + guess);
+    const row = document.querySelector(`#guess-${guess}`);
+
     const rowTiles = Array.from(row.children);
     rowTiles.forEach((tile, index) => {
         setTimeout(() => {
