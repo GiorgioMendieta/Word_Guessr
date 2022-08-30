@@ -11,7 +11,7 @@ Word Guessr
     const NUM_LETTERS = parseInt('{{ num_letters | tojson}}')
     const NUM_GUESSES = parseInt('{{ num_guesses | tojson}}')
     let wordle = '{{wordle}}'
-    let resetStatus = '{{resetStatus}}'
+    let resetLocalStorage = '{{resetLocalStorage}}'
 </script>
 {% endblock %}
 
@@ -42,18 +42,18 @@ Word Guessr
             type="button">Log-in</button>
     </div>
     <div class="menu-item">
-        <b>Board options</b>
+        <b>Game options</b>
         <form class="board-options" id="board-options" action="/" method="post">
             <div>
                 <span>
-                    Rows: <span id="guess-val">0</span>
+                    Rows: <span id="guess-val">6</span>
                 </span>
-                <input class="num-slider" id="guess-range" name="guesses" type="range" min="3" max="8" step="1"
+                <input class="num-slider" id="guess-range" name="guesses" type="range" min="5" max="7" step="1"
                     value="{{num_guesses}}">
             </div>
             <div>
                 <span>
-                    Letters: <span id="letter-val">0</span>
+                    Letters: <span id="letter-val">5</span>
                 </span>
                 <input class="num-slider" id="letter-range" name="letters" type="range" min="4" max="7" step="1"
                     value="{{num_letters}}">

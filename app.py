@@ -76,7 +76,7 @@ def index():
 
         NUM_GUESSES = int(NUM_GUESSES)
         # Reset local storage after a post request
-        resetStatus = "true"
+        resetLocalStorage = "true"
 
         flash("Settings applied")
 
@@ -104,7 +104,7 @@ def index():
                            num_letters=NUM_LETTERS,
                            wordle=wordle,
                            tiles=tiles, 
-                           resetStatus=resetStatus)
+                           resetLocalStorage=resetLocalStorage)
 
 
 @app.route("/check")

@@ -22,7 +22,7 @@ startInteraction();
 
 // Save theme, tiles, letter & guess vars, gamestatus
 function initLocalStorage() {
-    if (resetStatus == "true") resetGameState()
+    if (resetLocalStorage == "true") resetGameState()
 
     // Retrieve saved theme
     var theme = window.localStorage.getItem("theme");
