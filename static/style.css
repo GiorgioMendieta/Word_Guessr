@@ -502,8 +502,9 @@ label:active:after {
 
 .menu-button {
     font-family: 'Silkscreen', cursive;
-    background-color: var(--color-bg);
+    background-color: #121212;
     border: 2px solid var(--color-border);
+    color: white;
     border-radius: 0.4rem;
     padding: 0.5em;
     min-width: 8em;
@@ -590,6 +591,16 @@ label:active:after {
 .form-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     justify-content: space-evenly;
+    gap: 0.5rem;
+    padding: 1rem;
+}
+
+.form-container>b {
+    font-size: 0.8em;
+}
+
+.input-field {
+    height: 1.5rem;
 }
