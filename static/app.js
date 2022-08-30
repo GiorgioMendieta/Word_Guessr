@@ -42,12 +42,16 @@ function initLocalStorage() {
 
     // Retrieve submitted words from JSON
     guessedWords = JSON.parse(window.localStorage.getItem("guessedWords")) || guessedWords
+
+    // Retrieve wordle to prevent it from loading a new one
+    wordle = window.localStorage.getItem("wordle") || wordle
 }
 
 // Resets local storage variables
 function resetGameState() {
     window.localStorage.removeItem("gameStatus")
     window.localStorage.removeItem("guessedWords")
+    window.localStorage.removeItem("wordle")
 }
 
 // Saves game state to local storage
@@ -362,6 +366,7 @@ function checkWin(word) {
     }
 
     window.localStorage.setItem("gameStatus", gameStatus);
+    window.localStorage.setItem("wordle", wordle);
     return;
 }
 
