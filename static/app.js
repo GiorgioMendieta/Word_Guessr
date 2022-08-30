@@ -4,8 +4,8 @@ const JUMP_DURATION = 500;
 
 // Global variables
 
-let guess = 0;
-let letter = 0;
+let guessIndex = 0;
+let letterIndex = 0;
 let words = new Array(NUM_GUESSES)
 
 let gameStatus; // WIN, LOSE, IN_PROGRESS
@@ -203,8 +203,8 @@ function handleKeyPress(e) {
 
 function addKey(key) {
     // Limit number of tiles to be written
-    if (letter < NUM_LETTERS) {
-        const tile = document.getElementById(`tile-${guess}-${letter}`);
+    if (letterIndex < NUM_LETTERS) {
+        const tile = document.getElementById(`tile-${guessIndex}-${letterIndex}`);
         tile.dataset.letter = key.toLowerCase();
         tile.dataset.state = "active";
         tile.textContent = key;
@@ -220,7 +220,7 @@ function addKey(key) {
         );
 
         // Advance to next tile
-        letter++;
+        letterIndex++;
     }
 
     return;
@@ -228,11 +228,11 @@ function addKey(key) {
 
 function deleteKey() {
     // Limit number of tiles to be deleted
-    if (letter > 0) {
+    if (letterIndex > 0) {
         // Go back a tile
-        letter--;
+        letterIndex--;
 
-        const tile = document.getElementById(`tile-${guess}-${letter}`);
+        const tile = document.getElementById(`tile-${guessIndex}-${letterIndex}`);
 
         delete tile.dataset.letter;
         delete tile.dataset.state;
@@ -244,10 +244,10 @@ function deleteKey() {
 
 async function submitGuess() {
     // Get Word
-    const row = document.getElementById(`guess-${guess}`);
+    const row = document.getElementById(`guess-${guessIndex}`);
 
     // Check if user inserted enough letters to submit
-    if (letter < NUM_LETTERS) {
+    if (letterIndex < NUM_LETTERS) {
         showAlert("Not enough letters");
         shakeRow(row);
         return;
@@ -346,18 +346,18 @@ function checkWin(word) {
         gameStatus = "WIN";
 
         let winMsg;
-        if (guess == 0) { winMsg = "Genius" }
-        if (guess == 1) { winMsg = "Magnificent" }
-        if (guess == 2) { winMsg = "Impressive" }
-        if (guess == 3) { winMsg = "Splendid" }
-        if (guess == 4) { winMsg = "Great" }
-        if (guess >= NUM_GUESSES - 1) { winMsg = "Phew" }
+        if (guessIndex == 0) { winMsg = "Genius" }
+        if (guessIndex == 1) { winMsg = "Magnificent" }
+        if (guessIndex == 2) { winMsg = "Impressive" }
+        if (guessIndex == 3) { winMsg = "Splendid" }
+        if (guessIndex == 4) { winMsg = "Great" }
+        if (guessIndex >= NUM_GUESSES - 1) { winMsg = "Phew" }
 
         showAlert(winMsg, 5000);
         jumpTiles();
         stopInteraction();
         endScreen();
-    } else if (guess >= (NUM_GUESSES - 1)) {
+    } else if (guessIndex >= (NUM_GUESSES - 1)) {
         gameStatus = "LOSE";
         showAlert(wordle.toUpperCase(), null);
         stopInteraction();
@@ -373,9 +373,9 @@ function checkWin(word) {
 
 function advanceRow() {
     // Restart tile position
-    letter = 0;
+    letterIndex = 0;
     // Advance a row
-    guess++;
+    guessIndex++;
 }
 
 function flipTiles(wordGuess, row) {
@@ -461,7 +461,7 @@ function colorTiles(wordGuess) {
 
 function jumpTiles() {
     // Get array of tiles of the current row
-    const row = document.querySelector(`#guess-${guess}`);
+    const row = document.querySelector(`#guess-${guessIndex}`);
 
     const rowTiles = Array.from(row.children);
     rowTiles.forEach((tile, index) => {
@@ -522,12 +522,12 @@ function shareScore() {
     if (gameStatus === "LOSE") {
         msg = `X/${NUM_GUESSES} attempts 😢\n`;
     } else {
-        msg = `${guess + 1}/${NUM_GUESSES} attempts 😎\n`;
+        msg = `${guessIndex + 1}/${NUM_GUESSES} attempts 😎\n`;
     }
 
     emojis.push(msg);
 
-    for (let i = 0; i <= guess; i++) {
+    for (let i = 0; i <= guessIndex; i++) {
         // Reset variable
         row = [];
         for (let j = 0; j < NUM_LETTERS; j++) {
