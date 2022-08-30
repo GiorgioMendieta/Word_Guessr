@@ -27,7 +27,8 @@ Based on a popular web app, the objective is to guess the word with a limited nu
 
 ## Planned Features (To-do)
 
-- **Local Storage**
+- **Storage**
+Display local results (when not logged in) or be able to register an account and log in (SQL database)
   - Display satistics
   - Games played
   - Win percentage
@@ -65,6 +66,10 @@ The following dependencies must be installed:
 
 - Needed for API calls
 
+`pip install flask-sqlalchemy`
+
+- Needed for SQL database
+
 ### Environment variables
 
 We can use environment variables with `python-dotenv` and Flask to hide secrets such as API keys
@@ -90,6 +95,35 @@ And copying the random string into tbe `.env` file:
 ### Signing up for API
 
 Go to rapidapi.com, sign up and request for **Random words api**
+
+### Creating the database
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+
+Notice the **///** (three forward slashes) as it is important to create the database file in the root directory of the project folder (relative path)
+
+Following the quickstart guide <https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/> from the docs:
+
+    from flask import Flask
+    from flask_sqlalchemy import SQLAlchemy
+
+    app = Flask(__name__)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+    db = SQLAlchemy(app)
+
+
+    class User(db.Model):
+        id = db.Column(db.Integer, primary_key=True)
+        username = db.Column(db.String(80), unique=True, nullable=False)
+        email = db.Column(db.String(120), unique=True, nullable=False)
+
+        def __repr__(self):
+            return '<User %r>' % self.username
+
+Then we run in the python terminal the following command
+
+    >>> from yourapplication import db
+    >>> db.create_all()
 
 ### Running the server
 
