@@ -21,39 +21,39 @@ setBoardCss(NUM_GUESSES, NUM_LETTERS);
 
 // Save theme, tiles, letter & guess vars, gamestatus
 function initLocalStorage() {
-    if (resetLocalStorage == "true") resetGameState()
+    if (resetLocalStorage == "true") resetGameState();
 
     // Retrieve saved theme
     var theme = window.localStorage.getItem("theme");
     // If theme is present, set it
     if (theme) {
-        document.getElementById("body").setAttribute("theme", theme)
+        document.getElementById("body").setAttribute("theme", theme);
     } else {
         window.localStorage.setItem("theme", "light");
     }
 
     // Retrieve game status
-    gameStatus = window.localStorage.getItem("gameStatus") || gameStatus
+    gameStatus = window.localStorage.getItem("gameStatus") || gameStatus;
 
     // Retrieve submitted words from JSON
-    guessedWords = JSON.parse(window.localStorage.getItem("guessedWords")) || guessedWords
+    guessedWords = JSON.parse(window.localStorage.getItem("guessedWords")) || guessedWords;
 
     // Retrieve wordle to prevent it from loading a new one
-    wordle = window.localStorage.getItem("wordle") || wordle
+    wordle = window.localStorage.getItem("wordle") || wordle;
 }
 
 // Resets local storage variables
 function resetGameState() {
-    window.localStorage.removeItem("gameStatus")
-    window.localStorage.removeItem("guessedWords")
-    window.localStorage.removeItem("wordle")
+    window.localStorage.removeItem("gameStatus");
+    window.localStorage.removeItem("guessedWords");
+    window.localStorage.removeItem("wordle");
 }
 
 // Saves game state to local storage
 function saveGameState() {
-    window.localStorage.setItem("gameStatus")
-    window.localStorage.setItem("guessedWords")
-    window.localStorage.setItem("wordle")
+    window.localStorage.setItem("gameStatus", gameStatus);
+    window.localStorage.setItem("guessedWords", guessedWords);
+    window.localStorage.setItem("wordle", wordle);
 }
 
 function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
@@ -100,10 +100,10 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
         const body = document.getElementById("body");
 
         if (themeToggleSwitch.checked) {
-            body.setAttribute("theme", "dark")
+            body.setAttribute("theme", "dark");
             window.localStorage.setItem('theme', 'dark');
         } else {
-            body.setAttribute("theme", "light")
+            body.setAttribute("theme", "light");
             window.localStorage.setItem('theme', 'light');
         }
     });
@@ -121,19 +121,19 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
             // For each tile, get the word from guessedWords,
             // and add each letter to the tile's inner html
             tiles.forEach((tile, index) => {
-                let letter = word.charAt(index)
+                let letter = word.charAt(index);
 
                 tile.dataset.letter = letter.toLowerCase();
                 tile.innerHTML = letter;
             });
 
             // Flip tiles for each submitted word
-            flipTiles(word, row)
+            flipTiles(word, row);
         }
 
         // Wait until last tile animation ends
         // TODO: Fix bug that allows user to replace tiles before guessIndex is finished updating
-        let lastTile = document.querySelector(`#tile-${guessedWords.length - 1}-${NUM_LETTERS - 1}`)
+        let lastTile = document.querySelector(`#tile-${guessedWords.length - 1}-${NUM_LETTERS - 1}`);
         lastTile.addEventListener("transitionend", () => {
             // Only let user keep writing if game is still in progress
             if (gameStatus === "IN_PROGRESS") {
@@ -205,7 +205,7 @@ function handleKeyPress(e) {
     // If sidebar is open, close it when Esc is pressed
     // TODO: Fix esc key not working when game is over
     if (sidebarButton.dataset.state == "open" && e.key === "Escape") {
-        toggleSidebar()
+        toggleSidebar();
     }
 }
 
@@ -276,7 +276,8 @@ async function submitGuess() {
         flipTiles(word, row);
         // Save the word and convert it to JSON for storage
         guessedWords.push(word);
-        window.localStorage.setItem("guessedWords", JSON.stringify(guessedWords))
+
+        window.localStorage.setItem("guessedWords", JSON.stringify(guessedWords));
 
     } else {
         showAlert("Not in word list!");
