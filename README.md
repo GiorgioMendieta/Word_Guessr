@@ -24,7 +24,14 @@ Based on a popular web app, the objective is to guess the word with a limited nu
   - Get random words to play
   - Check if submitted word exists
   - Display definition at the end of game
-
+- **Local Storage**
+  - Theme
+  - Submitted words
+- **User accounts**
+  - Register & Log-in
+  - Store them in a SQLite database
+  - Encrypt passwords by salting them and using a hash (SHA-256)
+  
 ## Planned Features (To-do)
 
 - **Storage**
@@ -37,7 +44,6 @@ Display local results (when not logged in) or be able to register an account and
 
 - **User accounts**
   - Log in to display win streak & statistics
-  - Encrypt passwords by salting them and using a hash (SHA-256)
 
 - **Easy mode**
   - Provide a synonim (Words API)
@@ -73,7 +79,7 @@ The following dependencies must be installed:
 ### Environment variables
 
 We can use environment variables with `python-dotenv` and Flask to hide secrets such as API keys
-(See this <https://flask.palletsprojects.com/en/2.2.x/cli/#environment-variables-from-dotenv> for help on how to use environment variables with flask)
+(See [this](https://flask.palletsprojects.com/en/2.2.x/cli/#environment-variables-from-dotenv) for help on how to use environment variables with flask)
 
 Create `.env` file and add:
 
@@ -81,7 +87,7 @@ Create `.env` file and add:
 
 on `app.py` first we need to import the `os` package so that we can use the command `os.environ.get()` command to fetch the environment variable stored in `.env` file
 
-source(<https://medium.com/thedevproject/start-using-env-for-your-flask-project-and-stop-using-environment-variables-for-development-247dc12468be>)
+[Source](<https://medium.com/thedevproject/start-using-env-for-your-flask-project-and-stop-using-environment-variables-for-development-247dc12468be>)
 
 Furthermore, flask needs a secret key to store session variables as well.
 We can create one ourselves by entering into the terminal
@@ -102,15 +108,14 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 
 Notice the **///** (three forward slashes) as it is important to create the database file in the root directory of the project folder (relative path)
 
-Following the quickstart guide <https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/> from the docs:
+Following the [quickstart guide](https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/) from the docs:
 
     from flask import Flask
     from flask_sqlalchemy import SQLAlchemy
 
-    app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+    # Import app from app.py
+    from app import app
     db = SQLAlchemy(app)
-
 
     class User(db.Model):
         id = db.Column(db.Integer, primary_key=True)
@@ -152,3 +157,5 @@ The main things I learned after developing this web app are:
 - Javascript and Python
 - HTML and CSS styling
 - How Back-ends work using Flask
+- Using LocalStorage with JS
+- Sending data back and forth between the Front-end and Back-end
