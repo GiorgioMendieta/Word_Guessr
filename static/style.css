@@ -55,6 +55,10 @@ a {
     text-decoration: none;
 }
 
+hr {
+    width: 100%;
+}
+
 html {
     height: 100%;
 }
@@ -109,7 +113,8 @@ body {
 
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+    /* justify-content: space-between; */
     align-items: center;
     width: 100%;
     max-width: 500px;
@@ -595,6 +600,7 @@ label:active:after {
     justify-content: space-evenly;
     gap: 0.5rem;
     padding: 1rem;
+    width: 20rem;
 }
 
 .form-container>b {
