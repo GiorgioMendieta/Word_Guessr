@@ -150,7 +150,7 @@ def define():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    """Register user"""
+    """Register user or Log-in"""
     if request.method == "POST":
 
         # User clicked on "Register"
@@ -170,7 +170,7 @@ def register():
 
             # Ensure password was submitted
             if not password:
-                return apology("must provide password", "register.html", 400)
+                return apology("Must provide password", "register.html", 400)
             # Check password meets the requirements
             if len(password) < 8:
                 return apology("Password must contain at least 8 characters", "register.html", 400)
@@ -179,10 +179,10 @@ def register():
 
             # Ensure confirmation was submitted
             if not confirmation:
-                return apology("must provide password confirmation", "register.html", 400)
+                return apology("Must provide password confirmation", "register.html", 400)
 
             if password != confirmation:
-                return apology("passwords do not match", "register.html", 400)
+                return apology("Passwords do not match", "register.html", 400)
 
             # Generate hash from password
             hash = generate_password_hash(password)
@@ -210,14 +210,14 @@ def register():
 
             # Ensure password was submitted
             if not request.form.get("password"):
-                return apology("must provide password", "register.html", 400)
+                return apology("Must provide password", "register.html", 400)
 
             # Query database for email
             user = Users.query.filter_by(email=email).first()
 
             # Ensure email exists and password is correct
             if user is None or not check_password_hash(user.password, password):
-                return apology("invalid username and/or password", "register.html",400)
+                return apology("Invalid username and/or password", "register.html",400)
             
             session["user_id"] = user.id
 

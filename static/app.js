@@ -8,7 +8,7 @@ let guessIndex = 0;
 let letterIndex = 0;
 let words = new Array(NUM_GUESSES)
 
-let gameStatus; // WIN, LOSE, IN_PROGRESS
+let gameStatus = "IN_PROGRESS"; // WIN, LOSE, IN_PROGRESS
 let guessedWords = [];
 
 
@@ -16,7 +16,6 @@ let guessedWords = [];
 
 initLocalStorage();
 setBoardCss(NUM_GUESSES, NUM_LETTERS);
-startInteraction();
 
 // Function declarations
 
@@ -34,11 +33,7 @@ function initLocalStorage() {
     }
 
     // Retrieve game status
-    gameStatus = window.localStorage.getItem("gameStatus")
-    // If theme is present, set it
-    if (!gameStatus) {
-        window.localStorage.setItem("gameStatus", "IN_PROGRESS");
-    }
+    gameStatus = window.localStorage.getItem("gameStatus") || gameStatus
 
     // Retrieve submitted words from JSON
     guessedWords = JSON.parse(window.localStorage.getItem("guessedWords")) || guessedWords
@@ -55,9 +50,10 @@ function resetGameState() {
 }
 
 // Saves game state to local storage
-function setGameState() {
+function saveGameState() {
     window.localStorage.setItem("gameStatus")
     window.localStorage.setItem("guessedWords")
+    window.localStorage.setItem("wordle")
 }
 
 function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
@@ -115,10 +111,10 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
     // Hide alerts created by Flask backend
     hideFlashAlerts();
 
-    // Animate guessed words
-    if (guessedWords) {
+    // Animate guessed words if available (retrieved from Local Storage)
+    if (guessedWords.length > 0) {
         for (let i = 0; i < guessedWords.length; i++) {
-            let row = document.getElementById("guess-" + i);
+            let row = document.getElementById(`guess-${i}`);
             let tiles = Array.from(row.children);
             let word = guessedWords[i];
 
@@ -134,6 +130,18 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
             // Flip tiles for each submitted word
             flipTiles(word, row)
         }
+
+        // Wait until last tile animation ends
+        // TODO: Fix bug that allows user to replace tiles before guessIndex is finished updating
+        let lastTile = document.querySelector(`#tile-${guessedWords.length - 1}-${NUM_LETTERS - 1}`)
+        lastTile.addEventListener("transitionend", () => {
+            // Only let user keep writing if game is still in progress
+            if (gameStatus === "IN_PROGRESS") {
+                startInteraction();
+            }
+        });
+    } else {
+        startInteraction();
     }
 }
 
@@ -365,9 +373,7 @@ function checkWin(word) {
     } else {
         advanceRow()
     }
-
-    window.localStorage.setItem("gameStatus", gameStatus);
-    window.localStorage.setItem("wordle", wordle);
+    saveGameState()
     return;
 }
 
