@@ -52,7 +52,7 @@ function resetGameState() {
 // Saves game state to local storage
 function saveGameState() {
     window.localStorage.setItem("gameStatus", gameStatus);
-    window.localStorage.setItem("guessedWords", guessedWords);
+    window.localStorage.setItem("guessedWords", JSON.stringify(guessedWords));
     window.localStorage.setItem("wordle", wordle);
 }
 
@@ -111,15 +111,14 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
     // Hide alerts created by Flask backend
     hideFlashAlerts();
 
-    // Animate guessed words if available (retrieved from Local Storage)
+    // Retrieve guessed words from Local Storage (if available)
     if (guessedWords.length > 0) {
-        for (let i = 0; i < guessedWords.length; i++) {
-            let row = document.getElementById(`guess-${i}`);
-            let tiles = Array.from(row.children);
-            let word = guessedWords[i];
 
-            // For each tile, get the word from guessedWords,
-            // and add each letter to the tile's inner html
+        guessedWords.forEach((word, index) => {
+            let row = document.getElementById(`guess-${index}`);
+            let tiles = Array.from(row.children);
+
+            // For each row, get the word from guessedWords, and set every Tile's value
             tiles.forEach((tile, index) => {
                 let letter = word.charAt(index);
 
@@ -129,7 +128,7 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
 
             // Flip tiles for each submitted word
             flipTiles(word, row);
-        }
+        })
 
         // Wait until last tile animation ends
         // TODO: Fix bug that allows user to replace tiles before guessIndex is finished updating
@@ -276,9 +275,6 @@ async function submitGuess() {
         flipTiles(word, row);
         // Save the word and convert it to JSON for storage
         guessedWords.push(word);
-
-        window.localStorage.setItem("guessedWords", JSON.stringify(guessedWords));
-
     } else {
         showAlert("Not in word list!");
         shakeRow(row);
@@ -374,6 +370,7 @@ function checkWin(word) {
     } else {
         advanceRow()
     }
+
     saveGameState()
     return;
 }
@@ -422,7 +419,9 @@ function flipTile(tile, index, array, wordGuess, tileColorsArr) {
         if (index == array.length - 1) {
             tile.addEventListener("transitionend", () => {
                 // Resume user interaction
-                startInteraction();
+                if (gameStatus === "IN_PROGRESS") {
+                    startInteraction();
+                }
                 // Check submitted word
                 checkWin(wordGuess);
             })
