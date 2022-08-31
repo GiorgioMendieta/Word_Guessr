@@ -2,7 +2,6 @@ import os
 
 from flask import Flask, Config, flash, redirect, render_template, request, session, Response
 from flask_session import Session
-from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
 
 import requests
@@ -33,6 +32,7 @@ from database import db, Users, Stats
 
 Session(app)
 
+# API headers
 headers = {
     "X-RapidAPI-Key": str(FAST_API_KEY),
     "X-RapidAPI-Host": "wordsapiv1.p.rapidapi.com"
@@ -152,44 +152,77 @@ def define():
 def register():
     """Register user"""
     if request.method == "POST":
-        email = request.form.get("email")
-        password = request.form.get("password")
-        confirmation = request.form.get("confirmation")
 
-        # Ensure email was submitted
-        if not email:
-            return apology("Must provide email", "register.html", 400)
-        # Check if username already exists
-        result = Users.query.filter_by(email=email).first()
-        if result is not None:
-            return apology("Email not available, are you registered already?", "register.html", 400)
+        # User clicked on "Register"
+        if request.form["req"] == "register":
 
-        # Ensure password was submitted
-        if not password:
-            return apology("must provide password", "register.html", 400)
-        # Check password meets the requirements
-        if len(password) < 8:
-            return apology("Password must contain at least 8 characters", "register.html", 400)
-        if not any(char.isdigit() for char in password):
-            return apology("Password must contain at one number", "register.html", 400)
+            email = request.form.get("email")
+            password = request.form.get("password")
+            confirmation = request.form.get("confirmation")
 
-        # Ensure confirmation was submitted
-        if not confirmation:
-            return apology("must provide password confirmation", "register.html", 400)
+            # Ensure email was submitted
+            if not email:
+                return apology("Must provide email", "register.html", 400)
+            # Check if username already exists
+            result = Users.query.filter_by(email=email).first()
+            if result is not None:
+                return apology("Email not available, are you registered already?", "register.html", 400)
 
-        if password != confirmation:
-            return apology("passwords do not match", "register.html", 400)
+            # Ensure password was submitted
+            if not password:
+                return apology("must provide password", "register.html", 400)
+            # Check password meets the requirements
+            if len(password) < 8:
+                return apology("Password must contain at least 8 characters", "register.html", 400)
+            if not any(char.isdigit() for char in password):
+                return apology("Password must contain at one number", "register.html", 400)
 
-        # Generate hash from password
-        hash = generate_password_hash(password)
+            # Ensure confirmation was submitted
+            if not confirmation:
+                return apology("must provide password confirmation", "register.html", 400)
 
-        # Add the user's credentials into the database
-        user = Users(email=email, password=hash)
-        db.session.add(user)
-        db.session.commit()
+            if password != confirmation:
+                return apology("passwords do not match", "register.html", 400)
 
-        # After registering, redirect user to home page
-        flash("Registration succesful")
+            # Generate hash from password
+            hash = generate_password_hash(password)
+
+            # Add the user's credentials into the database
+            user = Users(email=email, password=hash)
+            db.session.add(user)
+            db.session.commit()
+
+            # After registering, redirect user to home page
+            flash("Registration succesful")
+        
+        # User clicked on "Log-in"
+        if request.form["req"] == "login":
+
+            # Forget any user_id
+            session.clear()
+
+            email = request.form.get("email")
+            password = request.form.get("password")
+
+            # Ensure email was submitted
+            if not email:
+                return apology("Must provide email", "register.html", 400)
+
+            # Ensure password was submitted
+            if not request.form.get("password"):
+                return apology("must provide password", "register.html", 400)
+
+            # Query database for email
+            user = Users.query.filter_by(email=email).first()
+
+            # Ensure email exists and password is correct
+            if user is None or not check_password_hash(user.password, password):
+                return apology("invalid username and/or password", "register.html",400)
+            
+            session["user_id"] = user.id
+
+            flash("Logged in succesfully")
+
         return redirect("/")
 
     else:
