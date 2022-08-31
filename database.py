@@ -14,7 +14,7 @@ class Users(db.Model):
 
     # Representation method
     def __repr__(self):
-        return f'<User {self.username}>'
+        return f'<User: {self.email}>'
 
 
 class Stats(db.Model):
@@ -26,4 +26,4 @@ class Stats(db.Model):
     max_streak = db.Column(db.Integer, nullable=False, default=0)
 
     def __repr__(self):
-        return f'<Stats {self.user_id}>'
+        return f'<Stats: {self.user_id}>'
