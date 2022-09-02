@@ -44,6 +44,7 @@ def index():
     """Show main game"""
 
     wordle = ""
+    username = ""
     resetLocalStorage = "false"
 
     # Keyboard layout
@@ -51,7 +52,16 @@ def index():
             [' ', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ' '],
             ['Enter', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'Back']]
 
-    # POST check because variables will alter the state on the backend
+
+    try:
+        user = Users.query.filter_by(id=session["user_id"]).first()
+        username = user.email
+    except:
+        pass
+
+    print(f"User: {username} logged in")
+
+    # POST request because variables will alter the state on the backend
     if request.method == "POST":
 
         # Perform check on number of letters
@@ -104,7 +114,8 @@ def index():
                            num_letters=NUM_LETTERS,
                            wordle=wordle,
                            tiles=tiles, 
-                           resetLocalStorage=resetLocalStorage)
+                           resetLocalStorage=resetLocalStorage,
+                           username=username)
 
 
 @app.route("/check")
@@ -192,8 +203,10 @@ def register():
             db.session.add(user)
             db.session.commit()
 
-            # After registering, redirect user to home page
+            # After registering, log-in & redirect user to home page
+            session["user_id"] = user.id
             flash("Registration succesful")
+            return redirect("/")
         
         # User clicked on "Log-in"
         if request.form["req"] == "login":
@@ -222,11 +235,20 @@ def register():
             session["user_id"] = user.id
 
             flash("Logged in succesfully")
-
-        return redirect("/")
+            return redirect("/")
 
     else:
         return render_template("register.html")
+
+@app.route("/logout")
+def logout():
+    """Log user out"""
+
+    # Forget any user_id
+    session.clear()
+
+    # Redirect user to homepage
+    return redirect("/")
 
 
 def get_word(n):

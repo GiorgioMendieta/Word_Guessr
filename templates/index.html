@@ -30,10 +30,17 @@ Word Guessr
 {% block main %}
 <div class="sidebar" id="sidebar" style="display: none;">
     <div class="menu-item">
+        {% if username == ""%}
         <b>Register/Log-in</b>
         <!-- Redirect to register.html when button is clicked -->
         <button class="menu-button green" id="register-button" onclick="location.href='http://127.0.0.1:5000/register'"
             type="button">Register/Log-in</button>
+        {% else %}
+        <b>Hello, {{username}}</b>
+        <!-- Redirect to logout.html when button is clicked -->
+        <button class="menu-button red" id="logout-button" onclick="location.href='http://127.0.0.1:5000/logout'"
+            type="button">Log-out</button>
+        {% endif %}
     </div>
     <div class="menu-item">
         <b>Game options</b>
