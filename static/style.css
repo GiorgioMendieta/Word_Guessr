@@ -113,7 +113,7 @@ button:disabled {
 
 .menu-button.red {
     color: white;
-    background-color: red;
+    background-color: #E33D26;
 }
 
 /* ---------- Main container for the game ---------- */
@@ -390,7 +390,7 @@ button:disabled {
 
 .flash.error,
 .alert.error {
-    background-color: red;
+    background-color: #E33D26;
     color: white;
 }
 
