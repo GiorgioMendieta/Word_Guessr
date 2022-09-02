@@ -111,6 +111,11 @@ button:disabled {
     background-color: var(--tile-correct);
 }
 
+.menu-button.red {
+    color: white;
+    background-color: red;
+}
+
 /* ---------- Main container for the game ---------- */
 .game-container {
     height: calc(100% - var(--header-height));
