@@ -30,7 +30,7 @@
 }
 
 body[theme="light"] {
-    --color-bg: #ffffff;
+    --color-bg: white;
     --color-border: #888A8D;
     --color-font: black;
 
@@ -71,6 +71,10 @@ body {
     /* Min size,  Default, Max */
     font-size: clamp(0.5rem, 2vh, 2.5rem);
     height: 100%;
+}
+
+button:disabled {
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 /* ---------- Header ---------- */
@@ -575,11 +579,12 @@ label:active:after {
     /* Stay on top of all elements */
     z-index: 3;
     background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
 }
 
 .dialog {
-    background-color: var(--alert-bg);
-    color: var(--alert-color-font);
+    background-color: white;
+    color: black;
     border-radius: 0.4rem;
     padding: 1rem;
     box-shadow: 0 0 20px 5px rgb(0 0 0 / 20%);
