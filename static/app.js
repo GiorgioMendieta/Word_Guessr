@@ -88,6 +88,12 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
     const playAgainButton = document.getElementById("play-button");
     playAgainButton.addEventListener("click", newGame);
 
+    // Share score button
+    const shareBtn = document.getElementById("share-result");
+    shareBtn.addEventListener("click", shareScore);
+    shareBtn.setAttribute("disabled", true)
+
+    // Modal
     const modal = document.getElementById("modal-container");
     modal.addEventListener("click", closeModal);
 
@@ -152,9 +158,6 @@ function startInteraction() {
         key.addEventListener("click", handleMouseClick);
     });
     document.addEventListener("keydown", handleKeyPress);
-
-    const shareBtn = document.getElementById("share-result");
-    shareBtn.addEventListener("click", shareScore);
 }
 
 function stopInteraction() {
@@ -503,6 +506,9 @@ async function endScreen() {
 
     // Show play again button
     document.getElementById("play-button").removeAttribute("style");
+
+    // Enable share score button
+    document.getElementById("share-result").removeAttribute("disabled")
     return;
 }
 
