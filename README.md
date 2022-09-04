@@ -11,7 +11,7 @@ Based on a popular web app, the objective is to guess the word with a limited nu
 - Flask
 - HTML
 - CSS
-- SQL (Planned)
+- SQL database
 - API calls
 
 ## Implemented Features
@@ -31,19 +31,17 @@ Based on a popular web app, the objective is to guess the word with a limited nu
   - Register & Log-in
   - Store them in a SQLite database
   - Encrypt passwords by salting them and using a hash (SHA-256)
-  
-## Planned Features (To-do)
-
+  - Store statistics
 - **Storage**
-Display local results (when not logged in) or be able to register an account and log in (SQL database)
-  - Display satistics
+  - Retrieve stats from LocalStorage when not logged in
+  - Retrieve stats from SQLite3 db when logged in
+- **Display satistics**
   - Games played
   - Win percentage
-  - Win streak
+  - Current win streak
   - Max streak
 
-- **User accounts**
-  - Log in to display win streak & statistics
+## Planned Features (To-do)
 
 - **Easy mode**
   - Provide a synonim (Words API)
@@ -57,7 +55,7 @@ Display local results (when not logged in) or be able to register an account and
 
 ### Install dependencies
 
-The following dependencies must be installed:
+The following dependencies must be installed by entering the following commands in the terminal:
 
 `pip install flask`
 
@@ -96,6 +94,7 @@ We can create one ourselves by entering into the terminal
     print(os.urandom(24).hex())
 
 And copying the random string into tbe `.env` file:
+
     SECRET_KEY = {KEY GOES HERE}
 
 ### Signing up for API
@@ -104,7 +103,9 @@ Go to rapidapi.com, sign up and request for **Random words api**
 
 ### Creating the database
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+Type the following line in the .py file where the main Flask app is located
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 
 Notice the **///** (three forward slashes) as it is important to create the database file in the root directory of the project folder (relative path)
 
@@ -127,7 +128,7 @@ Following the [quickstart guide](https://flask-sqlalchemy.palletsprojects.com/en
 
 Then we run in the python terminal the following command
 
-    >>> from yourapplication import db
+    >>> from app import db
     >>> db.create_all()
 
 ### Running the server
@@ -142,20 +143,26 @@ The project has the following tree structure:
     .
     ├── README.md         (Readme file)
     ├── app.py            (Flask backend)
+    ├── database.py       (Database configuration)
     ├── static
     │   ├── app.js        (Main javascript frontend code)
+    │   ├── register.js   (Js file for register.html)
     │   ├── favicon.ico   (Website icon)
     │   └── style.css     (Styles sheet)
     ├── templates
-    │   └── index.html    (HTML code using Jinja templates)
+    │   ├── register.html
+    │   ├── layout.html   (Main HTML layout using Jinja templates)
+    │   └── index.html    (Main website)
 
 ## Main takeaways
 
 The main things I learned after developing this web app are:
 
-- API and HTTP requests
 - Javascript and Python
 - HTML and CSS styling
 - How Back-ends work using Flask
 - Using LocalStorage with JS
 - Sending data back and forth between the Front-end and Back-end
+  - API and HTTP requests using RESTful commands
+  - Use of JSON data formats
+  - JS fetch requests (including async/await)
