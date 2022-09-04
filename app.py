@@ -152,7 +152,7 @@ def define():
     definition = definitions["definition"]
 
     # Return html in plain text
-    msg = f'Definition of <b>{word.capitalize()}</b>: <em>{partOfSpeech.capitalize()}</em>; <hr>{definition.capitalize()}.'
+    msg = f'<b>{word.capitalize()}</b>: <em>{partOfSpeech.capitalize()}</em>; <hr>{definition.capitalize()}.'
 
     return msg
 
