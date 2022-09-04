@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, Config, flash, redirect, render_template, request, session, Response
+from flask import Flask, Config, flash, redirect, render_template, request, session, Response, jsonify
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -38,7 +38,6 @@ headers = {
     "X-RapidAPI-Host": "wordsapiv1.p.rapidapi.com"
 }
 
-
 @app.route("/", methods=["GET", "POST"])
 def index():
     """Show main game"""
@@ -52,14 +51,13 @@ def index():
             [' ', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ' '],
             ['Enter', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'Back']]
 
-
     try:
         user = Users.query.filter_by(id=session["user_id"]).first()
         username = user.email
+        print("\033[96m" + f"User: {username} logged in")
     except:
+        print("Not logged in")
         pass
-
-    print(f"User: {username} logged in")
 
     # POST request because variables will alter the state on the backend
     if request.method == "POST":
@@ -201,6 +199,10 @@ def register():
             # Add the user's credentials into the database
             user = Users(email=email, password=hash)
             db.session.add(user)
+            # Initialize empty stats    
+            stats = Stats(users = user)
+            db.session.add(stats)
+            # Commit information into db
             db.session.commit()
 
             # After registering, log-in & redirect user to home page
@@ -233,11 +235,11 @@ def register():
                 return apology("Invalid username and/or password", "register.html",400)
             
             session["user_id"] = user.id
-
             flash("Logged in succesfully")
             return redirect("/")
 
     else:
+        # request.method == "GET":
         return render_template("register.html")
 
 @app.route("/logout")
@@ -247,9 +249,42 @@ def logout():
     # Forget any user_id
     session.clear()
 
+    flash("Logged out")
+
     # Redirect user to homepage
     return redirect("/")
 
+@app.route("/stats", methods=["GET", "POST"])
+def stats():
+    if session.get("user_id") is None:
+        return Response(status=401)
+
+    if request.method == "GET":
+        # Retrieve stats from DB and send them to the front-end
+        stats = Stats.query.filter_by(user_id=session["user_id"]).first()
+        print("GET stats request:")
+        result = stats.to_dict()
+        print(result)
+        # JSONify the result and send it
+        return jsonify(result)
+
+    if request.method == "POST":
+        # Retrieve stats from the front-end and store them in the db
+        stats = request.get_json()
+        print("POST stats request: " + str(stats))
+
+        # Update the stats in the db
+        user_stats = Stats.query.filter_by(user_id = session["user_id"]).first()
+
+        user_stats.games_played = stats["gamesPlayed"]
+        user_stats.games_won = stats["gamesWon"]
+        user_stats.current_streak = stats["currentStreak"]
+        user_stats.max_streak = stats["maxStreak"]
+
+        db.session.merge(user_stats)
+        db.session.commit()
+
+        return Response(status=200)
 
 def get_word(n):
     url = "https://wordsapiv1.p.rapidapi.com/words/"

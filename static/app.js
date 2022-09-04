@@ -3,14 +3,17 @@ const FLIP_DURATION = 500;
 const JUMP_DURATION = 500;
 
 // Global variables
-
 let guessIndex = 0;
 let letterIndex = 0;
 let words = new Array(NUM_GUESSES)
-
 let gameStatus = "IN_PROGRESS"; // WIN, LOSE, IN_PROGRESS
 let guessedWords = [];
-
+// Stats
+let gamesPlayed = 0;
+let gamesWon = 0;
+let currentStreak = 0;
+let maxStreak = 0;
+let stats = { "currentStreak": currentStreak, "maxStreak": maxStreak, "gamesWon": gamesWon, "gamesPlayed": gamesPlayed };
 
 // Main
 
@@ -20,7 +23,7 @@ setBoardCss(NUM_GUESSES, NUM_LETTERS);
 // Function declarations
 
 // Save theme, tiles, letter & guess vars, gamestatus
-function initLocalStorage() {
+async function initLocalStorage() {
     if (resetLocalStorage == "true") resetGameState();
 
     // Retrieve saved theme
@@ -40,6 +43,30 @@ function initLocalStorage() {
 
     // Retrieve wordle to prevent it from loading a new one
     wordle = window.localStorage.getItem("wordle") || wordle;
+
+    // Prefer stats from server
+    stats = await getStats()
+    stats = stats || JSON.parse(window.localStorage.getItem("stats"));
+
+    if (stats) {
+        gamesPlayed = stats.gamesPlayed;
+        gamesWon = stats.gamesWon;
+        currentStreak = stats.currentStreak;
+        maxStreak = stats.maxStreak;
+
+        window.localStorage.setItem("stats", JSON.stringify(stats));
+    }
+}
+
+async function getStats() {
+    const response = await fetch(`http://127.0.0.1:5000/stats`)
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
 }
 
 // Resets local storage variables
@@ -87,6 +114,12 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
     // Play again button
     const playAgainButton = document.getElementById("play-button");
     playAgainButton.addEventListener("click", newGame);
+
+    // Log-out button
+    const logoutBtn = document.getElementById("logout-button");
+    logoutBtn.addEventListener("click", () => {
+        // TODO: Clear LocalStorage stats when logging out
+    })
 
     // Share score button
     const shareBtn = document.getElementById("share-result");
@@ -300,7 +333,6 @@ async function checkWord(word) {
 
 function showAlert(msg, duration = 1000, type = "Message") {
     const alertContainer = document.getElementById("alert-container");
-    console.log(msg);
     const alert = document.createElement("div");
     alert.classList.add("alert");
     if (type == "Error") alert.classList.add("error");
@@ -364,12 +396,12 @@ function checkWin(word) {
         showAlert(winMsg, 5000);
         jumpTiles();
         stopInteraction();
-        endScreen();
+        endScreen(gameStatus);
     } else if (guessIndex >= (NUM_GUESSES - 1)) {
         gameStatus = "LOSE";
         showAlert(wordle.toUpperCase(), null);
         stopInteraction();
-        endScreen();
+        endScreen(gameStatus);
     } else {
         advanceRow()
     }
@@ -487,7 +519,7 @@ function jumpTiles() {
     })
 }
 
-async function endScreen() {
+async function endScreen(gameStatus) {
     // Show word definition
     let definition = await getDefinition(wordle);
     // TODO: Create modal with stats
@@ -509,6 +541,34 @@ async function endScreen() {
 
     // Enable share score button
     document.getElementById("share-result").removeAttribute("disabled")
+
+    // TODO: Don't save stats again after reloading page 
+    // Save stats
+    if (gameStatus == "WIN") {
+        currentStreak++;
+        gamesWon++;
+    } else if (gameStatus == "LOSE") {
+        currentStreak = 0;
+    }
+
+    if (currentStreak > maxStreak) {
+        maxStreak = currentStreak;
+    }
+
+    gamesPlayed++
+
+    // TODO: Calculate win %
+
+    stats = { "currentStreak": currentStreak, "maxStreak": maxStreak, "gamesWon": gamesWon, "gamesPlayed": gamesPlayed };
+    // Save stats to LocalStorage
+    window.localStorage.setItem("stats", JSON.stringify(stats));
+
+    // If logged in, save stats in DB with an AJAX request to the back-end
+    const request = new XMLHttpRequest();
+    request.open("POST", "/stats")
+    request.setRequestHeader("Content-Type", "application/json");
+    request.send(JSON.stringify(stats));
+
     return;
 }
 
