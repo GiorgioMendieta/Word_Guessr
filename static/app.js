@@ -116,10 +116,10 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
     playAgainButton.addEventListener("click", newGame);
 
     // Log-out button
-    const logoutBtn = document.getElementById("logout-button");
-    logoutBtn.addEventListener("click", () => {
-        // TODO: Clear LocalStorage stats when logging out
-    })
+    // const logoutBtn = document.getElementById("logout-button");
+    // logoutBtn.addEventListener("click", () => {
+    //     // TODO: Clear LocalStorage stats when logging out
+    // })
 
     // Share score button
     const shareBtn = document.getElementById("share-result");
@@ -523,17 +523,16 @@ async function endScreen(gameStatus) {
     // Show word definition
     let definition = await getDefinition(wordle);
     // TODO: Create modal with stats
-    const dialog = document.getElementById("dialog");
-    const modal = document.getElementById("modal-container");
+    const definitionDialog = document.getElementById("definition-dialog");
     if (definition != null) {
-        dialog.innerHTML = definition;
+        definitionDialog.innerHTML = definition;
     } else {
-        dialog.innerHTML = "Definition not found!";
+        definitionDialog.innerHTML = "Definition not found!";
     }
 
     // Show after 1.5 sec
     setTimeout(() => {
-        modal.style.display = "flex";
+        document.getElementById("modal-container").style.display = "flex";
     }, 1500)
 
     // Show play again button
@@ -550,16 +549,25 @@ async function endScreen(gameStatus) {
     } else if (gameStatus == "LOSE") {
         currentStreak = 0;
     }
-
     if (currentStreak > maxStreak) {
         maxStreak = currentStreak;
     }
-
     gamesPlayed++
 
-    // TODO: Calculate win %
+    const winPerc = (gamesWon * 100) / gamesPlayed
 
+    let msg = ""
+    msg += `Played: ${gamesPlayed} <br>`
+    msg += `Win %: ${winPerc.toFixed(1)} <br>`
+    msg += `Current Streak: ${currentStreak} <br>`
+    msg += `Max Streak: ${maxStreak} <br>`
+
+    const statsContainer = document.getElementById("statistics-container")
+    statsContainer.innerHTML = msg
+
+    // Update stats
     stats = { "currentStreak": currentStreak, "maxStreak": maxStreak, "gamesWon": gamesWon, "gamesPlayed": gamesPlayed };
+
     // Save stats to LocalStorage
     window.localStorage.setItem("stats", JSON.stringify(stats));
 
