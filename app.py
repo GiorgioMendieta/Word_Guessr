@@ -94,10 +94,8 @@ def index():
         NUM_LETTERS = 5
         NUM_GUESSES = 6
 
-    # TODO: Don't request a new word if last word hasn't been guessed (JS LocalStorage)
     # Obtain word from API
-    # wordle = get_word(NUM_LETTERS)  # Temporarily disabled for testing
-    wordle = "apple"
+    wordle = get_word(NUM_LETTERS)
 
     # Create board and populate it with blank values
     tiles = [[0] * NUM_LETTERS for i in range(NUM_GUESSES)]
