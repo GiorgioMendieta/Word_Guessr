@@ -1,6 +1,10 @@
 # Word Guessr (Wordle clone)
 
-It is a simple web app developed with Javascript and Flask (Python) as back-end to test my fullstack abilities.
+<p align="center">
+  <img src="img/logo.png" width="400">
+</p>
+
+It is web app developed with Javascript and Flask (Python) as back-end to test my fullstack abilities.
 
 Based on a popular web app, the objective is to guess the word with a limited number of attempts. The user can change the parameters of # of letters and attempts.
 
@@ -19,7 +23,13 @@ Based on a popular web app, the objective is to guess the word with a limited nu
 - Animations done manually in CSS
 - Share score using emojis 🟩🥲🤩
 - Dynamic board size based on settings (word length and # of attempts)
+
+![Grid size comparison](img/grid_transition.gif)
+
 - Theming support for Dark & Light modes (Default theme is light mode)
+
+![Theme comparison](img/theme_transition.gif)
+
 - **Words API**
   - Get random words to play
   - Check if submitted word exists
@@ -34,21 +44,13 @@ Based on a popular web app, the objective is to guess the word with a limited nu
   - Retrieve stats from **SQLite3 DB** when logged in
   - Store theme preference
   - Store submitted words
-- **Display statistics**
+- **Statistics**
   - Games played
   - Win percentage
   - Current win streak
   - Max streak
 
-## Planned Features (To-do)
-
-- **Easy mode**
-  - Provide a synonim (Words API)
-  - More number of opportunities (+1 tile row)
-
-- **Hard mode**
-  - Prevent using wrong letters
-  - Less number of opportunities (-1 tile row)
+![Logo](img/end_screen.png)
 
 ## Getting started
 
@@ -137,6 +139,11 @@ Then we run in the python terminal the following command
 
 - Execute `flask run`
 - Go to <http://127.0.0.1:5000/>
+- Voilà !
+
+<p align="center">
+  <img src="img/CS50_project.png" width="256" height="256">
+</p>
 
 ## Project structure
 
@@ -168,3 +175,5 @@ The main things I learned after developing this web app are:
   - API and HTTP requests using RESTful commands
   - Use of JSON data formats
   - JS fetch requests (including async/await)
+
+Thank you, this was CS50!
