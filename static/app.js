@@ -557,10 +557,10 @@ async function endScreen(gameStatus) {
     const winPerc = (gamesWon * 100) / gamesPlayed
 
     let msg = ""
-    msg += `Played: ${gamesPlayed} <br>`
-    msg += `Win %: ${winPerc.toFixed(1)} <br>`
-    msg += `Current Streak: ${currentStreak} <br>`
-    msg += `Max Streak: ${maxStreak} <br>`
+    msg += `<b>Played</b>: ${gamesPlayed} <br>`
+    msg += `<b>Win %</b>: ${winPerc.toFixed(1)} <br>`
+    msg += `<b>Current Streak</b>: ${currentStreak} <br>`
+    msg += `<b>Max Streak</b>: ${maxStreak} <br>`
 
     const statsContainer = document.getElementById("statistics-container")
     statsContainer.innerHTML = msg
