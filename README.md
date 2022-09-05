@@ -24,18 +24,17 @@ Based on a popular web app, the objective is to guess the word with a limited nu
   - Get random words to play
   - Check if submitted word exists
   - Display definition at the end of game
-- **Local Storage**
-  - Theme
-  - Submitted words
 - **User accounts**
   - Register & Log-in
   - Store them in a SQLite database
   - Encrypt passwords by salting them and using a hash (SHA-256)
   - Store statistics
 - **Storage**
-  - Retrieve stats from LocalStorage when not logged in
-  - Retrieve stats from SQLite3 db when logged in
-- **Display satistics**
+  - Retrieve stats from **LocalStorage** when not logged in
+  - Retrieve stats from **SQLite3 DB** when logged in
+  - Store theme preference
+  - Store submitted words
+- **Display statistics**
   - Games played
   - Win percentage
   - Current win streak
@@ -48,7 +47,7 @@ Based on a popular web app, the objective is to guess the word with a limited nu
   - More number of opportunities (+1 tile row)
 
 - **Hard mode**
-  - Prevent using past letters
+  - Prevent using wrong letters
   - Less number of opportunities (-1 tile row)
 
 ## Getting started
@@ -74,62 +73,65 @@ The following dependencies must be installed by entering the following commands 
 
 - Needed for SQL database
 
+### Signing up for Words API
+
+Go to [rapidapi.com](www.rapidapi.com), sign up and select the Basic plan for [Words API](https://rapidapi.com/dpventures/api/wordsapi/). Be sure to copy the API key.
+
 ### Environment variables
 
-We can use environment variables with `python-dotenv` and Flask to hide secrets such as API keys
+We can use environment variables with `python-dotenv` and Flask to hide secrets such as API keys.
 (See [this](https://flask.palletsprojects.com/en/2.2.x/cli/#environment-variables-from-dotenv) for help on how to use environment variables with flask)
 
 Create `.env` file and add:
 
     RAPID_API_KEY = {KEY GOES HERE}
 
-on `app.py` first we need to import the `os` package so that we can use the command `os.environ.get()` command to fetch the environment variable stored in `.env` file
+on `app.py` first we need to import the `os` package so that we can use the command `os.environ.get()` command to fetch the environment variable stored in `.env` file.
 
 [Source](<https://medium.com/thedevproject/start-using-env-for-your-flask-project-and-stop-using-environment-variables-for-development-247dc12468be>)
 
-Furthermore, flask needs a secret key to store session variables as well.
-We can create one ourselves by entering into the terminal
+Furthermore, Flask needs a secret key to store session variables.
+We can create one ourselves by entering the following commands into the python interpreter.
 
-    import os
-    print(os.urandom(24).hex())
+``` python
+>>> import os
+>>> print(os.urandom(24).hex())
+```
 
 And copying the random string into tbe `.env` file:
 
     SECRET_KEY = {KEY GOES HERE}
 
-### Signing up for API
-
-Go to rapidapi.com, sign up and request for **Random words api**
-
 ### Creating the database
 
-Type the following line in the .py file where the main Flask app is located
+Type the following line in the .py file where the main Flask app is located.
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+``` python
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///DB_NAME.sqlite3'
+```
 
-Notice the **///** (three forward slashes) as it is important to create the database file in the root directory of the project folder (relative path)
+Notice the "///" (three forward slashes) as it is important to create the database file in the root directory of the project folder (relative path).
 
 Following the [quickstart guide](https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/) from the docs:
 
-    from flask import Flask
-    from flask_sqlalchemy import SQLAlchemy
+``` python
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
-    # Import app from app.py
-    from app import app
-    db = SQLAlchemy(app)
+# Import app from app.py
+from app import app
+db = SQLAlchemy(app)
 
-    class User(db.Model):
-        id = db.Column(db.Integer, primary_key=True)
-        username = db.Column(db.String(80), unique=True, nullable=False)
-        email = db.Column(db.String(120), unique=True, nullable=False)
-
-        def __repr__(self):
-            return '<User %r>' % self.username
+class User(db.Model):
+  ...
+```
 
 Then we run in the python terminal the following command
 
-    >>> from app import db
-    >>> db.create_all()
+``` python
+>>> from app import db
+>>> db.create_all()
+```
 
 ### Running the server
 
