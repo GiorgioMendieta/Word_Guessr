@@ -6,7 +6,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 import requests
 
-FAST_API_KEY = os.environ.get("FAST_API_KEY")
+RAPID_API_KEY = os.environ.get("RAPID_API_KEY")
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # Configure application
@@ -34,7 +34,7 @@ Session(app)
 
 # API headers
 headers = {
-    "X-RapidAPI-Key": str(FAST_API_KEY),
+    "X-RapidAPI-Key": str(RAPID_API_KEY),
     "X-RapidAPI-Host": "wordsapiv1.p.rapidapi.com"
 }
 
@@ -96,6 +96,7 @@ def index():
 
     # Obtain word from API
     # wordle = get_word(NUM_LETTERS)
+    wordle='apple'
 
     # Create board and populate it with blank values
     tiles = [[0] * NUM_LETTERS for i in range(NUM_GUESSES)]
