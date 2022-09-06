@@ -3,6 +3,7 @@
     --header-height: 5em;
     --menu-button-w: 5em;
     --tile-size: 2em;
+
     --key-margin: 0.45em;
 
     --color-bg: #121212;
@@ -26,7 +27,11 @@
     --toggle-height: 2em;
     --toggle-width: 4em;
 
-    --transition-time: 200ms
+    /* Buttons */
+    --button-bg: #121212;
+
+    --transition-time: 200ms;
+    --animation-time: 200ms;
 }
 
 body[theme="light"] {
@@ -100,7 +105,6 @@ button:disabled {
 }
 
 .menu-button.menu-header {
-    /* font-size: 1.5em; */
     font-weight: bold;
     min-width: 0;
     margin: 1em;
@@ -317,7 +321,7 @@ button:disabled {
 }
 
 .tile.pop {
-    animation: pop 200ms linear;
+    animation: pop var(--animation-time) linear;
 }
 
 @keyframes pop {
@@ -461,8 +465,6 @@ label.toggle:active:after {
 .radio-container input {
     appearance: none;
     cursor: pointer;
-    margin-bottom: 0.5em;
-    background: var(--tile-wrong);
     transition: all 100ms linear;
 }
 
@@ -493,30 +495,34 @@ label.toggle:active:after {
 }
 
 .sidebar.show {
-    animation: slidein 200ms linear;
+    animation: slidein var(--animation-time) linear;
 }
 
 @keyframes slidein {
     from {
         transform: translateX(-100%);
+        opacity: 0;
     }
 
     to {
         transform: translateX(0%);
+        opacity: 1;
     }
 }
 
 .sidebar.hide {
-    animation: slideout 200ms linear;
+    animation: slideout var(--animation-time) linear;
 }
 
 @keyframes slideout {
     from {
         transform: translateX(0%);
+        opacity: 1;
     }
 
     to {
         transform: translateX(-100%);
+        opacity: 0;
     }
 }
 
@@ -536,7 +542,7 @@ label.toggle:active:after {
 
 .menu-button {
     font-family: 'Silkscreen', cursive;
-    background-color: #121212;
+    background: var(--button-bg);
     border: 2px solid var(--color-border);
     color: white;
     border-radius: 0.4rem;
@@ -544,6 +550,11 @@ label.toggle:active:after {
     min-width: 8em;
     font-size: inherit;
     justify-content: center;
+    margin-bottom: 0.5em;
+}
+
+.menu-button:last-of-type {
+    margin-bottom: 0;
 }
 
 .menu-button:hover {
@@ -624,6 +635,22 @@ label.toggle:active:after {
 /* Match all descendants of .dialog */
 .dialog * {
     color: inherit;
+}
+
+/* ---------- Statistics ---------- */
+.statistics-container {
+    display: flex;
+    gap: 1em;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat>span {
+    font-size: 2em;
 }
 
 /* ---------- Registration/Login Form ---------- */
