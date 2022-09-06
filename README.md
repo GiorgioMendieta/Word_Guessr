@@ -8,6 +8,8 @@ It is web app developed with Javascript and Flask (Python) as back-end to test m
 
 Based on a popular web app, the objective is to guess the word with a limited number of attempts. The user can change the parameters of # of letters and attempts.
 
+**Video Demo:**  <PENDING>
+
 ## Tech Stack
 
 - JavaScript
@@ -22,7 +24,9 @@ Based on a popular web app, the objective is to guess the word with a limited nu
 
 - Animations done manually in CSS
 - Share score using emojis 🟩🥲🤩
-- Dynamic board size based on settings (word length and # of attempts)
+- Dynamic board size based on settings:
+  - Number of letters
+  - Difficulty (number of attempts)
 
 ![Grid size comparison](img/grid_transition.gif)
 
@@ -38,7 +42,10 @@ Based on a popular web app, the objective is to guess the word with a limited nu
   - Register & Log-in
   - Store them in a SQLite database
   - Encrypt passwords by salting them and using a hash (SHA-256)
-  - Store statistics
+  - Store statistics for each user
+
+![Register screen](img/register.png)
+
 - **Storage**
   - Retrieve stats from **LocalStorage** when not logged in
   - Retrieve stats from **SQLite3 DB** when logged in
@@ -141,10 +148,6 @@ Then we run in the python terminal the following command
 - Go to <http://127.0.0.1:5000/>
 - Voilà !
 
-<p align="center">
-  <img src="img/CS50_project.png" width="256" height="256">
-</p>
-
 ## Project structure
 
 The project has the following tree structure:
@@ -176,4 +179,8 @@ The main things I learned after developing this web app are:
   - Use of JSON data formats
   - JS fetch requests (including async/await)
 
-Thank you, this was CS50!
+<p align="center">
+  <img src="img/CS50_project.png" width="256">
+</p>
+
+Thank you!
