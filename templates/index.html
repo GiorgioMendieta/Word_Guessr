@@ -31,17 +31,28 @@ Word Guessr
 <div class="sidebar" id="sidebar" style="display: none;">
     <div class="menu-item">
         {% if username == ""%}
+        <!-- User is not logged in -->
         <b>Register/Log-in</b>
         <!-- Redirect to register.html when button is clicked -->
         <button class="menu-button green" id="register-button" onclick="location.href='http://127.0.0.1:5000/register'"
             type="button">Register/Log-in</button>
         {% else %}
+        <!-- User is logged in -->
         <b>Hello, {{username}}</b>
         <!-- Redirect to logout.html when button is clicked -->
         <button class="menu-button red" id="logout-button" onclick="location.href='http://127.0.0.1:5000/logout'"
             type="button">Log-out</button>
+        <button class="menu-button" id="stats-button">Stats</button>
         {% endif %}
     </div>
+
+    <div class="menu-item" id="share-menu" style="display: none;">
+        <b>Share score</b>
+        <button class="menu-button" type="button" id="share-result">
+            Share
+        </button>
+    </div>
+
     <div class="menu-item">
         <b>Game options</b>
         <form class="board-options" id="board-options" action="/" method="post">
@@ -63,13 +74,6 @@ Word Guessr
 
         </form>
         <button class="menu-button btn-submit" form="board-options" type="submit">Save</button>
-    </div>
-
-    <div class="menu-item">
-        <b>Share score</b>
-        <button class="menu-button" type="button" id="share-result">
-            Share
-        </button>
     </div>
 
     <div class="menu-item">
