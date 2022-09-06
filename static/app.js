@@ -74,6 +74,7 @@ function resetGameState() {
     window.localStorage.removeItem("gameStatus");
     window.localStorage.removeItem("guessedWords");
     window.localStorage.removeItem("wordle");
+    window.localStorage.removeItem("stats");
 }
 
 // Saves game state to local storage
@@ -112,12 +113,15 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
     const playAgainButton = document.getElementById("play-button");
     playAgainButton.addEventListener("click", newGame);
 
-    // TODO: Clear local storage after logging-out
     // Log-out button
-    // const logoutBtn = document.getElementById("logout-button");
-    // logoutBtn.addEventListener("click", () => {
-    //     resetGameState();
-    // })
+    try {
+        const logoutBtn = document.getElementById("logout-button");
+        logoutBtn.addEventListener("click", () => {
+            resetGameState();
+        })
+    } catch (e) {
+        console.log("Not logged in")
+    }
 
     // Share score button
     const shareBtn = document.getElementById("share-result");
