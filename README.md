@@ -36,11 +36,15 @@ Based on a popular web app, the objective is to guess the word with a limited nu
   - Number of letters
   - Difficulty (number of attempts)
 
-![Grid size comparison](img/grid_transition.gif)
+<p align="center">
+  <img src="img/grid_transition.gif" width="512">
+</p>
 
 - Theming support for Dark & Light modes (Default theme is light mode)
 
-![Theme comparison](img/theme_transition.gif)
+<p align="center">
+  <img src="img/theme_transition.gif" width="512">
+</p>
 
 - **Words API**
   - Get random words to play
@@ -52,7 +56,9 @@ Based on a popular web app, the objective is to guess the word with a limited nu
   - Encrypt passwords by salting them and using a hash (SHA-256)
   - Store statistics for each user
 
-![Register screen](img/register.png)
+<p align="center">
+  <img src="img/register.png" width="512">
+</p>
 
 - **Storage**
   - Retrieve stats from **LocalStorage** when not logged in
@@ -65,7 +71,9 @@ Based on a popular web app, the objective is to guess the word with a limited nu
   - Current win streak
   - Max streak
 
-![Logo](img/end_screen.png)
+<p align="center">
+  <img src="img/end_screen.png" width="512">
+</p>
 
 ## Getting started
 
