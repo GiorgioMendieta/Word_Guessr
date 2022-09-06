@@ -52,7 +52,7 @@ Based on a popular web app, the objective is to guess the word with a limited nu
   - Display definition at the end of game
 - **User accounts**
   - Register & Log-in
-  - Store them in a SQLite database
+  - Store them in a SQLite3 database
   - Encrypt passwords by salting them and using a hash (SHA-256)
   - Store statistics for each user
 
@@ -62,7 +62,7 @@ Based on a popular web app, the objective is to guess the word with a limited nu
 
 - **Storage**
   - Retrieve stats from **LocalStorage** when not logged in
-  - Retrieve stats from **SQLite3 DB** when logged in
+  - Retrieve stats from the **SQLite3 DB** when logged in
   - Store theme preference
   - Store submitted words
 - **Statistics**
@@ -77,11 +77,18 @@ Based on a popular web app, the objective is to guess the word with a limited nu
 
 ## Getting started
 
-First, create  virtual environment and activate it by following the [installation guide](https://flask.palletsprojects.com/en/2.2.x/installation/) from Flask.
+Follow these steps to set-up the project (detailed instructions are shown further down):
 
-### Install dependencies
-
-The following dependencies must be installed by entering the following commands in the terminal:
+1. Clone this repository
+2. Create a virtual environment and activate it by following the [installation guide](https://flask.palletsprojects.com/en/2.2.x/installation/) from Flask.
+3. Run `pip install -r requirements.txt` to install [dependencies](#dependencies)
+4. [Get Words API key](#signing-up-for-words-api)
+5. [Generate Secret key](#secret-key)
+6. [Create `.env` file](#environment-variables)
+7. [Create SQLite3 db tables](#creating-the-database)
+8. [Run the server](#running-the-server)
+  
+### Dependencies
 
 `pip install flask`
 
@@ -101,20 +108,11 @@ The following dependencies must be installed by entering the following commands 
 
 ### Signing up for Words API
 
-Go to [rapidapi.com](www.rapidapi.com), sign up and select the Basic plan for [Words API](https://rapidapi.com/dpventures/api/wordsapi/). Be sure to copy the API key.
+Go to [rapidapi.com](www.rapidapi.com), sign up and select the Basic plan for [Words API](https://rapidapi.com/dpventures/api/wordsapi/).
 
-### Environment variables
+Be sure to copy the API key into the `.env` file.
 
-We can use environment variables with `python-dotenv` and Flask to hide secrets such as API keys.
-(See [this](https://flask.palletsprojects.com/en/2.2.x/cli/#environment-variables-from-dotenv) for help on how to use environment variables with flask)
-
-Create `.env` file and add:
-
-    RAPID_API_KEY = {KEY GOES HERE}
-
-on `app.py` first we need to import the `os` package so that we can use the command `os.environ.get()` command to fetch the environment variable stored in `.env` file.
-
-[Source](<https://medium.com/thedevproject/start-using-env-for-your-flask-project-and-stop-using-environment-variables-for-development-247dc12468be>)
+### Secret Key
 
 Furthermore, Flask needs a secret key to store session variables.
 We can create one ourselves by entering the following commands into the python interpreter.
@@ -124,9 +122,19 @@ We can create one ourselves by entering the following commands into the python i
 >>> print(os.urandom(24).hex())
 ```
 
-And copying the random string into tbe `.env` file:
+And copy the random string into the `.env` file.
 
+### Environment variables
+
+We can use environment variables with `python-dotenv` and Flask to hide secrets such as API keys.
+(See [this](https://flask.palletsprojects.com/en/2.2.x/cli/#environment-variables-from-dotenv) for help on how to use environment variables with flask)
+
+Create a file named `.env` and add the following lines:
+
+    RAPID_API_KEY = {KEY GOES HERE}
     SECRET_KEY = {KEY GOES HERE}
+
+[Source](<https://medium.com/thedevproject/start-using-env-for-your-flask-project-and-stop-using-environment-variables-for-development-247dc12468be>)
 
 ### Creating the database
 
@@ -138,21 +146,19 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///DB_NAME.sqlite3'
 
 Notice the "///" (three forward slashes) as it is important to create the database file in the root directory of the project folder (relative path).
 
-Following the [quickstart guide](https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/) from the docs:
+Follow the [quickstart guide](https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/) from the docs to create the table structure (schema) of the db:
 
 ``` python
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-
-# Import app from app.py
+# Import from app.py
 from app import app
+from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy(app)
 
 class User(db.Model):
   ...
 ```
 
-Then we run in the python terminal the following command
+Then we run in the python terminal the following command to create the tables:
 
 ``` python
 >>> from app import db
