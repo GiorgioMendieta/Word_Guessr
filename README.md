@@ -10,6 +10,14 @@ Based on a popular web app, the objective is to guess the word with a limited nu
 
 **Video Demo:**  <PENDING>
 
+## Table of contents
+
+- [Tech Stack](#tech-stack)
+- [Implemented Features](#implemented-features)
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
+- [Main Takeaways](#main-takeaways)
+
 ## Tech Stack
 
 - JavaScript
