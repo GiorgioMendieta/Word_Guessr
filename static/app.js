@@ -571,7 +571,8 @@ function updateStats() {
 function showStats() {
     document.getElementById("modal-container").style.display = "flex";
 
-    const winPerc = (gamesWon * 100) / gamesPlayed
+    // Convert NaN to 0
+    const winPerc = ((gamesWon * 100) / gamesPlayed) || 0
 
     document.getElementById("stat-played").innerHTML = gamesPlayed;
     document.getElementById("stat-win-perc").innerHTML = winPerc.toFixed(0);
