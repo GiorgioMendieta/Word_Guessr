@@ -113,10 +113,10 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
     playAgainButton.addEventListener("click", newGame);
 
     // Log-out button
-    // const logoutBtn = document.getElementById("logout-button");
-    // logoutBtn.addEventListener("click", () => {
-    //     // TODO: Clear LocalStorage stats when logging out
-    // })
+    const logoutBtn = document.getElementById("logout-button");
+    logoutBtn.addEventListener("click", () => {
+        resetGameState();
+    })
 
     // Share score button
     const shareBtn = document.getElementById("share-result");
