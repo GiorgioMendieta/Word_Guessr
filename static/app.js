@@ -112,16 +112,21 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
     const playAgainButton = document.getElementById("play-button");
     playAgainButton.addEventListener("click", newGame);
 
+    // TODO: Clear local storage after logging-out
     // Log-out button
-    const logoutBtn = document.getElementById("logout-button");
-    logoutBtn.addEventListener("click", () => {
-        resetGameState();
-    })
+    // const logoutBtn = document.getElementById("logout-button");
+    // logoutBtn.addEventListener("click", () => {
+    //     resetGameState();
+    // })
 
     // Share score button
     const shareBtn = document.getElementById("share-result");
     shareBtn.addEventListener("click", shareScore);
     shareBtn.setAttribute("disabled", true)
+
+    // Stats button
+    const statsBtn = document.getElementById("stats-button");
+    statsBtn.addEventListener("click", showStats);
 
     // Modal
     const modal = document.getElementById("modal-container");
@@ -514,29 +519,11 @@ function jumpTiles() {
     })
 }
 
-async function endScreen() {
-    // Show word definition
-    let definition = await getDefinition(wordle);
-    const definitionDialog = document.getElementById("definition-dialog");
-    if (definition != null) {
-        definitionDialog.innerHTML = definition;
-    } else {
-        definitionDialog.innerHTML = "Definition not found!";
-    }
-
-    // Show stats
-    const winPerc = (gamesWon * 100) / gamesPlayed
-    let msg = ""
-    msg += `<b>Played</b>: ${gamesPlayed} <br>`
-    msg += `<b>Win %</b>: ${winPerc.toFixed(1)} <br>`
-    msg += `<b>Current Streak</b>: ${currentStreak} <br>`
-    msg += `<b>Max Streak</b>: ${maxStreak} <br>`
-
-    const statsContainer = document.getElementById("statistics-container")
-    statsContainer.innerHTML = msg
-
+function endScreen() {
     // Show modal after 1.5 sec
     setTimeout(() => {
+        showDefinition();
+        showStats();
         document.getElementById("modal-container").style.display = "flex";
     }, ((FLIP_DURATION / 2) * NUM_LETTERS))
 
@@ -544,9 +531,8 @@ async function endScreen() {
     document.getElementById("play-button").removeAttribute("style");
 
     // Enable share score button
+    document.getElementById("share-menu").removeAttribute("style")
     document.getElementById("share-result").removeAttribute("disabled")
-
-    return;
 }
 
 function saveStats() {
@@ -578,11 +564,32 @@ function updateStats() {
     gamesPlayed++
 }
 
+function showStats() {
+    document.getElementById("modal-container").style.display = "flex";
+
+    const winPerc = (gamesWon * 100) / gamesPlayed
+
+    document.getElementById("stat-played").innerHTML = gamesPlayed;
+    document.getElementById("stat-win-perc").innerHTML = winPerc.toFixed(0);
+    document.getElementById("stat-current-streak").innerHTML = currentStreak;
+    document.getElementById("stat-max-streak").innerHTML = maxStreak;
+}
+
 async function getDefinition(word) {
     let response = await fetch(`http://127.0.0.1:5000/define?word=${word}`)
     if (!response.ok) return
 
     return response.text()
+}
+
+async function showDefinition() {
+    let definition = await getDefinition(wordle);
+    const definitionDialog = document.getElementById("definition-dialog");
+    if (definition != null) {
+        definitionDialog.innerHTML = definition;
+    } else {
+        definitionDialog.innerHTML = "Definition not found!";
+    }
 }
 
 function shareScore() {
