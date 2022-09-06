@@ -62,7 +62,7 @@ async function getStats() {
     const response = await fetch(`http://127.0.0.1:5000/stats`)
 
     if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        return
     }
 
     const data = await response.json();
@@ -149,7 +149,6 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
 
     // Retrieve guessed words from Local Storage (if available)
     if (guessedWords.length > 0) {
-
         guessedWords.forEach((word, index) => {
             let row = document.getElementById(`guess-${index}`);
             let tiles = Array.from(row.children);
@@ -165,17 +164,8 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
             // Flip tiles for each submitted word
             flipTiles(word, row);
         })
-
-        // Wait until last tile animation ends
-        // TODO: Fix bug that allows user to replace tiles before guessIndex is finished updating
-        let lastTile = document.querySelector(`#tile-${guessedWords.length - 1}-${NUM_LETTERS - 1}`);
-        lastTile.addEventListener("transitionend", () => {
-            // Only let user keep writing if game is still in progress
-            if (gameStatus === "IN_PROGRESS") {
-                startInteraction();
-            }
-        });
     } else {
+        // No submitted words, play immediately
         startInteraction();
     }
 }
@@ -377,7 +367,7 @@ function shakeRow(row) {
     return;
 }
 
-function checkWin(word) {
+function checkWin(word, saveStatsAfterWin = true) {
     // Win condition
     if (word === wordle) {
         gameStatus = "WIN";
@@ -390,15 +380,21 @@ function checkWin(word) {
         if (guessIndex == 4) { winMsg = "Great" }
         if (guessIndex >= NUM_GUESSES - 1) { winMsg = "Phew" }
 
-        showAlert(winMsg, 5000);
         jumpTiles();
+        showAlert(winMsg, 5000);
         stopInteraction();
-        endScreen(gameStatus);
+        if (saveStatsAfterWin) {
+            saveStats();
+        }
+        endScreen();
     } else if (guessIndex >= (NUM_GUESSES - 1)) {
         gameStatus = "LOSE";
         showAlert(wordle.toUpperCase(), null);
         stopInteraction();
-        endScreen(gameStatus);
+        if (saveStatsAfterWin) {
+            saveStats();
+        }
+        endScreen();
     } else {
         advanceRow()
     }
@@ -453,9 +449,11 @@ function flipTile(tile, index, array, wordGuess, tileColorsArr) {
                 // Resume user interaction
                 if (gameStatus === "IN_PROGRESS") {
                     startInteraction();
+                    checkWin(wordGuess);
+                } else {
+                    // Game was already finished, don't update stats
+                    checkWin(wordGuess, false);
                 }
-                // Check submitted word
-                checkWin(wordGuess);
             })
         }
     });
@@ -516,10 +514,9 @@ function jumpTiles() {
     })
 }
 
-async function endScreen(gameStatus) {
+async function endScreen() {
     // Show word definition
     let definition = await getDefinition(wordle);
-    // TODO: Create modal with stats
     const definitionDialog = document.getElementById("definition-dialog");
     if (definition != null) {
         definitionDialog.innerHTML = definition;
@@ -527,32 +524,8 @@ async function endScreen(gameStatus) {
         definitionDialog.innerHTML = "Definition not found!";
     }
 
-    // Show after 1.5 sec
-    setTimeout(() => {
-        document.getElementById("modal-container").style.display = "flex";
-    }, 1500)
-
-    // Show play again button
-    document.getElementById("play-button").removeAttribute("style");
-
-    // Enable share score button
-    document.getElementById("share-result").removeAttribute("disabled")
-
-    // TODO: Don't save stats again after reloading page 
-    // Save stats
-    if (gameStatus == "WIN") {
-        currentStreak++;
-        gamesWon++;
-    } else if (gameStatus == "LOSE") {
-        currentStreak = 0;
-    }
-    if (currentStreak > maxStreak) {
-        maxStreak = currentStreak;
-    }
-    gamesPlayed++
-
+    // Show stats
     const winPerc = (gamesWon * 100) / gamesPlayed
-
     let msg = ""
     msg += `<b>Played</b>: ${gamesPlayed} <br>`
     msg += `<b>Win %</b>: ${winPerc.toFixed(1)} <br>`
@@ -562,7 +535,23 @@ async function endScreen(gameStatus) {
     const statsContainer = document.getElementById("statistics-container")
     statsContainer.innerHTML = msg
 
-    // Update stats
+    // Show modal after 1.5 sec
+    setTimeout(() => {
+        document.getElementById("modal-container").style.display = "flex";
+    }, ((FLIP_DURATION / 2) * NUM_LETTERS))
+
+    // Show play again button
+    document.getElementById("play-button").removeAttribute("style");
+
+    // Enable share score button
+    document.getElementById("share-result").removeAttribute("disabled")
+
+    return;
+}
+
+function saveStats() {
+    updateStats()
+    // Save stats as JSON
     stats = { "currentStreak": currentStreak, "maxStreak": maxStreak, "gamesWon": gamesWon, "gamesPlayed": gamesPlayed };
 
     // Save stats to LocalStorage
@@ -573,8 +562,20 @@ async function endScreen(gameStatus) {
     request.open("POST", "/stats")
     request.setRequestHeader("Content-Type", "application/json");
     request.send(JSON.stringify(stats));
+}
 
-    return;
+function updateStats() {
+    if (gameStatus == "WIN") {
+        currentStreak++;
+        gamesWon++;
+    } else if (gameStatus == "LOSE") {
+        currentStreak = 0;
+    }
+    // Check streak
+    if (currentStreak > maxStreak) {
+        maxStreak = currentStreak;
+    }
+    gamesPlayed++
 }
 
 async function getDefinition(word) {
