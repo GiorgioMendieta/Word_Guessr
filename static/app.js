@@ -90,22 +90,19 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
     r.style.setProperty('--rows', NUM_GUESSES);
     r.style.setProperty('--letters', NUM_LETTERS);
 
-    // Rows slider
-    const sliderGuess = document.getElementById("guess-range");
-    let outputGuess = document.getElementById("guess-val");
-    outputGuess.innerHTML = sliderGuess.value; // Display the default slider value
     // Letters slider
     const sliderLetter = document.getElementById("letter-range");
     let outputLetter = document.getElementById("letter-val");
     outputLetter.innerHTML = sliderLetter.value; // Display the default slider value
 
-    // Update the current slider value (each time the slider handle is dragged)
-    sliderGuess.oninput = function () {
-        outputGuess.innerHTML = this.value;
-    }
     sliderLetter.oninput = function () {
         outputLetter.innerHTML = this.value;
     }
+
+    // Difficulty
+    const difficultyRadio = document.getElementById(`diff-${NUM_GUESSES}`);
+    difficultyRadio.setAttribute("checked", "checked");
+    difficultyRadio.checked = true;
 
     // Button to show/hide sidebar
     const sidebarButton = document.getElementById("sidebar-button");

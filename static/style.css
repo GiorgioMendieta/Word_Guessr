@@ -407,7 +407,7 @@ input[type=checkbox] {
     visibility: hidden;
 }
 
-label {
+label.toggle {
     cursor: pointer;
     text-indent: -9999px;
     width: var(--toggle-width);
@@ -419,11 +419,11 @@ label {
     position: relative;
 }
 
-label:hover {
+label.toggle:hover {
     filter: brightness(130%);
 }
 
-label:after {
+label.toggle:after {
     content: "";
     position: absolute;
     /* top = 5px - border(2px); */
@@ -442,19 +442,39 @@ label:after {
     transition: 0.3s;
 }
 
-input:checked+label {
+input:checked+label.toggle {
     background: var(--tile-correct);
 }
 
-input:checked+label:after {
+input:checked+label.toggle:after {
     /* left: calc(100% - 5px); */
     left: calc(100% - (var(--toggle-height)*0.05));
     transform: translateX(-100%);
 }
 
-label:active:after {
+label.toggle:active:after {
     /* width: 130px; */
     width: calc(var(--toggle-height)*1.3);
+}
+
+/* ---------- Radio buttons ---------- */
+.radio-container input {
+    appearance: none;
+    cursor: pointer;
+    margin-bottom: 0.5em;
+    background: var(--tile-wrong);
+    transition: all 100ms linear;
+}
+
+.radio-container input:checked {
+    background-color: var(--tile-correct);
+}
+
+.radio-container input:before {
+    content: attr(label);
+    display: inline-block;
+    text-align: center;
+    width: 100%;
 }
 
 /* ---------- Sidebar ---------- */
@@ -540,9 +560,8 @@ label:active:after {
 }
 
 .board-options>div {
-    display: inherit;
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
     margin-bottom: 1em;
 }
 

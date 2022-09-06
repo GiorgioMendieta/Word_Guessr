@@ -45,12 +45,13 @@ Word Guessr
     <div class="menu-item">
         <b>Game options</b>
         <form class="board-options" id="board-options" action="/" method="post">
-            <div>
+            <div class="radio-container">
                 <span>
-                    Rows: <span id="guess-val">6</span>
+                    Difficulty:
                 </span>
-                <input class="num-slider" id="guess-range" name="guesses" type="range" min="5" max="7" step="1"
-                    value="{{num_guesses}}">
+                <input class="menu-button" label="Easy" type="radio" id="diff-7" name="difficulty" value="7">
+                <input class="menu-button" label="Normal" type="radio" id="diff-6" name="difficulty" value="6" checked>
+                <input class="menu-button" label="Hard" type="radio" id="diff-5" name="difficulty" value="5">
             </div>
             <div>
                 <span>
@@ -61,7 +62,7 @@ Word Guessr
             </div>
 
         </form>
-        <button class="menu-button btn-submit" form="board-options" type="submit">Submit</button>
+        <button class="menu-button btn-submit" form="board-options" type="submit">Save</button>
     </div>
 
     <div class="menu-item">
@@ -74,7 +75,7 @@ Word Guessr
     <div class="menu-item">
         <b>Use dark mode</b>
         <input type="checkbox" id="switch-theme">
-        <label for="switch-theme">Toggle theme</label>
+        <label class="toggle" for="switch-theme">Toggle theme</label>
     </div>
 </div>
 

@@ -74,7 +74,7 @@ def index():
         NUM_LETTERS = int(NUM_LETTERS)
 
         # Perform check on number of guesses
-        NUM_GUESSES = request.form.get("guesses")
+        NUM_GUESSES = request.form.get("difficulty")
         if not NUM_GUESSES or not NUM_GUESSES.isdecimal():
             NUM_GUESSES = 6  # Default value
         if int(NUM_GUESSES) < 5:
@@ -95,7 +95,7 @@ def index():
         NUM_GUESSES = 6
 
     # Obtain word from API
-    wordle = get_word(NUM_LETTERS)
+    # wordle = get_word(NUM_LETTERS)
 
     # Create board and populate it with blank values
     tiles = [[0] * NUM_LETTERS for i in range(NUM_GUESSES)]
@@ -260,9 +260,8 @@ def stats():
     if request.method == "GET":
         # Retrieve stats from DB and send them to the front-end
         stats = Stats.query.filter_by(user_id=session["user_id"]).first()
-        print("GET stats request:")
         result = stats.to_dict()
-        print(result)
+        print("GET stats request: " + str(result))
         # JSONify the result and send it
         return jsonify(result)
 
