@@ -589,7 +589,7 @@ async function getDefinition(word) {
 
 async function showDefinition() {
     let definition = await getDefinition(wordle);
-    const definitionDialog = document.getElementById("definition-dialog");
+    const definitionDialog = document.getElementById("definition-container");
     if (definition != null) {
         definitionDialog.innerHTML = definition;
     } else {
