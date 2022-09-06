@@ -69,6 +69,8 @@ Based on a popular web app, the objective is to guess the word with a limited nu
 
 ## Getting started
 
+First, create  virtual environment and activate it by following the [installation guide](https://flask.palletsprojects.com/en/2.2.x/installation/) from Flask.
+
 ### Install dependencies
 
 The following dependencies must be installed by entering the following commands in the terminal:
@@ -76,7 +78,6 @@ The following dependencies must be installed by entering the following commands 
 `pip install flask`
 
 - Needed for Python web server
-- activate venv environment
 
 `pip install python-dotenv`
 
