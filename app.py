@@ -12,7 +12,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # Configure application
 app = Flask(__name__)
 
-# Run app in debug modeß
+# Run app in debug mode
 app.config["DEBUG"] = True
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
