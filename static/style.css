@@ -7,7 +7,7 @@
     --key-margin: 0.45em;
 
     --color-bg: #121212;
-    --color-border: #3A3A3C;
+    --color-border: #3a3a3c;
     --color-font: white;
 
     --key-bg: #818384;
@@ -17,11 +17,11 @@
     --alert-color-font: black;
 
     /* Tile colors */
-    --tile-absent: #393A3C;
+    --tile-absent: #393a3c;
     --tile-active: #565758;
-    --tile-wrong: #3A3A3C;
-    --tile-present: #B59F3B;
-    --tile-correct: #538D4E;
+    --tile-wrong: #3a3a3c;
+    --tile-present: #b59f3b;
+    --tile-correct: #538d4e;
 
     /* Toggle switch */
     --toggle-height: 2em;
@@ -36,24 +36,25 @@
 
 body[theme="light"] {
     --color-bg: white;
-    --color-border: #888A8D;
+    --color-border: #888a8d;
     --color-font: black;
 
-    --key-bg: #D4D6DA;
+    --key-bg: #d4d6da;
 
     --alert-bg: #121212;
     --alert-color-font: white;
 
-    --tile-absent: #D4D6DA;
-    --tile-active: #888A8D;
-    --tile-wrong: #787C7E;
+    --tile-absent: #d4d6da;
+    --tile-active: #888a8d;
+    --tile-wrong: #787c7e;
 }
 
 /* Selects ALL elements */
 * {
     color: var(--color-font);
     /* Smoothly transition between dark/light modes */
-    transition: background-color var(--transition-time) ease-in, color var(--transition-time) ease-in;
+    transition: background-color var(--transition-time) ease-in,
+        color var(--transition-time) ease-in;
 }
 
 a {
@@ -97,7 +98,7 @@ button:disabled {
 }
 
 .title-container {
-    font-family: 'Silkscreen', cursive;
+    font-family: "Silkscreen", cursive;
     text-align: center;
     position: absolute;
     left: 50vw;
@@ -117,7 +118,7 @@ button:disabled {
 
 .menu-button.red {
     color: white;
-    background-color: #E33D26;
+    background-color: #e33d26;
 }
 
 /* ---------- Main container for the game ---------- */
@@ -171,7 +172,8 @@ button:disabled {
     /* Remove ugly blue highlight on mobile */
     -webkit-tap-highlight-color: transparent;
 
-    transition: transform var(--transition-time) ease, background-color var(--transition-time) ease;
+    transition: transform var(--transition-time) ease,
+        background-color var(--transition-time) ease;
 }
 
 .key.large {
@@ -220,7 +222,7 @@ button:disabled {
 
 /* ---------------------- Game board ---------------------- */
 .guess-grid-container {
-    font-family: 'Silkscreen', cursive;
+    font-family: "Silkscreen", cursive;
 
     display: flex;
     align-items: center;
@@ -279,7 +281,7 @@ button:disabled {
 .tile {
     font-size: var(--tile-size);
     font-weight: bold;
-    border: .075em solid var(--tile-absent);
+    border: 0.075em solid var(--tile-absent);
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -300,19 +302,19 @@ button:disabled {
 
 /* Wrong tile */
 .tile[data-state="wrong"] {
-    border: .075em solid var(--tile-wrong);
+    border: 0.075em solid var(--tile-wrong);
     background-color: var(--tile-wrong);
 }
 
 /* Present tile */
 .tile[data-state="present"] {
-    border: .075em solid var(--tile-present);
+    border: 0.075em solid var(--tile-present);
     background-color: var(--tile-present);
 }
 
 /* Correct tile */
 .tile[data-state="correct"] {
-    border: .075em solid var(--tile-correct);
+    border: 0.075em solid var(--tile-correct);
     background-color: var(--tile-correct);
 }
 
@@ -394,7 +396,7 @@ button:disabled {
 
 .flash.error,
 .alert.error {
-    background-color: #E33D26;
+    background-color: #e33d26;
     color: white;
 }
 
@@ -405,7 +407,7 @@ button:disabled {
 
 /* ---------------------- Toggle switch ---------------------- */
 /* Hide checkbox */
-input[type=checkbox] {
+input[type="checkbox"] {
     height: 0;
     width: 0;
     visibility: hidden;
@@ -431,34 +433,34 @@ label.toggle:after {
     content: "";
     position: absolute;
     /* top = 5px - border(2px); */
-    top: calc(var(--toggle-height)*0.05 - 2px);
+    top: calc(var(--toggle-height) * 0.05 - 2px);
     /* left: 5px; */
-    left: calc(var(--toggle-height)*0.05);
+    left: calc(var(--toggle-height) * 0.05);
     /* width: 90px; */
-    width: calc(var(--toggle-height)*0.9);
+    width: calc(var(--toggle-height) * 0.9);
     /* height: 90px; */
-    height: calc(var(--toggle-height)*0.9);
+    height: calc(var(--toggle-height) * 0.9);
     background: white;
     /* border-radius: 90px; */
     border: 2px solid var(--color-border);
 
-    border-radius: calc(var(--toggle-height)*0.9);
+    border-radius: calc(var(--toggle-height) * 0.9);
     transition: 0.3s;
 }
 
-input:checked+label.toggle {
+input:checked + label.toggle {
     background: var(--tile-correct);
 }
 
-input:checked+label.toggle:after {
+input:checked + label.toggle:after {
     /* left: calc(100% - 5px); */
-    left: calc(100% - (var(--toggle-height)*0.05));
+    left: calc(100% - (var(--toggle-height) * 0.05));
     transform: translateX(-100%);
 }
 
 label.toggle:active:after {
     /* width: 130px; */
-    width: calc(var(--toggle-height)*1.3);
+    width: calc(var(--toggle-height) * 1.3);
 }
 
 /* ---------- Radio buttons ---------- */
@@ -536,12 +538,12 @@ label.toggle:active:after {
     border-bottom: 1px solid var(--color-border);
 }
 
-.menu-item>b {
+.menu-item > b {
     margin-bottom: 0.5em;
 }
 
 .menu-button {
-    font-family: 'Silkscreen', cursive;
+    font-family: "Silkscreen", cursive;
     background: var(--button-bg);
     border: 2px solid var(--color-border);
     color: white;
@@ -570,13 +572,13 @@ label.toggle:active:after {
     width: 90%;
 }
 
-.board-options>div {
+.board-options > div {
     display: flex;
     flex-direction: column;
     margin-bottom: 1em;
 }
 
-.board-options>div>span {
+.board-options > div > span {
     margin-bottom: 1em;
     font-weight: bold;
 }
@@ -649,7 +651,7 @@ label.toggle:active:after {
     align-items: center;
 }
 
-.stat>span {
+.stat > span {
     font-size: 2em;
 }
 
@@ -664,7 +666,7 @@ label.toggle:active:after {
     width: 20rem;
 }
 
-.form-container>b {
+.form-container > b {
     font-size: 0.8em;
 }
 

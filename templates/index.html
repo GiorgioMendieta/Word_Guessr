@@ -1,52 +1,57 @@
-{% extends "layout.html" %}
-
-{% block title %}
-Word Guessr
-{% endblock %}
-
-{% block javascript %}
+{% extends "layout.html" %} {% block title %} Word Guessr {% endblock %} {%
+block javascript %}
 <script src="/static/app.js" defer></script>
 <!-- Pass in variables from Flask server to JS -->
 <script type="text/javascript">
-    const NUM_LETTERS = parseInt('{{ num_letters | tojson}}')
-    const NUM_GUESSES = parseInt('{{ num_guesses | tojson}}')
-    let wordle = '{{wordle}}'
-    let resetLocalStorage = '{{resetLocalStorage}}'
+    const NUM_LETTERS = parseInt("{{ num_letters | tojson}}");
+    const NUM_GUESSES = parseInt("{{ num_guesses | tojson}}");
+    let wordle = "{{wordle}}";
+    let resetLocalStorage = "{{resetLocalStorage}}";
 </script>
-{% endblock %}
-
-{% block headerleft %}
+{% endblock %} {% block headerleft %}
 <button class="menu-button menu-header" id="sidebar-button" data-state="closed">
     Menu
 </button>
-{% endblock %}
-
-{% block headerright %}
-<button class="menu-button menu-header green" id="play-button" style="display: none;">
+{% endblock %} {% block headerright %}
+<button
+    class="menu-button menu-header green"
+    id="play-button"
+    style="display: none"
+>
     Play again
 </button>
-{% endblock %}
-
-{% block main %}
-<div class="sidebar" id="sidebar" style="display: none;">
+{% endblock %} {% block main %}
+<div class="sidebar" id="sidebar" style="display: none">
     <div class="menu-item">
         {% if username == ""%}
         <!-- User is not logged in -->
         <b>Register/Log-in</b>
         <!-- Redirect to register.html when button is clicked -->
-        <button class="menu-button green" id="register-button" onclick="location.href='http://127.0.0.1:5000/register'"
-            type="button">Register/Log-in</button>
+        <button
+            class="menu-button green"
+            id="register-button"
+            onclick="location.href='http://127.0.0.1:5000/register'"
+            type="button"
+        >
+            Register/Log-in
+        </button>
         {% else %}
         <!-- User is logged in -->
         <b>Hello, {{username}}</b>
         <!-- Redirect to logout.html when button is clicked -->
-        <button class="menu-button red" id="logout-button" onclick="location.href='http://127.0.0.1:5000/logout'"
-            type="button">Log-out</button>
+        <button
+            class="menu-button red"
+            id="logout-button"
+            onclick="location.href='http://127.0.0.1:5000/logout'"
+            type="button"
+        >
+            Log-out
+        </button>
         {% endif %}
         <button class="menu-button" id="stats-button">Stats</button>
     </div>
 
-    <div class="menu-item" id="share-menu" style="display: none;">
+    <div class="menu-item" id="share-menu" style="display: none">
         <b>Share score</b>
         <button class="menu-button" type="button" id="share-result">
             Share
@@ -57,28 +62,59 @@ Word Guessr
         <b>Game options</b>
         <form class="board-options" id="board-options" action="/" method="post">
             <div class="radio-container">
-                <span>
-                    Difficulty:
-                </span>
-                <input class="menu-button" label="Easy" type="radio" id="diff-7" name="difficulty" value="7">
-                <input class="menu-button" label="Normal" type="radio" id="diff-6" name="difficulty" value="6" checked>
-                <input class="menu-button" label="Hard" type="radio" id="diff-5" name="difficulty" value="5">
+                <span> Difficulty: </span>
+                <input
+                    class="menu-button"
+                    label="Easy"
+                    type="radio"
+                    id="diff-7"
+                    name="difficulty"
+                    value="7"
+                />
+                <input
+                    class="menu-button"
+                    label="Normal"
+                    type="radio"
+                    id="diff-6"
+                    name="difficulty"
+                    value="6"
+                    checked
+                />
+                <input
+                    class="menu-button"
+                    label="Hard"
+                    type="radio"
+                    id="diff-5"
+                    name="difficulty"
+                    value="5"
+                />
             </div>
             <div>
-                <span>
-                    Letters: <span id="letter-val">5</span>
-                </span>
-                <input class="num-slider" id="letter-range" name="letters" type="range" min="4" max="7" step="1"
-                    value="{{num_letters}}">
+                <span> Letters: <span id="letter-val">5</span> </span>
+                <input
+                    class="num-slider"
+                    id="letter-range"
+                    name="letters"
+                    type="range"
+                    min="4"
+                    max="7"
+                    step="1"
+                    value="{{num_letters}}"
+                />
             </div>
-
         </form>
-        <button class="menu-button btn-submit" form="board-options" type="submit">Save</button>
+        <button
+            class="menu-button btn-submit"
+            form="board-options"
+            type="submit"
+        >
+            Save
+        </button>
     </div>
 
     <div class="menu-item">
         <b>Use dark mode</b>
-        <input type="checkbox" id="switch-theme">
+        <input type="checkbox" id="switch-theme" />
         <label class="toggle" for="switch-theme">Toggle theme</label>
     </div>
 </div>
@@ -88,8 +124,7 @@ Word Guessr
         {% for guess in range(num_guesses) %}
         <div class="guess-row" id="guess-{{guess}}">
             {% for letter in range(num_letters) %}
-            <div class="tile" id="tile-{{guess}}-{{letter}}">
-            </div>
+            <div class="tile" id="tile-{{guess}}-{{letter}}"></div>
             {% endfor %}
         </div>
         {% endfor %}
@@ -99,15 +134,13 @@ Word Guessr
 <div class="keyboard-container">
     {% for row in keys %}
     <div class="keyboard-row">
-        {% for key in row %}
-        {% if key == ' ' %}
+        {% for key in row %} {% if key == ' ' %}
         <div class="spacer"></div>
         {% elif key == "Enter" or key == "Back" %}
         <button class="key large" data-key="{{key}}">{{key}}</button>
         {% else %}
         <button class="key" data-key="{{key}}">{{key}}</button>
-        {% endif %}
-        {% endfor %}
+        {% endif %} {% endfor %}
     </div>
     {% endfor %}
 </div>

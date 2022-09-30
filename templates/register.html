@@ -1,44 +1,76 @@
-{% extends "layout.html" %}
-
-{% block title %}
-Register
-{% endblock %}
-
-{% block javascript %}
+{% extends "layout.html" %} {% block title %} Register {% endblock %} {% block
+javascript %}
 <script src="/static/register.js" defer></script>
-{% endblock %}
-
-{% block main %}
+{% endblock %} {% block main %}
 <div class="form-container">
     <strong>Register to save results, view stats & more!</strong>
 
     <form action="/register" method="post" id="register"></form>
-    <input type="hidden" name="req" value="register" form="register">
+    <input type="hidden" name="req" value="register" form="register" />
     <b>Email address</b>
-    <input form="register" autocomplete="off" autofocus class="input-field" id="email" name="email" placeholder="Email"
-        type="email" required>
+    <input
+        form="register"
+        autocomplete="off"
+        autofocus
+        class="input-field"
+        id="email"
+        name="email"
+        placeholder="Email"
+        type="email"
+        required
+    />
     <b>Password</b>
-    <input form="register" class="input-field" id="password" name="password" placeholder="Password" type="password"
-        required>
+    <input
+        form="register"
+        class="input-field"
+        id="password"
+        name="password"
+        placeholder="Password"
+        type="password"
+        required
+    />
     <b>Confirm password</b>
-    <input form="register" class="input-field" id="confirmation" name="confirmation" placeholder="Confirm password"
-        type="password" required>
+    <input
+        form="register"
+        class="input-field"
+        id="confirmation"
+        name="confirmation"
+        placeholder="Confirm password"
+        type="password"
+        required
+    />
     <button form="register" class="menu-button" type="submit">Register</button>
 </div>
 
-<hr>
+<hr />
 
 <div class="form-container">
     <strong>Log-in</strong>
 
     <form action="/register" method="post" id="login"></form>
-    <input type="hidden" name="req" value="login" form="login">
+    <input type="hidden" name="req" value="login" form="login" />
     <b>Email address</b>
-    <input form="login" autocomplete="off" autofocus class="input-field" id="email2" name="email" placeholder="Email"
-        type="email" required>
+    <input
+        form="login"
+        autocomplete="off"
+        autofocus
+        class="input-field"
+        id="email2"
+        name="email"
+        placeholder="Email"
+        type="email"
+        required
+    />
     <b>Password</b>
-    <input form="login" class="input-field" id="password2" name="password" placeholder="Password" type="password"
-        required>
+    <input
+        form="login"
+        class="input-field"
+        id="password2"
+        name="password"
+        placeholder="Password"
+        type="password"
+        required
+    />
     <button form="login" class="menu-button" type="submit">Log-in</button>
 </div>
 {% endblock %}

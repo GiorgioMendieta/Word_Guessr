@@ -5,7 +5,7 @@ const JUMP_DURATION = 500;
 // Global variables
 let guessIndex = 0;
 let letterIndex = 0;
-let words = new Array(NUM_GUESSES)
+let words = new Array(NUM_GUESSES);
 let gameStatus = "IN_PROGRESS"; // WIN, LOSE, IN_PROGRESS
 let guessedWords = [];
 // Stats
@@ -13,7 +13,12 @@ let gamesPlayed = 0;
 let gamesWon = 0;
 let currentStreak = 0;
 let maxStreak = 0;
-let stats = { "currentStreak": currentStreak, "maxStreak": maxStreak, "gamesWon": gamesWon, "gamesPlayed": gamesPlayed };
+let stats = {
+    currentStreak: currentStreak,
+    maxStreak: maxStreak,
+    gamesWon: gamesWon,
+    gamesPlayed: gamesPlayed,
+};
 
 // Main
 
@@ -39,13 +44,14 @@ async function initLocalStorage() {
     gameStatus = window.localStorage.getItem("gameStatus") || gameStatus;
 
     // Retrieve submitted words from JSON
-    guessedWords = JSON.parse(window.localStorage.getItem("guessedWords")) || guessedWords;
+    guessedWords =
+        JSON.parse(window.localStorage.getItem("guessedWords")) || guessedWords;
 
     // Retrieve wordle to prevent it from loading a new one
     wordle = window.localStorage.getItem("wordle") || wordle;
 
     // Prefer stats from server
-    stats = await getStats()
+    stats = await getStats();
     stats = stats || JSON.parse(window.localStorage.getItem("stats"));
 
     if (stats) {
@@ -59,10 +65,10 @@ async function initLocalStorage() {
 }
 
 async function getStats() {
-    const response = await fetch(`http://127.0.0.1:5000/stats`)
+    const response = await fetch(`http://127.0.0.1:5000/stats`);
 
     if (!response.ok) {
-        return
+        return;
     }
 
     const data = await response.json();
@@ -86,10 +92,10 @@ function saveGameState() {
 
 function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
     // Get the root element
-    var r = document.querySelector(':root');
+    var r = document.querySelector(":root");
     // Set CSS properties to display tiles correctly
-    r.style.setProperty('--rows', NUM_GUESSES);
-    r.style.setProperty('--letters', NUM_LETTERS);
+    r.style.setProperty("--rows", NUM_GUESSES);
+    r.style.setProperty("--letters", NUM_LETTERS);
 
     // Letters slider
     const sliderLetter = document.getElementById("letter-range");
@@ -98,7 +104,7 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
 
     sliderLetter.oninput = function () {
         outputLetter.innerHTML = this.value;
-    }
+    };
 
     // Difficulty
     const difficultyRadio = document.getElementById(`diff-${NUM_GUESSES}`);
@@ -118,15 +124,15 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
         const logoutBtn = document.getElementById("logout-button");
         logoutBtn.addEventListener("click", () => {
             resetGameState();
-        })
+        });
     } catch (e) {
-        console.log("Not logged in")
+        console.log("Not logged in");
     }
 
     // Share score button
     const shareBtn = document.getElementById("share-result");
     shareBtn.addEventListener("click", shareScore);
-    shareBtn.setAttribute("disabled", true)
+    shareBtn.setAttribute("disabled", true);
 
     // Stats button
     const statsBtn = document.getElementById("stats-button");
@@ -138,18 +144,18 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
 
     // Dark mode switch
     const themeToggleSwitch = document.getElementById("switch-theme");
-    var theme = window.localStorage.getItem('theme');
-    themeToggleSwitch.checked = (theme == 'dark' ? true : false);
+    var theme = window.localStorage.getItem("theme");
+    themeToggleSwitch.checked = theme == "dark" ? true : false;
 
     themeToggleSwitch.addEventListener("change", () => {
         const body = document.getElementById("body");
 
         if (themeToggleSwitch.checked) {
             body.setAttribute("theme", "dark");
-            window.localStorage.setItem('theme', 'dark');
+            window.localStorage.setItem("theme", "dark");
         } else {
             body.setAttribute("theme", "light");
-            window.localStorage.setItem('theme', 'light');
+            window.localStorage.setItem("theme", "light");
         }
     });
 
@@ -172,13 +178,12 @@ function setBoardCss(NUM_GUESSES, NUM_LETTERS) {
 
             // Flip tiles for each submitted word
             flipTiles(word, row);
-        })
+        });
     } else {
         // No submitted words, play immediately
         startInteraction();
     }
 }
-
 
 function startInteraction() {
     // Get keyboard keys and put them in an array
@@ -243,13 +248,15 @@ function handleKeyPress(e) {
 function addKey(key) {
     // Limit number of tiles to be written
     if (letterIndex < NUM_LETTERS) {
-        const tile = document.getElementById(`tile-${guessIndex}-${letterIndex}`);
+        const tile = document.getElementById(
+            `tile-${guessIndex}-${letterIndex}`
+        );
         tile.dataset.letter = key.toLowerCase();
         tile.dataset.state = "active";
         tile.textContent = key;
 
         // Add pop animation when writing on tiles
-        tile.classList.add("pop")
+        tile.classList.add("pop");
         tile.addEventListener(
             "animationend",
             () => {
@@ -271,7 +278,9 @@ function deleteKey() {
         // Go back a tile
         letterIndex--;
 
-        const tile = document.getElementById(`tile-${guessIndex}-${letterIndex}`);
+        const tile = document.getElementById(
+            `tile-${guessIndex}-${letterIndex}`
+        );
 
         delete tile.dataset.letter;
         delete tile.dataset.state;
@@ -294,7 +303,7 @@ async function submitGuess() {
 
     // Get array of tile letters of the current row
     const tiles = Array.from(row.children);
-    let word = '';
+    let word = "";
     tiles.forEach((tile) => {
         // For each tile, get the contents and append it to the word
         word = word + tile.innerHTML;
@@ -302,7 +311,7 @@ async function submitGuess() {
 
     // Check if word exists
     const wordExists = await checkWord(word);
-    console.log(word)
+    console.log(word);
     if (wordExists) {
         flipTiles(word, row);
         // Save the word and convert it to JSON for storage
@@ -312,7 +321,7 @@ async function submitGuess() {
         shakeRow(row);
     }
 
-    console.log(guessedWords)
+    console.log(guessedWords);
 
     return;
 }
@@ -341,24 +350,25 @@ function showAlert(msg, duration = 1000, type = "Message") {
     setTimeout(() => {
         alert.classList.add("hide");
         // As soon as the fade out transition ends, delete the element
-        alert.addEventListener("transitionend",
-            () => {
-                alert.remove();
-            });
+        alert.addEventListener("transitionend", () => {
+            alert.remove();
+        });
     }, duration);
 }
 
 function hideFlashAlerts() {
     // Hide alerts created by the server
-    const flashAlerts = Array.from(document.getElementsByClassName("flash"))
+    const flashAlerts = Array.from(document.getElementsByClassName("flash"));
 
     flashAlerts.forEach((flash) => {
         setTimeout(() => {
             flash.classList.add("hide");
             // As soon as the fade out transition ends, delete the element
-            flash.addEventListener("transitionend", () => { flash.remove() })
-        }, 2000)
-    })
+            flash.addEventListener("transitionend", () => {
+                flash.remove();
+            });
+        }, 2000);
+    });
 }
 
 // If the guess is incorrect, shake the whole row
@@ -382,12 +392,24 @@ function checkWin(word, saveStatsAfterWin = true) {
         gameStatus = "WIN";
 
         let winMsg;
-        if (guessIndex == 0) { winMsg = "Genius" }
-        if (guessIndex == 1) { winMsg = "Magnificent" }
-        if (guessIndex == 2) { winMsg = "Impressive" }
-        if (guessIndex == 3) { winMsg = "Splendid" }
-        if (guessIndex == 4) { winMsg = "Great" }
-        if (guessIndex >= NUM_GUESSES - 1) { winMsg = "Phew" }
+        if (guessIndex == 0) {
+            winMsg = "Genius";
+        }
+        if (guessIndex == 1) {
+            winMsg = "Magnificent";
+        }
+        if (guessIndex == 2) {
+            winMsg = "Impressive";
+        }
+        if (guessIndex == 3) {
+            winMsg = "Splendid";
+        }
+        if (guessIndex == 4) {
+            winMsg = "Great";
+        }
+        if (guessIndex >= NUM_GUESSES - 1) {
+            winMsg = "Phew";
+        }
 
         jumpTiles();
         showAlert(winMsg, 5000);
@@ -396,7 +418,7 @@ function checkWin(word, saveStatsAfterWin = true) {
             saveStats();
         }
         endScreen();
-    } else if (guessIndex >= (NUM_GUESSES - 1)) {
+    } else if (guessIndex >= NUM_GUESSES - 1) {
         gameStatus = "LOSE";
         showAlert(wordle.toUpperCase(), null);
         stopInteraction();
@@ -405,10 +427,10 @@ function checkWin(word, saveStatsAfterWin = true) {
         }
         endScreen();
     } else {
-        advanceRow()
+        advanceRow();
     }
 
-    saveGameState()
+    saveGameState();
     return;
 }
 
@@ -428,7 +450,9 @@ function flipTiles(wordGuess, row) {
     const tileColorsArr = colorTiles(wordGuess);
 
     // Pass all the information to the flipTile function
-    rowTiles.forEach((...params) => flipTile(...params, wordGuess, tileColorsArr));
+    rowTiles.forEach((...params) =>
+        flipTile(...params, wordGuess, tileColorsArr)
+    );
 
     return;
 }
@@ -443,7 +467,7 @@ function flipTile(tile, index, array, wordGuess, tileColorsArr) {
     // Flip 90 deg, change color, then flip back for each tile
     setTimeout(() => {
         tile.classList.add("flip");
-    }, (index * FLIP_DURATION / 2));
+    }, (index * FLIP_DURATION) / 2);
 
     tile.addEventListener("transitionend", () => {
         tile.classList.remove("flip");
@@ -463,7 +487,7 @@ function flipTile(tile, index, array, wordGuess, tileColorsArr) {
                     // Game was already finished, don't update stats
                     checkWin(wordGuess, false);
                 }
-            })
+            });
         }
     });
 }
@@ -488,7 +512,7 @@ function colorTiles(wordGuess) {
 
     // Obtain letters present in wordle
     for (let i = 0; i < NUM_LETTERS; i++) {
-        // Skip correctly-guessed letters 
+        // Skip correctly-guessed letters
         if (guessArr[i] === "") continue;
 
         const index = wordleArr.indexOf(guessArr[i]);
@@ -511,16 +535,16 @@ function jumpTiles() {
     const rowTiles = Array.from(row.children);
     rowTiles.forEach((tile, index) => {
         setTimeout(() => {
-            tile.classList.add("jump")
+            tile.classList.add("jump");
             tile.addEventListener(
                 "animationend",
                 () => {
                     tile.classList.remove("jump");
                 },
                 { once: true }
-            )
-        }, (index * JUMP_DURATION / NUM_LETTERS))
-    })
+            );
+        }, (index * JUMP_DURATION) / NUM_LETTERS);
+    });
 }
 
 function endScreen() {
@@ -529,27 +553,32 @@ function endScreen() {
         showDefinition();
         showStats();
         document.getElementById("modal-container").style.display = "flex";
-    }, ((FLIP_DURATION / 2) * NUM_LETTERS))
+    }, (FLIP_DURATION / 2) * NUM_LETTERS);
 
     // Show play again button
     document.getElementById("play-button").removeAttribute("style");
 
     // Enable share score button
-    document.getElementById("share-menu").removeAttribute("style")
-    document.getElementById("share-result").removeAttribute("disabled")
+    document.getElementById("share-menu").removeAttribute("style");
+    document.getElementById("share-result").removeAttribute("disabled");
 }
 
 function saveStats() {
-    updateStats()
+    updateStats();
     // Save stats as JSON
-    stats = { "currentStreak": currentStreak, "maxStreak": maxStreak, "gamesWon": gamesWon, "gamesPlayed": gamesPlayed };
+    stats = {
+        currentStreak: currentStreak,
+        maxStreak: maxStreak,
+        gamesWon: gamesWon,
+        gamesPlayed: gamesPlayed,
+    };
 
     // Save stats to LocalStorage
     window.localStorage.setItem("stats", JSON.stringify(stats));
 
     // If logged in, save stats in DB with an AJAX request to the back-end
     const request = new XMLHttpRequest();
-    request.open("POST", "/stats")
+    request.open("POST", "/stats");
     request.setRequestHeader("Content-Type", "application/json");
     request.send(JSON.stringify(stats));
 }
@@ -565,14 +594,14 @@ function updateStats() {
     if (currentStreak > maxStreak) {
         maxStreak = currentStreak;
     }
-    gamesPlayed++
+    gamesPlayed++;
 }
 
 function showStats() {
     document.getElementById("modal-container").style.display = "flex";
 
     // Convert NaN to 0
-    const winPerc = ((gamesWon * 100) / gamesPlayed) || 0
+    const winPerc = (gamesWon * 100) / gamesPlayed || 0;
 
     document.getElementById("stat-played").innerHTML = gamesPlayed;
     document.getElementById("stat-win-perc").innerHTML = winPerc.toFixed(0);
@@ -581,10 +610,10 @@ function showStats() {
 }
 
 async function getDefinition(word) {
-    let response = await fetch(`http://127.0.0.1:5000/define?word=${word}`)
-    if (!response.ok) return
+    let response = await fetch(`http://127.0.0.1:5000/define?word=${word}`);
+    if (!response.ok) return;
 
-    return response.text()
+    return response.text();
 }
 
 async function showDefinition() {
@@ -621,7 +650,7 @@ function shareScore() {
         // Reset variable
         row = [];
         for (let j = 0; j < NUM_LETTERS; j++) {
-            var tile = document.querySelector(`#tile-${i}-${j}`)
+            var tile = document.querySelector(`#tile-${i}-${j}`);
             var tileState = tile.dataset.state;
 
             if (tileState == "correct") {
@@ -633,7 +662,7 @@ function shareScore() {
             }
         }
         // Transform the row into a string (no commas) and push it to the emoji array
-        emojis.push(row.join(''));
+        emojis.push(row.join(""));
     }
 
     // Convert array to string separated by new lines
@@ -642,7 +671,7 @@ function shareScore() {
     // Copy results to clipboard
     navigator.clipboard.writeText(emojis);
 
-    showAlert("Copied results to clipboard")
+    showAlert("Copied results to clipboard");
 }
 
 // Function gets called on button click
@@ -652,7 +681,6 @@ function toggleSidebar() {
 
     // Sidebar is open, close it
     if (button.dataset.state == "open") {
-
         sidebar.classList.add("hide");
         sidebar.addEventListener(
             "animationend",
@@ -671,7 +699,6 @@ function toggleSidebar() {
 
     // Sidebar is closed, open it
     if (button.dataset.state == "closed") {
-
         sidebar.style.display = "block";
         sidebar.classList.add("show");
         sidebar.addEventListener(

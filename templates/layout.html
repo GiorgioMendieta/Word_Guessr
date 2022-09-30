@@ -1,90 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{% block title %}{% endblock %}</title>
+        <link href="/static/favicon.ico" rel="icon" />
+        <link rel="stylesheet" href="/static/style.css" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock %}</title>
-    <link href="/static/favicon.ico" rel="icon">
-    <link rel="stylesheet" href="/static/style.css" />
+        <!-- Google fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap"
+            rel="stylesheet"
+        />
 
-    <!-- Google fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
+        {% block javascript %} {% endblock %}
+    </head>
 
-    {% block javascript %}
-    {% endblock %}
-</head>
+    <!-- Default to light theme -->
 
-<!-- Default to light theme -->
+    <body id="body" theme="light">
+        <header class="header-container">
+            {% block headerleft %} {% endblock %}
 
-<body id="body" theme="light">
-    <header class="header-container">
-        {% block headerleft %}
-        {% endblock %}
-
-        <div class="title-container">
-            <a href="http://127.0.0.1:5000/">
-                <h1>Word Guessr</h1>
-            </a>
-        </div>
-
-        {% block headerright %}
-        {% endblock %}
-    </header>
-
-    <div class="game-container">
-        {% block main %}
-        {% endblock %}
-
-        <div class="alert-container" id="alert-container">
-            <!-- Alerts go here (Javascript)-->
-            <!-- Flash messages with Flask go here (if any) -->
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-            {% for category, message in messages %}
-            <div class="flash {{category}}">
-                {{ message }}
+            <div class="title-container">
+                <a href="http://127.0.0.1:5000/">
+                    <h1>Word Guessr</h1>
+                </a>
             </div>
-            {% endfor %}
-            {% endif %}
-            {% endwith %}
-        </div>
 
-        <div class="modal-overlay" id="modal-container" style="display: none;">
-            <div class="dialog" id="dialog">
-                <b>STATISTICS</b>
-                <div class="statistics-container" id="statistics-container">
-                    <div class="stat">
-                        <span id="stat-played">X</span>
-                        Played
+            {% block headerright %} {% endblock %}
+        </header>
+
+        <div class="game-container">
+            {% block main %} {% endblock %}
+
+            <div class="alert-container" id="alert-container">
+                <!-- Alerts go here (Javascript)-->
+                <!-- Flash messages with Flask go here (if any) -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %} {% for category, message in messages %}
+                <div class="flash {{category}}">{{ message }}</div>
+                {% endfor %} {% endif %} {% endwith %}
+            </div>
+
+            <div
+                class="modal-overlay"
+                id="modal-container"
+                style="display: none"
+            >
+                <div class="dialog" id="dialog">
+                    <b>STATISTICS</b>
+                    <div class="statistics-container" id="statistics-container">
+                        <div class="stat">
+                            <span id="stat-played">X</span>
+                            Played
+                        </div>
+                        <div class="stat">
+                            <span id="stat-win-perc">X</span>
+                            Win %
+                        </div>
+                        <div class="stat">
+                            <span id="stat-current-streak">X</span>
+                            Current<br />Streak
+                        </div>
+                        <div class="stat">
+                            <span id="stat-max-streak">X</span>
+                            Max<br />Streak
+                        </div>
                     </div>
-                    <div class="stat">
-                        <span id="stat-win-perc">X</span>
-                        Win %
-                    </div>
-                    <div class="stat">
-                        <span id="stat-current-streak">X</span>
-                        Current<br>Streak
-                    </div>
-                    <div class="stat">
-                        <span id="stat-max-streak">X</span>
-                        Max<br>Streak
+
+                    <br />
+
+                    <b>DEFINITION</b>
+                    <div id="definition-container">
+                        Guess the word to show the definition.
                     </div>
                 </div>
-
-                <br>
-
-                <b>DEFINITION</b>
-                <div id="definition-container">
-                    Guess the word to show the definition.
-                </div>
-
             </div>
         </div>
-    </div>
-</body>
-
+    </body>
 </html>
